@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=65.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "uncertainty-datatypes"
+version = "1.0.0"
+authors = [
+  { name="Atenea Research Group, University of Malaga, Spain" },
+]
+description = "Uncertainty Datatypes Library"
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers=[
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Education",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries"
+]
+dependencies = [
+    "numpy>=1.25.0"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/atenearesearchgroup/uncertainty"
+"Bug Tracker" = "https://github.com/atenearesearchgroup/uncertainty/issues"
