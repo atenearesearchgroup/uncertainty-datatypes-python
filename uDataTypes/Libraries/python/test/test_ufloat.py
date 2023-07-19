@@ -3,7 +3,7 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../")
 
 import unittest
 
-from udatatypes.utypes import *
+from uncertainty.utypes import *
 from funcs_testing import *
 
 def execute(l, r, e, func, method, op, rev_op):
@@ -442,6 +442,8 @@ class ufloatTest(unittest.TestCase):
         t(max(abs(self.ufa), abs(self.ufb), abs(self.ufc)), self.ufc)
         t(max(ufloat(2.2, 12), ufloat(1.3, 12), ufloat(3.7, 12), ufloat(5.3, 12), ufloat(3.1, 12), ufloat(2.6, 12), ufloat(0.6, 12), ufloat(4.4, 12)), ufloat(5.3, 12))
         t(max(ufloat(2.2, 12), ufloat(-1.3, 12), ufloat(3.7, 12), ufloat(5.3, 12), ufloat(-3.1, 12), ufloat(2.6, 12), ufloat(-0.6, 12), ufloat(4.4, 12)), ufloat(5.3, 12))
+        t(max(2, ufloat(-1, 12), 3, ufloat(5, 12), -3, ufloat(2, 12), ufloat(-0, 12), 6), 6)
+        t(max(2, uint(-1, 1), ufloat(-3.5, 1.0), uint(3, 1), -2, uint(0, 1), -4, ufloat(5.5, 1.7)), ufloat(5.5, 1.7))
 
     def test_min(self):
         ''' min '''
@@ -449,7 +451,8 @@ class ufloatTest(unittest.TestCase):
         t(min(abs(self.ufa), abs(self.ufb), abs(self.ufc)), self.ufb)
         t(min(ufloat(2.2, 1), ufloat(1.3, 1), ufloat(3.7, 1), ufloat(3.3, 1), ufloat(2.1, 1), ufloat(0.6, 1), ufloat(4.6, 1), ufloat(5.4, 1)), ufloat(0.6, 1))
         t(min(ufloat(2.2, 1), ufloat(-1.3, 1), ufloat(3.7, 1), ufloat(3.3, 1), ufloat(-2.1, 1), ufloat(0.6, 1), ufloat(-4.6, 1), ufloat(5.4, 1)), ufloat(-4.6, 1))
-
+        t(min(2, ufloat(-1, 1), -3, ufloat(3, 1), -2, ufloat(0, 1), -4, -5), -5)
+        t(min(2, uint(-1, 1), ufloat(-3.5, 1.0), uint(3, 1), -2, uint(0, 1), -4, ufloat(-5.5, 1.7)), ufloat(-5.5, 1.7))
     '''
         Comparison Operators
     '''

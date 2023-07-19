@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import math
 
-from udatatypes.utypes import ubool
-from udatatypes.utypes import Result
+from uncertainty.utypes import ubool
+from uncertainty.utypes import Result
 
 import math
 
@@ -229,6 +229,8 @@ class uint:
 	 	of mean x and standard deviation \sigma = u
 	 '''
 	def uEquals(self, r: uint|ufloat) -> ubool:
+		if isinstance(r, (int, float)):
+			r = ufloat(r)
 		return self.toufloat() == r.toufloat()
 	
 	def eq(self, other) -> ubool:
@@ -238,6 +240,8 @@ class uint:
 		return self.uEquals(r)
 
 	def uDistinct(self, r: uint|ufloat) -> ubool:
+		if isinstance(r, (int, float)):
+			r = ufloat(r)
 		return ~self.uEquals(r)
 	
 	def ne(self, other) -> ubool:
@@ -247,24 +251,32 @@ class uint:
 		return self.uDistinct(r)
 
 	def lt(self, r: uint|ufloat) -> ubool:
+		if isinstance(r, (int, float)):
+			r = ufloat(r)
 		return self.toufloat() < r.toufloat()
 	
 	def __lt__(self, r: uint|ufloat) -> ubool:
 		return self.lt(r)
 
 	def le(self, r: uint|ufloat) -> ubool:
+		if isinstance(r, (int, float)):
+			r = ufloat(r)
 		return self.toufloat() <= r.toufloat()
 
 	def __le__(self, r: uint|ufloat) -> ubool:
 		return self.le(r)
 
 	def gt(self, r: uint|ufloat) -> ubool:
+		if isinstance(r, (int, float)):
+			r = ufloat(r)
 		return self.toufloat() > r.toufloat()
 	
 	def __gt__(self, r: uint|ufloat) -> ubool:
 		return self.gt(r)
 	
 	def ge(self, r: uint|ufloat) -> ubool:
+		if isinstance(r, (int, float)):
+			r = ufloat(r)
 		return self.toufloat() >= r.toufloat()
 	
 	def __ge__(self, r: uint|ufloat) -> ubool:
@@ -645,8 +657,10 @@ class ufloat:
 	
 			return r.check(swap) 
 		
-	def uEquals(self, number: uint|ufloat) -> ubool:
-		r = self.calculate(number.toufloat())
+	def uEquals(self, other: uint|ufloat) -> ubool:
+		if isinstance(other, (int, float)):
+			other = ufloat(other)
+		r = self.calculate(other.toufloat())
 		return ubool(r.eq)
 
 	def eq(self, other) -> ubool:
@@ -655,24 +669,28 @@ class ufloat:
 	def __eq__(self, other) -> ubool:
 		return self.eq(other)
 
-	def uDistinct(self, r: uint|ufloat) -> ubool:
-		return ~self.uEquals(r)
+	def uDistinct(self, other: uint|ufloat) -> ubool:
+		if isinstance(other, (int, float)):
+			other = ufloat(other)
+		return ~self.uEquals(other)
 	
 	def ne(self, other) -> ubool:
+		if isinstance(other, (int, float)):
+			other = ufloat(other)
 		return self.uDistinct(other)
 
 	def __ne__(self, other) -> ubool:
 		return self.uDistinct(other)
 
 	def lt(self, number: uint|ufloat) -> ubool:
-		r = self.calculate(number.toufloat())
+		r = self.calculate(ufloat(number) if isinstance(number, (int, float)) else number.toufloat())
 		return ubool(r.lt)
 	
 	def __lt__(self, number: uint|ufloat) -> ubool:
 		return self.lt(number)
 	
 	def le(self, number: uint|ufloat) -> ubool:
-		r = self.calculate(number.toufloat())
+		r = self.calculate(ufloat(number) if isinstance(number, (int, float)) else number.toufloat())
 		return ubool(r.lt + r.eq)
 
 	def __le__(self, number: uint|ufloat) -> ubool:
@@ -686,7 +704,7 @@ class ufloat:
 		return self.gt(number)
 	
 	def ge(self, number: uint|ufloat) -> ubool:
-		r = self.calculate(number.toufloat())
+		r = self.calculate(ufloat(number) if isinstance(number, (int, float)) else number.toufloat())
 		return ubool(r.gt + r.eq)
 	
 	def __ge__(self, number: uint|ufloat) -> ubool:

@@ -3,7 +3,7 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../")
 
 import unittest
 
-from udatatypes.utypes import *
+from uncertainty.utypes import *
 from funcs_testing import *
 
 def execute(l, r, e, func, special_op, method, op, rev_op):

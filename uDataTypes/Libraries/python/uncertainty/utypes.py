@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
-from udatatypes.ubool import ubool
-from udatatypes.result import Result
-from udatatypes.unumbers import uint
-from udatatypes.unumbers import ufloat
+from uncertainty.ubool import ubool
+from uncertainty.result import Result
+from uncertainty.unumbers import uint
+from uncertainty.unumbers import ufloat
 	
 # Operator Class
 class infix:
@@ -47,6 +47,15 @@ ne = infix(lambda l, r: l != r)
 # Data Functions
 def is_utype(obj) -> bool:
     return isinstance(obj, (uint, ufloat, ubool))
+
+def is_ubool(obj) -> bool:
+    return isinstance(obj, ubool)
+
+def is_ufloat(obj) -> bool:
+    return isinstance(obj, ufloat)
+
+def is_uint(obj) -> bool:
+    return isinstance(obj, uint)
 
 def is_unumber(obj) -> bool:
     return isinstance(obj, (uint, ufloat))
@@ -90,15 +99,17 @@ def __search(rs: Iterable, eval):
     
     ev = eval(rs[0], rs[1]); rev = eval(rs[1], rs[0])
     best = rs[0] if ev.c > rev.c else rs[1]
-    for r in rs:
-        ev = eval(best, r); rev = eval(r, best)
+    for i in range(2, len(rs)):
+        r = rs[i]
+        ur = r if is_utype(r) else ufloat(r)
+        ev = eval(best, ur); rev = eval(ur, best)
         if ev.c < rev.c:
             best = r
     
     if is_utype(best):
         return best.copy()
     else:
-        best
+        return best
 
 # min
 def min(*rs):

@@ -17,13 +17,15 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
 ```bash
 pip install uncertainty-datatypes
 ```
+
 <sub>Note pip3 may be used instead of pip</sub> 
 
 ## Usage
 
 Import all the datatypes and functions using:
+
 ```python
-from udatatypes.utypes import *
+from uncertainty.utypes import *
 ```
 
 ---
@@ -41,13 +43,16 @@ w = ubool(False)  # True or False can be also used.
 ```
 
 ubools can be used as conditional statements.
+
 ```python
 if x:
     'executed'
 ```
+
 **ubool never should be used with python logical operators** (and, or and not keywords). **ubool special logical operators must be used** (see below.)
 
 #### Logical operators
+
 The python logical operators ('and', 'or', and 'not' keywords)  have a different meaning when they are being used with objects. Therefore, **ubool special logical operators must be used**. 
 
 ubool logical operators include: *AND*, *OR*, *NOT*, *XOR*, *IMPLIES, and *EQUIVALENT*. The library offers the following four ways of using logical operators: 
@@ -58,19 +63,20 @@ ubool logical operators include: *AND*, *OR*, *NOT*, *XOR*, *IMPLIES, and *EQUIV
 
 The table below summarizes all the possible usages.
 
-| Logical <br/> Operation | Operator      | Special <br/> Operator  | Method | Function |
-|:-----------:|:---------------:|:-------------------:|:-------------:|:----------:|
-| AND      | ``` x & y ``` | ``` x |AND| y ``` | ``` x.AND(y) ```  | ``` AND(x, y) ```|
-| OR       | ``` x | y ``` | ``` x |OR| y ``` | ``` x.OR(y) ```  | ``` OR(x, y) ```|
-| XOR      | ``` x ^ y ``` | ``` x |XOR| y ```| ``` x.XOR(y) ``` | ``` XOR(x, y) ```|
-| NOT      | ``` ~ x ``` | | ``` x.NOT() ``` | ``` NOT(x) ```|
-| IMPLIES      | ``` x >> y ``` | ``` x |IMPLIES| y ```| ``` x.IMPLIES(y) ``` | ``` IMPLIES(x, y) ```|
-| EQUIVALENT      | ``` x == y ``` | ``` x |EQUIVALENT| y ```<br />``` x |EQUALS| y ```| ``` x.EQUIVALENT(y) ```<br />``` x.EQUALS(y) ```| ``` EQUIVALENT(x, y) ```<br />``` EQUALS(x, y) ```|
-| DISTINCT      | ``` x != y ``` | ``` x |DISTINCT| y ```| ``` x.DISTINCT(y) ```| ``` DISTINCT(x, y) ```|
+| Operation  | Operator        | Special Operator           | Method                  | Function                 |
+|:----------:|:---------------:|:--------------------------:|:-----------------------:|:------------------------:|
+| AND        | ``` x & y ```   | ``` x \|AND\| y ```        | ``` x.AND(y) ```        | ``` AND(x, y) ```        |
+| OR         | ``` x \| y ```  | ``` x \|OR\| y ```         | ``` x.OR(y) ```         | ``` OR(x, y) ```         |
+| XOR        | ``` x ^ y ```   | ``` x \|XOR\| y ```        | ``` x.XOR(y) ```        | ``` XOR(x, y) ```        |
+| NOT        | ``` ~x ```      |                            | ``` x.NOT() ```         | ``` NOT(x) ```           |
+| IMPLIES    | ``` x >> y ```  | ``` x \|IMPLIES\| y ```    | ``` x.IMPLIES(y) ```    | ``` IMPLIES(x, y) ```    |
+| EQUIVALENT | ``` x == y ```  | ``` x \|EQUIVALENT\| y ``` | ``` x.EQUIVALENT(y) ``` | ``` EQUIVALENT(x, y) ``` |
+| EQUALS     | ``` x == y ```  | ``` x \|EQUALS\| y ```     | ``` x.EQUALS(y) ```     | ``` EQUALS(x, y) ```     |
+| DISTINCT   | ``` x != y ```  | ``` x \|DISTINCT\| y ```   | ``` x.DISTINCT(y) ```   | ``` DISTINCT(x, y) ```   |
 
-Operators or special operators must be surrounded by parentheses due operator precedence. Meanwhile, using a method or the function provides the highest precedence.
+<sub> Operators or special operators must be surrounded by parentheses due operator precedence. Meanwhile, using a method or the function provides the highest precedence. </sub>
 
-*Code example:*
+*ubool Code example:*
 ```python
 x = ubool(0.3)
 y = ubool(0.8)
@@ -81,6 +87,7 @@ w = (~x & y) |IMPLIES| (y ^ z)
 ```
 
 #### Usage with bool
+
 ubools can be used together with python's bools, but ubool operators must be used. 
 
 ```python
@@ -93,11 +100,12 @@ elif x |XOR| (3 > 2):
 while x.AND(3 > 2):
     # do something
 ```
+
 <sub>Note that, python logical operations (3 > 2) must be enclosed by paretheses. True values (result of 3 > 2) are converted into a ubool(1.0) and False into ubool(0.0).</sub>
 
 #### Level of certainty
-The level of certainty changes when a ubool is evaluated to True. 
-The level of certainty can be set using **ubool.setCertainty()** function. By default, 0.9 is used.
+
+The level of certainty changes when a ubool is evaluated to True. The level of certainty can be set using **ubool.setCertainty()** function. By default, 0.9 is used.
 
 ```python
 y = ubool(0.7)
@@ -110,6 +118,7 @@ ubool.setCertainty(0.5)
 if y:   # y is ubool(0.7) >= 0.5
     'executed'
 ```
+
 ---
 
 ## The ufloat type
@@ -123,22 +132,25 @@ y = ufloat(233, '0.7')  # Data can be provided as str, int or float.
 ```
 
 #### Operators
+
 ufloat operators include: *ADD*, *SUB*, *MUL*, *DIV*, *FLOOR DIV*, *NEG*, *POWER*. The table below summarizes all the possible operations.
 
-| Operation | Operator      | Method | Function |
-|:---------:|:------------:|:-----------------:|:----------------:|
-| ADD      | ``` x + y ``` | ``` x.add(y) ```  | ``` add(x, y) ```|
-| SUB      | ``` x - y ``` | ``` x.sub(y) ```  | ``` sub(x, y) ```|
-| MUL      | ``` x * y ``` | ``` x.mul(y) ```  | ``` mul(x, y) ```|
-| DIV      | ``` x / y ``` | ``` x.div(y) ```  | ``` div(x, y) ```|
-| FLOOR DIV| ``` x // y ```| ``` x.floordiv(y) ``` | ``` floordiv(x, y) ```|
-| NEG      | ``` ~ x ```   | ``` x.neg(y) ```  | ``` neg(x, y) ```|
-| POW      | ``` x ** y ```| ``` x.power(y) ```| ``` pow(x, y) ```|
+| Operation | Operator      | Method                | Function               |
+|:---------:|:-------------:|:---------------------:|:----------------------:|
+| ADD       | ``` x + y ``` | ``` x.add(y) ```      | ``` add(x, y) ```      |
+| SUB       | ``` x - y ``` | ``` x.sub(y) ```      | ``` sub(x, y) ```      |
+| MUL       | ``` x * y ``` | ``` x.mul(y) ```      | ``` mul(x, y) ```      |
+| DIV       | ``` x / y ``` | ``` x.div(y) ```      | ``` div(x, y) ```      |
+| FLOOR DIV | ``` x // y ```| ``` x.floordiv(y) ``` | ``` floordiv(x, y) ``` |
+| NEG       | ``` -x ```    | ``` x.neg(y) ```      | ``` neg(x, y) ```      |
+| POW       | ``` x ** y ```| ``` x.power(y) ```    | ``` pow(x, y) ```      |
 
 <sub>Arithmetic operators are recommended. The usage of methods or functions changes the precedence of the operation at execution as if it were enclosed in parentheses.</sub>
 
 ##### Covariance methods
+
 Methods *add*, *sub*, *mul*, *div*, *floordiv* allows the usage of the covariance as an additional parameter.
+
 ```python
 x = ufloat(92.69, 3.8)
 y = ufloat(56.50, 1.83)
@@ -182,17 +194,21 @@ y = uint(432, '5.7')  # Data can be provided as str, int or float.
 ```
 
 #### Operators
+
 The operator MOD is included for uint. The rest of the operators available for uint are the same than those provided for ufloat: *ADD*, *SUB*, *MUL*, *DIV*, *FLOOR DIV*, *NEG*, *POWER*. 
 
-| Operation | Operator      | Method | Function |
-|:---------:|:------------:|:-----------------:|:----------------:|
-| MOD      | ``` x % y ``` | ``` x.mod(y) ```  | ``` mod(x, y) ```|
+| Operation | Operator      | Method            | Function         |
+|:---------:|:-------------:|:-----------------:|:----------------:|
+| MOD       | ``` x % y ``` | ``` x.mod(y) ```  | ``` mod(x, y) ```|
+
 <sub>Arithmetic operators are recommended. The usage of methods or functions changes the precedence of the operation at execution as if it were enclosed in parentheses.</sub>
 
 ##### Covariance methods
+
 Covariance methods are also provided for the uint type.
 
 *uint operators Code example:*
+
 ```python
 x = uint(145, 3.4)
 y = uint(56, 4.35)
@@ -212,24 +228,25 @@ y = x - 3
 z = y - ufloat(0.3, 10.3)
 # z = ufloat(1.700, 25.933)
 ```
+
 --- 
 
 ## Comparison Operators
 Comparison between uint and ufloat can be made using the comparison operators: <, <=, >, >=, == and != and the methods.
 
 
-| Operation | Operator      | Method | Function |
-|:-----------:|:---------------:|:-------------------:|:-------------:|
-| Less      | ``` x < y ``` | ``` x.lt(y) ```  | ``` lt(x, y) ```|
-| Less or Equals | ``` x <= y ``` | ``` x.le(y) ```  | ``` le(x, y) ```|
-| Greater | ``` x > y ``` | ``` x.gt(y) ```  | ``` gt(x, y) ```|
+| Operation         | Operator       | Method           | Function        |
+|:-----------------:|:--------------:|:----------------:|:---------------:|
+| Less              | ``` x < y ```  | ``` x.lt(y) ```  | ``` lt(x, y) ```|
+| Less or Equals    | ``` x <= y ``` | ``` x.le(y) ```  | ``` le(x, y) ```|
+| Greater           | ``` x > y ```  | ``` x.gt(y) ```  | ``` gt(x, y) ```|
 | Greater or Equals | ``` x >= y ``` | ``` x.ge(y) ```  | ``` ge(x, y) ```|
-| Equals | ``` x == y ``` | ``` x.eq(y) ```  | ``` eq(x, y) ```|
-| Not Equals | ``` x != y ``` | ``` x.ne(y) ```  | ``` ne(x, y) ```|
+| Equals            | ``` x == y ``` | ``` x.eq(y) ```  | ``` eq(x, y) ```|
+| Not Equals        | ``` x != y ``` | ``` x.ne(y) ```  | ``` ne(x, y) ```|
 
 <sub>Operators are recommended. The usage of methods or functions changes the precedence of the operation at execution as if it were enclosed in parentheses.</sub>
 
-*Code example:*
+*ufloat Comparison Code example:*
 ```python
 x = uint(100, 0.7)
 y = ufloat(900.45, 0.6)
@@ -238,6 +255,7 @@ if y > x:
     w = y - x # ufloat - uint
     # w = ufloat(800.450, 0.922)
 ```
+
 ---
 
 ## Math functions
@@ -245,7 +263,7 @@ if y > x:
 The library provides the following math functions for uint and ufloat types: 
 *sqrt*(), *sin*(), *cos*(), *tan*(), *atan*(), *acos*(), *asin*(), *inverse*(), *floor*(), *round*(), *max*(...), *min*(...)
 
-Example usage of max for uint and ufloat.
+*Example usage of max for uint and ufloat:*
 ```python
 m = max( 
     sin(ufloat(53.34, 0.8)),
@@ -258,6 +276,7 @@ m = max(
 ``` 
 
 ---
+
 ## The abool type
 
 ---
@@ -282,4 +301,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 [MIT](https://choosealicense.com/licenses/mit/)
 
 ## Atenea Research Group
-For more information, please visit our research group's websites: http://atenea.lcc.uma.es/projects/UncertainOCLTypes.html and http://atenea.lcc.uma.es/projects/SubjectiveLogic.html
+For more information, please visit our research group's websites: 
+- [Atenea Research Group](http://atenea.lcc.uma.es/) 
+- [Atenea: Uncertain OCL Types](http://atenea.lcc.uma.es/projects/UncertainOCLTypes.html) 
+- [Atenea: Subjective Logic](http://atenea.lcc.uma.es/projects/SubjectiveLogic.html)
