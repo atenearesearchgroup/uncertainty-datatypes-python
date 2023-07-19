@@ -84,11 +84,15 @@ def inverse(obj: uint|ufloat) -> uint|ufloat:
 
 def __search(rs: Iterable, eval):
     if len(rs) == 0:
-        raise ValueError('max expected at least 1 argument, got 0')
+        raise ValueError('expected at least 1 argument, got 0')
+    if len(rs) == 1:
+        return rs[0]
     
-    best = rs[0]
+    ev = eval(rs[0], rs[1]); rev = eval(rs[1], rs[0])
+    best = rs[0] if ev.c > rev.c else rs[1]
     for r in rs:
-        if eval(r, best):
+        ev = eval(best, r); rev = eval(r, best)
+        if ev.c < rev.c:
             best = r
     
     if is_utype(best):

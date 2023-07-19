@@ -146,6 +146,9 @@ class ubool:
     ''' Conversions '''
     def __str__(self) -> str:
         return 'ubool({:5.3f})'.format(self.c)
+    
+    def __repr__(self) -> str:
+        return 'ubool({:5.3f})'.format(self.c)
 
     def tobool(self, c: float = None) -> bool:
         if c is None:

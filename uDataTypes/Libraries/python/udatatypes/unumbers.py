@@ -55,9 +55,14 @@ class uint:
 		return self.add(r)
 	
 	def __radd__(self, left) -> uint:
-		return uint(left).__add__(self)
+		if isinstance(left, int):
+			left = uint(left)
+		elif isinstance(left, float):
+			left = ufloat(left)
+
+		return left + self
 	
-	def sub(self, r: int|uint, covariance: float = 0.0) -> uint:
+	def sub(self, r: int|uint, covariance: float = 0.0) -> uint|ufloat:
 		if isinstance(r, float):
 			return self.toufloat() - ufloat(r)
 		elif isinstance(r, ufloat):
@@ -74,7 +79,12 @@ class uint:
 		return self.sub(r)
 	
 	def __rsub__(self, left) -> uint:
-		return uint(left).__sub__(self)
+		if isinstance(left, int):
+			left = uint(left)
+		elif isinstance(left, float):
+			left = ufloat(left)
+			
+		return left - self
 
 	def mul(self, r: int|uint, covariance: float = 0.0) -> uint:
 		if isinstance(r, float):
@@ -94,7 +104,12 @@ class uint:
 		return self.mul(r)
 	
 	def __rmul__(self, left) -> uint:
-		return uint(left).__mul__(self)
+		if isinstance(left, int):
+			left = uint(left)
+		elif isinstance(left, float):
+			left = ufloat(left)
+			
+		return left * self
 
 	''' self operation returns a ufloat '''
 	def __div(self, r: ufloat, covariance:float = 0.0) -> ufloat:
@@ -120,7 +135,12 @@ class uint:
 		return self.div(r, 0.0)
 	
 	def __rtruediv__(self, left) -> uint:
-		return uint(left).__truediv__(self)
+		if isinstance(left, int):
+			left = uint(left)
+		elif isinstance(left, float):
+			left = ufloat(left)
+			
+		return left / self
 		
 	def floordiv(self, r: uint|ufloat|int|float, covariance: float = 0.0) -> uint|ufloat:
 		if isinstance(r, (int, uint)):
@@ -135,7 +155,12 @@ class uint:
 		return self.floordiv(r, 0.0)
 	
 	def __rfloordiv__(self, left):
-		return uint(left).__floordiv__(self)
+		if isinstance(left, int):
+			left = uint(left)
+		elif isinstance(left, float):
+			left = ufloat(left)
+			
+		return left // self
 
 	def mod(self, r: int|uint, covariance: float = 0.0) -> uint|ufloat:
 		if isinstance(r, int):
@@ -398,7 +423,7 @@ class ufloat:
 		return self.floordiv(r, 0.0)
 	
 	def __rfloordiv__(self, left):
-		return uint(left).__floordiv__(self)
+		return ufloat(left).__floordiv__(self)
 
 	def abs(self) -> ufloat:
 		return ufloat(abs(self.x), self.u)

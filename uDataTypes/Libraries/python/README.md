@@ -1,8 +1,6 @@
 # Uncertainty Python Library
 
-Uncertainty Datatypes is a Python library providing uncertainty datatypes including u-type, a-type and s-type.
-
-The library provides three kinds of datatypes: 
+Uncertainty is a Python library providing uncertainty datatypes including u-type, a-type and s-type: 
 1. **u-type** datatypes: ubool, uint, ufloat, ustr, uenum.
     Type U is a pair (x, u), noted x ± u, that represents a random variable whose average is x and standard deviation is u.
 2. **a-type** datatypes: abool, aint, afloat.
