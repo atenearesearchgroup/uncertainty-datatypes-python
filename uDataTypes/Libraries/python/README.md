@@ -1,6 +1,6 @@
 # Uncertainty Python Library
 
-Uncertainty is a Python library providing uncertain primitive datatypes, namely **ubool**, **uint** and **ufloat**. They extend their corresponding counterparts (**bool**, **int** and **float**) with uncertainty. 
+Uncertainty is a Python library providing uncertain primitive datatypes, namely **ubool**, **uint** and **ufloat**. They extend their corresponding Python counterparts (**bool**, **int** and **float**) with uncertainty. 
 
 Uncertain numerical values, **ufloat** and **uint**, are represented by pairs (x,u) where x is the numerical value and u is the associated uncertainty. For example, **ufloat(3.5, 0.1)** represents the uncertain real number "3.5 +/- 0.1", and **uint(30, 1)** represents the uncertain integer 30 +/- 1. 
 
@@ -35,9 +35,9 @@ from uncertainty.utypes import *
 ```
 
 ---
-# Basic Datatypes{#basic-datatypes}
+# [Basic Datatypes]{#basic-datatypes}
 
-## The ubool type{#ubool}
+## [Type ubool]{#ubool}
 
 Type **ubool** extends traditional logic truth values (True, False) with probabilities, and truth tables are replaced with probability expressions. Thus, an **ubool** value is expressed by means of a probability that represents a confidence, e.g., 
 
@@ -137,7 +137,7 @@ Note that python logical operations (3 > 2) must be enclosed in paretheses. True
 
 ---
 
-## The ufloat type{#ufloat}
+## [Type ufloat]{#ufloat}
 
 An **ufloat** value represents a **float** endowed with its asscciated uncertainty.
 
@@ -201,7 +201,7 @@ y = x + 3.1
 
 ---
 
-## The uint type{#uint}
+## [Type uint]{#uint}
 
 An **uint** is represented by an **int** value and its associated uncertainty. 
 
@@ -298,11 +298,11 @@ m = max(
 
 ---
 
-# Further datatypes{#further-datatypes}
+# [Further datatypes]{#further-datatypes}
 
 This library also supports other primitive datatypes endowed with uncertainty, namely **sbool**, **ustr**, **uenum**
 
-## The ustr type{#ustr}
+## [Type ustr]{#ustr}
 
 A ustr can be instantiated providing the string value and the certainty. Certainty is a float[0, 1] where 1 is the highest possible certainty while 0 is the lowest.
 
@@ -401,7 +401,7 @@ le(x, y)
 
 ---
 
-## The uenum type{#uenum}
+## [Type uenum]{#uenum}
 
 A uenum can be instantiated in three ways:
 1. providing a dic where the key is the literal and the value the certainty;
@@ -425,12 +425,12 @@ x.ustrs
 ```
 
 ---
-## Type sbool{#sbool}
+## [Type sbool]{#sbool}
 
 
 ---
 
-# Alternative representations{#alternative-representations}
+# [Alternative representations]{#alternative-representations}
 
 We provide two different implementations for the extended numerical types values, using their corresponding Type-A and Type-B evaluations described in the "ISO Guide to Measurement Uncertainty" ([JCMG 100:2008](https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf)). 
 
@@ -455,15 +455,15 @@ This package also provides Type A implementations, which are represented by type
 
 ---
 
-## Type abool{#abool}
+## [Type abool]{#abool}
 
 ---
 
-## Type afloat{#afloat}
+## [Type afloat]{#afloat}
 
 ---
 
-## Type aint{#aint}
+## [Type aint]{#aint}
 
 
 
