@@ -35,9 +35,9 @@ from uncertainty.utypes import *
 ```
 
 ---
-# Basic Datatypes {#basic-datatypes}
+# Basic Datatypes
 
-## Type ubool {#ubool}
+## Type ubool
 
 Type **ubool** extends traditional logic truth values (True, False) with probabilities, and truth tables are replaced with probability expressions. Thus, an **ubool** value is expressed by means of a probability that represents a confidence, e.g., 
 
