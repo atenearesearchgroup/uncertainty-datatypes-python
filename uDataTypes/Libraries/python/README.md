@@ -1,6 +1,8 @@
 # Uncertainty Python Library
 
-Uncertainty is a Python library providing uncertainty datatypes including u-type, a-type and s-type: 
+Uncertainty is a Python library providing uncertain primitive datatypes, including booleans, reals and integers endowed with uncertainty. 
+
+  including u-type, a-type and s-type: 
 1. **u-type** datatypes: ubool, uint, ufloat, ustr, uenum.
     Type U is a pair (x, u), noted x ± u, that represents a random variable whose average is x and standard deviation is u.
 2. **a-type** datatypes: abool, aint, afloat.
@@ -123,7 +125,7 @@ if y:   # y is ubool(0.7) >= 0.5
 
 ## The ufloat type
 
-A ufloat can be instantiated providing the value and the certainty. Value is any float and Certainty is a float[0, 1] where 1 is the highest possible certainty while 0 is the lowest.
+A ufloat value represents a float endowed with its asscciated uncertainty.
 
 ```python
 x = ufloat(-230.30, 0.7) 
@@ -184,7 +186,7 @@ y = x + 3.1
 
 ## The uint type
 
-A uint can be instantiated in the same way as for ufloat, providing the value and certainty. Value is any float and Certainty is a float[0, 1] where 1 is the highest possible certainty while 0 is the lowest.
+A uint can be instantiated in the same way as for ufloat, providing the value and the uncertainty. 
 
 ```python
 x = uint(-654, 2.4) 
@@ -232,7 +234,7 @@ z = y - ufloat(0.3, 10.3)
 --- 
 
 ## Comparison Operators
-Comparison between uint and ufloat can be made using the comparison operators: <, <=, >, >=, == and != and the methods.
+Comparison between uint and ufloat can be made using the comparison operators: <, <=, >, >=, == and !=. These perators return uboolean values.
 
 
 | Operation         | Operator       | Method           | Function        |
