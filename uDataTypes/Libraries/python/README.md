@@ -8,11 +8,11 @@ This representation of uncertainty for numerical values follows the "ISO Guide t
 
 In turn, type **ubool** extends type **bool** by using propabilities instead of the traditional logical truth values (True, False), and by replacing truth tables with probability expressions. Thus, an **ubool** value is expressed by a probability representing the degree of belief (i.e., the confidence) that a given statement is true. For example, **ubool(0.7)** means that there is a 70% probability that an event will occur. Boolean values True and False correspond to **ubool(1.0)** and **ubool(0.0)**, respectively. 
 
-In addition to these uncertain primitive datatypes, this library also support [further uncertain datatypes](#further-datatypes), namely 
+In addition to these uncertain primitive datatypes, this library also supports [further uncertain datatypes](#further-datatypes), namely 
 
-- [**sbool**](#type-sbool) to represent opinions in Subjective Logic, which allow expressing Belief uncertainty.
-- [**ustr**](#type-ustr) to represent **str** values (i.e., strings) with uncertainty.
-- [**uenum**](#type-uenum) to represent enumerations with uncertainty.
+- [**sbool**](#type-sbool) to represent opinions in [Subjective Logic](https://en.wikipedia.org/wiki/Subjective_logic), which allows expressing degrees of belief with uncertainty.
+- [**ustr**](#type-ustr) to represent **str** values (i.e., Python strings) with uncertainty.
+- [**uenum**](#type-uenum) to represent Python enumerations with uncertainty.
 
 All related operations and Mathematical functions on these datatypes are also provided.
 
@@ -127,12 +127,12 @@ while x.AND(3 > 2):
     # do something
 ```
 
-Note that python logical operations (3 > 2) must be enclosed in paretheses. True values (result of 3 > 2) are converted into a ubool(1.0) and False into ubool(0.0).
+Note that Python logical operations (3 > 2) must be enclosed in paretheses. True values (result of 3 > 2) are converted into a ubool(1.0) and False into ubool(0.0).
 
-**IMPORTANT**: The python logical operators ('and', 'or', and 'not' keywords)  have a different meaning when they are used with objects. Therefore, **ubool special logical operators must ALWAYS be used to deal with ubool values**.   
+**IMPORTANT**: The Python logical operators ('and', 'or', and 'not' keywords)  have a different meaning when they are used with objects. Therefore, **ubool special logical operators must ALWAYS be used to deal with ubool values**.   
 
 <!---
-**ubool never should be used with python logical operators** (and, or and not keywords). **ubool special logical operators must be used instead** 
+**ubool never should be used with Python logical operators** (and, or and not keywords). **ubool special logical operators must be used instead** 
 -->
 
 ---
@@ -191,7 +191,7 @@ w = (x / y)**2 - z
 
 #### Usage with uint, int and float.
 
-**ufloats** can be used together with **uint**, as well as with python's **float** and **int** values (these ones act as scalars in this case).
+**ufloats** can be used together with **uint**, as well as with Python's **float** and **int** values (these ones act as scalars in this case).
 
 ```python
 x = ufloat(5.69, 23.8)
@@ -238,7 +238,7 @@ w = (x // y)**3 % z
 ```
 
 #### Usage with ufloat, int and float
-*uints* can be used together with **ufloat** and with python's **float** and **int** values.
+*uints* can be used together with **ufloat** and with Python's **float** and **int** values.
 
 ```python
 x = uint(5, 23.8)
