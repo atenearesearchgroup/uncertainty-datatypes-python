@@ -10,9 +10,9 @@ In turn, type **ubool** extends type **bool** by using propabilities instead of 
 
 In addition to these uncertain primitive datatypes, this library also support [further uncertain datatypes](#further-datatypes), namely 
 
-- **sbool** to represent opinions in Subjective Logic, which allow expressing Belief uncertainty.
-- **ustr** to represent **str** values (i.e., strings) with uncertainty.
-- **uenum** to represent enumerations with uncertainty.
+- [**sbool**](#type-sbool) to represent opinions in Subjective Logic, which allow expressing Belief uncertainty.
+- [**ustr**](#type-ustr) to represent **str** values (i.e., strings) with uncertainty.
+- [**uenum**](#type-uenum) to represent enumerations with uncertainty.
 
 All related operations and Mathematical functions on these datatypes are also provided.
 
@@ -137,7 +137,7 @@ Note that python logical operations (3 > 2) must be enclosed in paretheses. True
 
 ---
 
-## Type ufloat {#ufloat}
+## Type ufloat
 
 An **ufloat** value represents a **float** endowed with its asscciated uncertainty.
 
@@ -201,7 +201,7 @@ y = x + 3.1
 
 ---
 
-## Type uint {#uint}
+## Type uint
 
 An **uint** is represented by an **int** value and its associated uncertainty. 
 
@@ -298,11 +298,11 @@ m = max(
 
 ---
 
-# Further datatypes {#further-datatypes}
+# Further datatypes
 
 This library also supports other primitive datatypes endowed with uncertainty, namely **sbool**, **ustr**, **uenum**
 
-## Type ustr {#ustr}
+## Type ustr
 
 A ustr can be instantiated providing the string value and the certainty. Certainty is a float[0, 1] where 1 is the highest possible certainty while 0 is the lowest.
 
@@ -401,7 +401,7 @@ le(x, y)
 
 ---
 
-## Type uenum {#uenum}
+## Type uenum
 
 A uenum can be instantiated in three ways:
 1. providing a dic where the key is the literal and the value the certainty;
@@ -425,12 +425,12 @@ x.ustrs
 ```
 
 ---
-## Type sbool {#sbool}
+## Type sbool
 
 
 ---
 
-# Alternative representations {#alternative-representations}
+# Alternative representations
 
 We provide two different implementations for the extended numerical types values, using their corresponding Type-A and Type-B evaluations described in the "ISO Guide to Measurement Uncertainty" ([JCMG 100:2008](https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf)). 
 
@@ -455,15 +455,15 @@ This package also provides Type A implementations, which are represented by type
 
 ---
 
-## Type abool {#abool}
+## Type abool
 
 ---
 
-## Type afloat {#afloat}
+## Type afloat
 
 ---
 
-## Type aint {#aint}
+## Type aint
 
 
 
