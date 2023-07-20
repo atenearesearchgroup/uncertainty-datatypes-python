@@ -1,14 +1,20 @@
 # Uncertainty Python Library
 
-Uncertainty is a Python library providing uncertain primitive datatypes, namely `ubool`, `uint` and `ufloat`. They extend their corresponding counterparts (**bool**, **int** and **float**) with uncertainty. 
+Uncertainty is a Python library providing uncertain primitive datatypes, namely **ubool**, **uint** and **ufloat**. They extend their corresponding counterparts (**bool**, **int** and **float**) with uncertainty. 
 
-Uncertain numerical values, ufloat and uint, are represented by pairs (x,u) where x is the numerical value and u is the associated uncertainty. For example, ufloat(3.5, 0.1) represents the uncertain real number "3.5 +/- 0.1", and uint(30, 1) represents the uncertain integer 30 +/- 1. 
+Uncertain numerical values, **ufloat** and **uint**, are represented by pairs (x,u) where x is the numerical value and u is the associated uncertainty. For example, **ufloat(3.5, 0.1)** represents the uncertain real number "3.5 +/- 0.1", and **uint(30, 1)** represents the uncertain integer 30 +/- 1. 
 
-This representation of uncertainty for numerical values follows the "ISO Guide to Measurement Uncertainty" ([JCMG 100:2008][https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf]), where values are represented by the mean and standard deviation of the assumed probability density function representing how measurements of ground truth values are distributed. For example, if we assume that the values of X follow a normal distribution N(x, σ), then we set u = σ. If we can only assume a uniform or rectangular distribution of the possible values of X, then x is taken as the midpoint of the interval, x = (a + b)/2, and its associated variance as u = (b - a)/(2 * sqrt(3)).
+This representation of uncertainty for numerical values follows the "ISO Guide to Measurement Uncertainty" ([JCMG 100:2008](https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf)), where values are represented by the mean and standard deviation of the assumed probability density function representing how measurements of ground truth values are distributed. For example, if we assume that the values of X follow a normal distribution N(x, σ), then we set u = σ. If we can only assume a uniform or rectangular distribution of the possible values of X, then x is taken as the midpoint of the interval, x = (a + b)/2, and its associated variance as u = (b - a)/(2 * sqrt(3)).
 
-In turn, type "ubool" extends type "bool" by using propabilities instead of the traditional logical truth values (True, False), and by replacing truth tables with probability expressions. Thus, an ubool value is expressed by a probability representing the degree of belief (i.e., the confidence) that a given statement is true. For example, ubool(0.7) means that there is a 70% probability that an event will occur. Boolean values True and False correspond to ubool(1.0) and ubool(0.0), respectively. 
+In turn, type **ubool** extends type **bool** by using propabilities instead of the traditional logical truth values (True, False), and by replacing truth tables with probability expressions. Thus, an **ubool** value is expressed by a probability representing the degree of belief (i.e., the confidence) that a given statement is true. For example, **ubool(0.7)** means that there is a 70% probability that an event will occur. Boolean values True and False correspond to **ubool(1.0)** and **ubool(0.0)**, respectively. 
 
-Math functions on these datatypes are also provided.
+In addition to these uncertain primitive datatypes, this library also support [further uncertain datatypes](#further-datatypes), namely 
+
+- **sbool** to represent opinions in Subjective Logic, which allow expressing Belief uncertainty.
+- **ustr** to represent **str** values (i.e., strings) with uncertainty.
+- **uenum** to represent enumerations with uncertainty.
+
+All related operations and Mathematical functions on these datatypes are also provided.
 
 ## Installation
 
@@ -29,10 +35,11 @@ from uncertainty.utypes import *
 ```
 
 ---
+# Basic Datatypes{#basic-datatypes}
 
-## The ubool type
+## The ubool type{#ubool}
 
-Type "ubool" extends traditional logic truth values (True, False) with probabilities, and truth tables are replaced by probability expressions. Thus, a ubool value is expressed by means of a probability that represents a confidence, e.g., 
+Type **ubool** extends traditional logic truth values (True, False) with probabilities, and truth tables are replaced with probability expressions. Thus, an **ubool** value is expressed by means of a probability that represents a confidence, e.g., 
 
 ```python
 x = ubool(0.7) 
@@ -42,9 +49,9 @@ w = ubool(False)  # True or False can be also used.
                    #True -> ubool(1.0) and False -> ubool(0.0).
 ```
 
-**Type embedding**: values ubool(1.0) and ubool(0.0) correspond, respectively, to Boolean values True and False.  
+**Type embedding**: values **ubool(1.0)** and **ubool(0.0)** correspond, respectively, to **bool** values True and False.  
 
-**Type projection**: ubool values can be projected to Boolean values, using a threshold that determines when the ubool value becomes True or False. This threshold is called "level of certainty" and by default is 0.9. That is, ubool(z) becomes True if z > 0.9.  The level of certainty can be changed using **ubool.setCertainty()** function. 
+**Type projection**: **ubool** values can be projected to **bool** values, using a threshold that determines when the **ubool** value becomes True or False. This threshold is called "level of certainty" and by default is 0.9. That is, **ubool(z)** becomes True if z > 0.9.  The level of certainty can be changed using **ubool.setCertainty()** function. 
 
 ```python
 y = ubool(0.7)
@@ -58,7 +65,7 @@ if y:   # y is ubool(0.7) >= 0.5
     'executed'
 ```
 
-In this manner, ubool values can be used as Booleans in conditional statements.
+In this manner, **ubool** values can be used as booleans in conditional statements.
 
 ```python
 if x:
@@ -67,13 +74,15 @@ if x:
 
 #### Logical operators
 
-Operations on ubool values extend those of bool values. 
+Operations on **ubool** values extend those of **bool** values. 
 
-ubool logical operators include: *AND*, *OR*, *NOT*, *XOR*, *IMPLIES*, and *EQUIVALENT*. The library offers the following four ways of using logical operators: 
+
+**ubool** logical operators include: *AND*, *OR*, *NOT*, *XOR*, *IMPLIES*, and *EQUIVALENT*. The library offers the following four ways of using logical operators: 
 * Operator: ``` x & y ``` 
 * Special operator: ``` x |AND| y ``` 
 * The ubool method: ``` x.AND(y) ``` 
 * A function: ``` AND(x, y) ```
+
 
 The table below summarizes all the possible usages.
 
@@ -88,7 +97,10 @@ The table below summarizes all the possible usages.
 | EQUALS     | ``` x == y ```  | ``` x \|EQUALS\| y ```     | ``` x.EQUALS(y) ```     | ``` EQUALS(x, y) ```     |
 | DISTINCT   | ``` x != y ```  | ``` x \|DISTINCT\| y ```   | ``` x.DISTINCT(y) ```   | ``` DISTINCT(x, y) ```   |
 
-**IMPORTANT**: All ubool operators must be enclosed in parentheses to ensure correct operator precedence. 
+**IMPORTANT**: 
+
+- This library assumes variables are independent.
+- All **ubool** operators must be enclosed in parentheses to ensure correct operator precedence. 
 
 *ubool Code example:*
 ```python
@@ -100,9 +112,9 @@ w = (~x & y) |IMPLIES| (y ^ z)
 # w = ubool(0.608)
 ```
 
-#### Usage with bool
+#### Using ubools with bools
 
-ubool values can be used together with Python's bool values, but always using ubool operators. 
+**ubool** values can be used together with Python's **bool** values, but always using **ubool** operators. 
 
 ```python
 if x & (3 > 2): 
@@ -115,7 +127,7 @@ while x.AND(3 > 2):
     # do something
 ```
 
-<sub>Note that, python logical operations (3 > 2) must be enclosed in paretheses. True values (result of 3 > 2) are converted into a ubool(1.0) and False into ubool(0.0).</sub>
+Note that python logical operations (3 > 2) must be enclosed in paretheses. True values (result of 3 > 2) are converted into a ubool(1.0) and False into ubool(0.0).
 
 **IMPORTANT**: The python logical operators ('and', 'or', and 'not' keywords)  have a different meaning when they are used with objects. Therefore, **ubool special logical operators must ALWAYS be used to deal with ubool values**.   
 
@@ -125,9 +137,9 @@ while x.AND(3 > 2):
 
 ---
 
-## The ufloat type
+## The ufloat type{#ufloat}
 
-A ufloat value represents a float endowed with its asscciated uncertainty.
+An **ufloat** value represents a **float** endowed with its asscciated uncertainty.
 
 ```python
 x = ufloat(-230.30, 0.7) 
@@ -137,7 +149,7 @@ y = ufloat(233, '0.7')  # Data can be provided as str, int or float.
 
 #### Operators
 
-ufloat operators include: *ADD*, *SUB*, *MUL*, *DIV*, *FLOOR DIV*, *NEG*, *POWER*. The table below summarizes all the possible operations.
+**ufloat** operators include: *ADD*, *SUB*, *MUL*, *DIV*, *FLOOR DIV*, *NEG*, *POWER*. The table below summarizes all the possible operations.
 
 | Operation | Operator      | Method                | Function               |
 |:---------:|:-------------:|:---------------------:|:----------------------:|
@@ -149,11 +161,13 @@ ufloat operators include: *ADD*, *SUB*, *MUL*, *DIV*, *FLOOR DIV*, *NEG*, *POWER
 | NEG       | ``` -x ```    | ``` x.neg(y) ```      | ``` neg(x, y) ```      |
 | POW       | ``` x ** y ```| ``` x.power(y) ```    | ``` pow(x, y) ```      |
 
-<sub>Arithmetic operators are recommended. The usage of methods or functions changes the precedence of the operation at execution as if it were enclosed in parentheses.</sub>
+Infix operators are recommended, and operators precedence is respected: it works the same as with **float** values. 
 
-##### Covariance methods
+**IMPORTANT**: Variables are assumed to be independent. Among other things, this means that expressions should be simplified and reduced in order for the results to be correct. In case of having to operate with dependent variables, it is possible to specify their covariance.
 
-Methods *add*, *sub*, *mul*, *div*, *floordiv* allows the usage of the covariance as an additional parameter.
+##### Specifying the covariance of variables in operations
+
+Operations *add*, *sub*, *mul*, *div*, *floordiv* allow specifying the covariance of the operands as an additional parameter.
 
 ```python
 x = ufloat(92.69, 3.8)
@@ -176,19 +190,20 @@ w = (x / y)**2 - z
 ```
 
 #### Usage with uint, int and float.
-ufloats can be used together uint and with python's float and int.
+
+**ufloats** can be used together with **uint**, as well as with python's **float** and **int** values (these ones act as scalars in this case).
 
 ```python
 x = ufloat(5.69, 23.8)
 y = x + 3.1
-# y = ufloat(8.790, 23.800)
+# y = ufloat(8.790, 23.8)
 ```
 
 ---
 
-## The uint type
+## The uint type{#uint}
 
-A uint can be instantiated in the same way as for ufloat, providing the value and the uncertainty. 
+An **uint** is represented by an **int** value and its associated uncertainty. 
 
 ```python
 x = uint(-654, 2.4) 
@@ -199,17 +214,17 @@ y = uint(432, '5.7')  # Data can be provided as str, int or float.
 
 #### Operators
 
-The operator MOD is included for uint. The rest of the operators available for uint are the same than those provided for ufloat: *ADD*, *SUB*, *MUL*, *DIV*, *FLOOR DIV*, *NEG*, *POWER*. 
+The operator *MOD* is included for **uint**. The rest of the operators are the same than those provided for **ufloat**: *ADD*, *SUB*, *MUL*, *DIV*, *FLOOR DIV*, *NEG*, *POWER*. 
 
 | Operation | Operator      | Method            | Function         |
 |:---------:|:-------------:|:-----------------:|:----------------:|
 | MOD       | ``` x % y ``` | ``` x.mod(y) ```  | ``` mod(x, y) ```|
 
-<sub>Arithmetic operators are recommended. The usage of methods or functions changes the precedence of the operation at execution as if it were enclosed in parentheses.</sub>
+Again, infix operators are recommended. 
 
 ##### Covariance methods
 
-Covariance methods are also provided for the uint type.
+Covariance can also be specified in **unit** operations.
 
 *uint operators Code example:*
 
@@ -222,8 +237,8 @@ w = (x // y)**3 % z
 # w = uint(8, 1.246)
 ```
 
-#### Usage with ufloat, int and float.
-uints can be used together ufloat and with python's float and int.
+#### Usage with ufloat, int and float
+*uints* can be used together with **ufloat** and with python's **float** and **int** values.
 
 ```python
 x = uint(5, 23.8)
@@ -236,7 +251,8 @@ z = y - ufloat(0.3, 10.3)
 --- 
 
 ## Comparison Operators
-Comparison between uint and ufloat can be made using the comparison operators: <, <=, >, >=, == and !=. These perators return uboolean values.
+
+Comparisons between **uint** and **ufloat** can be performed using the comparison operators: <, <=, >, >=, == and !=. These perators return **ubool** values.
 
 
 | Operation         | Operator       | Method           | Function        |
@@ -248,7 +264,7 @@ Comparison between uint and ufloat can be made using the comparison operators: <
 | Equals            | ``` x == y ``` | ``` x.eq(y) ```  | ``` eq(x, y) ```|
 | Not Equals        | ``` x != y ``` | ``` x.ne(y) ```  | ``` ne(x, y) ```|
 
-<sub>Operators are recommended. The usage of methods or functions changes the precedence of the operation at execution as if it were enclosed in parentheses.</sub>
+Again, infix operators are recommended. 
 
 *ufloat Comparison Code example:*
 ```python
@@ -264,7 +280,7 @@ if y > x:
 
 ## Math functions
 
-The library provides the following math functions for uint and ufloat types: 
+The library provides the following math functions for **uint** and **ufloat** variables and values: 
 *sqrt*(), *sin*(), *cos*(), *tan*(), *atan*(), *acos*(), *asin*(), *inverse*(), *floor*(), *round*(), *max*(...), *min*(...)
 
 *Example usage of max for uint and ufloat:*
@@ -280,7 +296,13 @@ m = max(
 ``` 
 ---
 
-## The ustr type
+---
+
+# Further datatypes{#further-datatypes}
+
+This library also supports other primitive datatypes endowed with uncertainty, namely **sbool**, **ustr**, **uenum**
+
+## The ustr type{#ustr}
 
 A ustr can be instantiated providing the string value and the certainty. Certainty is a float[0, 1] where 1 is the highest possible certainty while 0 is the lowest.
 
@@ -379,7 +401,7 @@ le(x, y)
 
 ---
 
-## The uenum type
+## The uenum type{#uenum}
 
 A uenum can be instantiated in three ways:
 1. providing a dic where the key is the literal and the value the certainty;
@@ -403,14 +425,18 @@ x.ustrs
 ```
 
 ---
+## Type sbool{#sbool}
 
-# Alternative representations 
 
-We provide two different implementations for the extended types values, using their corresponding Type-A and Type-B evaluations described in the "ISO Guide to Measurement Uncertainty" ([JCMG 100:2008][https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf]). 
+---
 
-* In Type A implementations, uncertain values are represented by n independent observations X = {x1,...,xn} that have been
+# Alternative representations{#alternative-representations}
+
+We provide two different implementations for the extended numerical types values, using their corresponding Type-A and Type-B evaluations described in the "ISO Guide to Measurement Uncertainty" ([JCMG 100:2008](https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf)). 
+
+- In Type A implementations, uncertain values are represented by n independent observations X = {x1,...,xn} that have been
 obtained under the same conditions of measurement. The value of the corresponding uncertain number corresponds to the mean of the sample, and the uncertainty is given by the standard deviation.  
-* In Type B implementation, values are represented by the mean and standard deviation of the assumed probability density function that represents how the measurements of the ground truth values are expected to distribute (in case of floats and integers) or the degree of belief that an event will occur (in case of booleans).
+- In Type B implementation, values are represented by the mean and standard deviation of the assumed probability density function that represents how the measurements of the ground truth values are expected to distribute (in case of floats and integers) or the degree of belief that an event will occur (in case of booleans).
 
 Types **ubool**, **ufloat** and **uint** defined above are implemented using Type B evaluation, and all type operations are implemented using closed-form expressions.
 
@@ -429,20 +455,21 @@ This package also provides Type A implementations, which are represented by type
 
 ---
 
-## The abool type
+## Type abool{#abool}
 
 ---
 
-## The afloat type
+## Type afloat{#afloat}
 
 ---
 
-## The aint type
+## Type aint{#aint}
+
+
 
 ---
-## sbool
 
----
+# Final considerations 
 
 ## Contributing
 
