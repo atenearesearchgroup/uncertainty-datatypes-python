@@ -1,6 +1,6 @@
 # Uncertainty Python Library
 
-Uncertainty is a Python library providing uncertain primitive datatypes, namely **ubool**, **ufloat** and **uint**. They extend their corresponding counterparts (bool, float and int) with uncertainty. 
+Uncertainty is a Python library providing uncertain primitive datatypes, namely `ubool`, `uint` and `ufloat`. They extend their corresponding counterparts (`bool`, `float` and `int`) with uncertainty. 
 
 Uncertain numerical values, ufloat and uint, are represented by pairs (x,u) where x is the numerical value and u is the associated uncertainty. For example, ufloat(3.5, 0.1) represents the uncertain real number "3.5 +/- 0.1", and uint(30, 1) represents the uncertain integer 30 +/- 1. 
 
@@ -102,7 +102,7 @@ w = (~x & y) |IMPLIES| (y ^ z)
 
 #### Usage with bool
 
-ubool values can be used together with python's bool values, but always using ubool operators. 
+ubool values can be used together with Python's bool values, but always using ubool operators. 
 
 ```python
 if x & (3 > 2): 
@@ -117,7 +117,7 @@ while x.AND(3 > 2):
 
 <sub>Note that, python logical operations (3 > 2) must be enclosed in paretheses. True values (result of 3 > 2) are converted into a ubool(1.0) and False into ubool(0.0).</sub>
 
-**IMPORTANT**: The python logical operators ('and', 'or', and 'not' keywords)  have a different meaning when they are used with objects. Therefore, **ubool special logical operators must be used to deal with ubool values**.   
+**IMPORTANT**: The python logical operators ('and', 'or', and 'not' keywords)  have a different meaning when they are used with objects. Therefore, **ubool special logical operators must ALWAYS be used to deal with ubool values**.   
 
 <!---
 **ubool never should be used with python logical operators** (and, or and not keywords). **ubool special logical operators must be used instead** 
