@@ -1,6 +1,6 @@
 # Uncertainty Python Library
 
-Uncertainty is a Python library providing uncertain primitive datatypes, namely `ubool`, `uint` and `ufloat`. They extend their corresponding counterparts (`bool`, `float` and `int`) with uncertainty. 
+Uncertainty is a Python library providing uncertain primitive datatypes, namely `ubool`, `uint` and `ufloat`. They extend their corresponding counterparts (**bool**, **int** and **float**) with uncertainty. 
 
 Uncertain numerical values, ufloat and uint, are represented by pairs (x,u) where x is the numerical value and u is the associated uncertainty. For example, ufloat(3.5, 0.1) represents the uncertain real number "3.5 +/- 0.1", and uint(30, 1) represents the uncertain integer 30 +/- 1. 
 
