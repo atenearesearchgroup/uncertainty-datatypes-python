@@ -1,14 +1,13 @@
 # Uncertainty Python Library
 
-Uncertainty is a Python library providing uncertain primitive datatypes, including booleans, reals and integers endowed with uncertainty. 
+Uncertainty is a Python library providing uncertain primitive datatypes, namely **ubool**, **ufloat** and **uint**. They extend their corresponding counterparts (bool, float and int) with uncertainty. 
 
-  including u-type, a-type and s-type: 
-1. **u-type** datatypes: ubool, uint, ufloat, ustr, uenum.
-    Type U is a pair (x, u), noted x ± u, that represents a random variable whose average is x and standard deviation is u.
-2. **a-type** datatypes: abool, aint, afloat.
-    Type A, maintain the set of the measured values as X = {x1,...,xn}, x ± u could be calculated as the mean and standard deviation.
-3. **s-type** datatype: sbool.
-    A particular type of subjective uncertainty (Belief Uncertainty) when a user is not sure about the truth of a statement.
+Uncertain numerical values, ufloat and uint, are represented by pairs (x,u) where x is the numerical value and u is the associated uncertainty. For example, ufloat(3.5, 0.1) represents the uncertain real number "3.5 +/- 0.1", and uint(30, 1) represents the uncertain integer 30 +/- 1. 
+
+This representation of uncertainty for numerical values follows the "ISO Guide to Measurement Uncertainty" ([JCMG 100:2008][https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf]), where values are represented by the mean and standard deviation of the assumed probability density function representing how measurements of ground truth values are distributed. For example, if we assume that the values of X follow a normal distribution N(x, σ), then we set u = σ. If we can only assume a uniform or rectangular distribution of the possible values of X, then x is taken as the midpoint of the interval, x = (a + b)/2, and its associated variance as u = (b - a)/(2 * sqrt(3)).
+
+In turn, type "ubool" extends type "bool" by using propabilities instead of the traditional logical truth values (True, False), and by replacing truth tables with probability expressions. Thus, an ubool value is expressed by a probability representing the degree of belief (i.e., the confidence) that a given statement is true. For example, ubool(0.7) means that there is a 70% probability that an event will occur. Boolean values True and False correspond to ubool(1.0) and ubool(0.0), respectively. 
+
 
 Math functions with the datatypes are also provided.
 
@@ -34,7 +33,7 @@ from uncertainty.utypes import *
 
 ## The ubool type
 
-A ubool can be instantiated providing the certainty, that is, a float[0, 1] where 1 is the highest possible certainty while 0 is the lowest.
+Type "ubool" extends traditional logic truth values (True, False) with probabilities, and truth tables are replaced by probability expressions. Thus, a ubool value is expressed by means of a probability that represents a confidence, e.g., 
 
 ```python
 x = ubool(0.7) 
@@ -44,18 +43,32 @@ w = ubool(False)  # True or False can be also used.
                    #True -> ubool(1.0) and False -> ubool(0.0).
 ```
 
-ubools can be used as conditional statements.
+**Type embedding**: values ubool(1.0) and ubool(0.0) correspond, respectively, to Boolean values True and False.  
+
+**Type projection**: ubool values can be projected to Boolean values, using a threshold that determines when the ubool value becomes True or False. This threshold is called "level of certainty" and by default is 0.9. That is, ubool(z) becomes True if z > 0.9.  The level of certainty can be changed using **ubool.setCertainty()** function. 
+
+```python
+y = ubool(0.7)
+
+# Certainty by default: 0.9
+if y:   # y is ubool(0.7) < 0.9
+    'not executed'
+
+ubool.setCertainty(0.5)
+if y:   # y is ubool(0.7) >= 0.5
+    'executed'
+```
+
+In this manner, ubool values can be used as Booleans in conditional statements.
 
 ```python
 if x:
     'executed'
 ```
 
-**ubool never should be used with python logical operators** (and, or and not keywords). **ubool special logical operators must be used** (see below.)
-
 #### Logical operators
 
-The python logical operators ('and', 'or', and 'not' keywords)  have a different meaning when they are being used with objects. Therefore, **ubool special logical operators must be used**. 
+Operations on ubool values extend those of bool values. 
 
 ubool logical operators include: *AND*, *OR*, *NOT*, *XOR*, *IMPLIES, and *EQUIVALENT*. The library offers the following four ways of using logical operators: 
 * Operator: ``` x & y ``` 
@@ -76,7 +89,7 @@ The table below summarizes all the possible usages.
 | EQUALS     | ``` x == y ```  | ``` x \|EQUALS\| y ```     | ``` x.EQUALS(y) ```     | ``` EQUALS(x, y) ```     |
 | DISTINCT   | ``` x != y ```  | ``` x \|DISTINCT\| y ```   | ``` x.DISTINCT(y) ```   | ``` DISTINCT(x, y) ```   |
 
-<sub> Operators or special operators must be surrounded by parentheses due operator precedence. Meanwhile, using a method or the function provides the highest precedence. </sub>
+**IMPORTANT**: All ubool operators must be enclosed in parentheses to ensure correct operator precedence. 
 
 *ubool Code example:*
 ```python
@@ -90,7 +103,7 @@ w = (~x & y) |IMPLIES| (y ^ z)
 
 #### Usage with bool
 
-ubools can be used together with python's bools, but ubool operators must be used. 
+ubool values can be used together with python's bool values, but always using ubool operators. 
 
 ```python
 if x & (3 > 2): 
@@ -103,23 +116,13 @@ while x.AND(3 > 2):
     # do something
 ```
 
-<sub>Note that, python logical operations (3 > 2) must be enclosed by paretheses. True values (result of 3 > 2) are converted into a ubool(1.0) and False into ubool(0.0).</sub>
+<sub>Note that, python logical operations (3 > 2) must be enclosed in paretheses. True values (result of 3 > 2) are converted into a ubool(1.0) and False into ubool(0.0).</sub>
 
-#### Level of certainty
+**IMPORTANT**: The python logical operators ('and', 'or', and 'not' keywords)  have a different meaning when they are used with objects. Therefore, **ubool special logical operators must be used to deal with ubool values**.   
 
-The level of certainty changes when a ubool is evaluated to True. The level of certainty can be set using **ubool.setCertainty()** function. By default, 0.9 is used.
-
-```python
-y = ubool(0.7)
-
-# Certainty by default: 0.9
-if y:   # y is ubool(0.7) < 0.9
-    'not executed'
-
-ubool.setCertainty(0.5)
-if y:   # y is ubool(0.7) >= 0.5
-    'executed'
-```
+<!---
+**ubool never should be used with python logical operators** (and, or and not keywords). **ubool special logical operators must be used instead** 
+-->
 
 ---
 
@@ -279,6 +282,28 @@ m = max(
 
 ---
 
+# Alternative representations 
+
+We provide two different implementations for the extended types values, using their corresponding Type-A and Type-B evaluations described in the "ISO Guide to Measurement Uncertainty" ([JCMG 100:2008][https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf]). 
+
+* In Type A implementations, uncertain values are represented by n independent observations X = {x1,...,xn} that have been
+obtained under the same conditions of measurement. The value of the corresponding uncertain number corresponds to the mean of the sample, and the uncertainty is given by the standard deviation.  
+* In Type B implementation, values are represented by the mean and standard deviation of the assumed probability density function that represents how the measurements of the ground truth values are expected to distribute (in case of floats and integers) or the degree of belief that an event will occur (in case of booleans).
+
+Types **ubool**, **ufloat** and **uint** defined above are implemented using Type B evaluation, and all type operations are implemented using closed-form expressions.
+
+This package also provides Type A implementations, which are represented by types abool, aint and afloat. These are described next.
+
+
+
+<!--- 
+1. **u-type** datatypes: ubool, uint, ufloat, ustr, uenum.
+    Type U is a pair (x, u), noted x ± u, that represents a random variable whose average is x and standard deviation is u.
+2. **a-type** datatypes: abool, aint, afloat.
+    Type A, maintain the set of the measured values as X = {x1,...,xn}, x ± u could be calculated as the mean and standard deviation.
+3. **s-type** datatype: sbool.
+    A particular type of subjective uncertainty (Belief Uncertainty) when a user is not sure about the truth of a statement.
+-->
 ## The abool type
 
 ---
