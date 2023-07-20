@@ -6,6 +6,8 @@ from uncertainty.ubool import ubool
 from uncertainty.result import Result
 from uncertainty.unumbers import uint
 from uncertainty.unumbers import ufloat
+from uncertainty.ustr import ustr
+from uncertainty.uenum import uenum
 	
 # Operator Class
 class infix:
@@ -29,6 +31,7 @@ DISTINCT = infix(lambda l, r: l.DISTINCT(r) if isinstance(l, ubool) else r.DISTI
 NOT = lambda x: x.NOT()
 
 add = infix(lambda l, r: l + r)
+concat = infix(lambda l, r: l + r)
 sub = infix(lambda l, r: l - r)
 mul = infix(lambda l, r: l * r)
 div = infix(lambda l, r: l / r)
@@ -46,7 +49,7 @@ ne = infix(lambda l, r: l != r)
 
 # Data Functions
 def is_utype(obj) -> bool:
-    return isinstance(obj, (uint, ufloat, ubool))
+    return isinstance(obj, (uint, ufloat, ubool, ustr, uenum))
 
 def is_ubool(obj) -> bool:
     return isinstance(obj, ubool)

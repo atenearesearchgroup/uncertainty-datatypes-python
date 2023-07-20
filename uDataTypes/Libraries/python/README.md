@@ -8,8 +8,7 @@ This representation of uncertainty for numerical values follows the "ISO Guide t
 
 In turn, type "ubool" extends type "bool" by using propabilities instead of the traditional logical truth values (True, False), and by replacing truth tables with probability expressions. Thus, an ubool value is expressed by a probability representing the degree of belief (i.e., the confidence) that a given statement is true. For example, ubool(0.7) means that there is a 70% probability that an event will occur. Boolean values True and False correspond to ubool(1.0) and ubool(0.0), respectively. 
 
-
-Math functions with the datatypes are also provided.
+Math functions on these datatypes are also provided.
 
 ## Installation
 
@@ -70,7 +69,7 @@ if x:
 
 Operations on ubool values extend those of bool values. 
 
-ubool logical operators include: *AND*, *OR*, *NOT*, *XOR*, *IMPLIES, and *EQUIVALENT*. The library offers the following four ways of using logical operators: 
+ubool logical operators include: *AND*, *OR*, *NOT*, *XOR*, *IMPLIES*, and *EQUIVALENT*. The library offers the following four ways of using logical operators: 
 * Operator: ``` x & y ``` 
 * Special operator: ``` x |AND| y ``` 
 * The ubool method: ``` x.AND(y) ``` 
@@ -193,7 +192,7 @@ A uint can be instantiated in the same way as for ufloat, providing the value an
 
 ```python
 x = uint(-654, 2.4) 
-# y = uint(-654, 2.4)
+# x = uint(-654, 2.4)
 y = uint(432, '5.7')  # Data can be provided as str, int or float.
 # y = uint(432, 5.7)
 ```
@@ -279,6 +278,129 @@ m = max(
 )
 # m = uint(84, 0.600)
 ``` 
+---
+
+## The ustr type
+
+A ustr can be instantiated providing the string value and the certainty. Certainty is a float[0, 1] where 1 is the highest possible certainty while 0 is the lowest.
+
+```python
+x = ustr('What is Lorem Ipsum?', 0.97)
+```
+
+#### Accesing elements
+Elements of the ustr can be accesed using *uAt(index)* or *[index]* operator. The character on the position can be obtained using *
+at(index)*
+
+```python
+x = ustr('What is Lorem Ipsum?', 0.97)
+
+x.uAt(0)
+# ustr('W', 0.97)
+x[0]
+# ustr('W', 0.97)
+x.at(0)
+# 'W'
+```
+
+#### Slicing
+
+The *[start, stop, step]* operator and the uSubstring(start, stop, step) method can be used to split the ustr. The start and stop indexes are optional, their default values are 0 and the lenght of the string. The third parameter is also optional with a default value of 1. Negative indexes are valid.
+
+```python
+x = ustr('What is Lorem Ipsum?', 0.97)
+
+x[0: 4]
+x[: 4]
+x.uSubstring(0, 4)
+#ustr('What', 0.97)
+
+x[-6: ]
+x.uSubstring(-6)
+#ustr('Ipsum?', 0.97)
+```
+
+#### Concatenating ustrs
+
+The method *.add(ustr)*, function *add(ustr, ustr)* or the operator + can be used to concat diferent ustrs or strings, example below:
+
+```python
+x = ustr('What is Lorem Ipsum?', 0.97)
+y = ustr(' Lorem Ipsum is simply dummy text', 0.7)
+
+x + y
+concat(x, y)
+x.concat(y)
+# ustr(What is Lorem Ipsum? Lorem Ipsum is simply dummy text, 0.802)
+
+x + ' Lorem Ipsum is simply dummy text'
+concat(x, ' Lorem Ipsum is simply dummy text')
+x.concat(' Lorem Ipsum is simply dummy text')
+# ustr(What is Lorem Ipsum? Lorem Ipsum is simply dummy text, 0.989)
+```
+
+#### Comparison Operators
+
+Comparisions between ustrs can be performed using the methods, functions and operators defined for booleans. A ubool is returned in coparison operations.
+
+```python
+x = ustr('What is Lorem Ipsum?', 0.97)
+y = ustr('What is', 0.7)
+
+x >= y
+# ubool(0.679)
+
+x.lt(y)
+# ubool(0.321)
+
+le(x, y)
+# ubool(0.321)
+```
+
+#### ustr Methods
+
+- *uLen()*: returns the size of the ustr as uint.
+<sub> len(ustr) function can be used to obtain the length of the string as int. </sub>
+- *uUpper()* returns a new ustr with all characters converted into upper case.
+- *uLower()* returns a new ustr with all characters converted into lower case.
+- *uCapitalize()* returns a new ustr with first character as capital letter.
+- *uFirstLower()* returns a new ustr with first character as lower case.
+- *index(s: str)* return the index of the string 's'.
+- *uCharacters()* return a list of ustr with each character.
+
+#### Conversion Methods
+
+- *tofloat()* Convert the ustr into a float. *float(ustr) function can be used.*
+- *toufloat()* Convert the ustr into a ufloat. 
+- *toint()* Convert the ustr into a int. *int(ustr) function can be used.*
+- *touint()* Convert the ustr into a uint. 
+- *tobool()* Convert the ustr into a bool. *int(ustr) function can be used.*
+- *toubool()* Convert the ustr into a ubool. 
+
+---
+
+## The uenum type
+
+A uenum can be instantiated in three ways:
+1. providing a dic where the key is the literal and the value the certainty;
+2. providing a list of strings with the literals and a list with certainties of each string; 
+3. providing a list of ustr. Certainty is a float[0, 1] where 1 is the highest possible certainty while 0 is the lowest.
+
+```python
+x = uenum(["Red", "Blue"], [0.3, 0.453])
+y = uenum({"red": 0.8, "green": 0.771})
+z = uenum([ustr("blue", 0.83), ustr("yellow", 0.7)])
+```
+
+literals can be accessed using the property 'literals'. A copy of the dict can be obtained with the property 'elements'. A list of ustr with each element can be obtained with the property 'ustrs'
+```python
+x.literals
+# ['Red', 'Blue']
+x.elements
+# {'Red': 0.3, 'Blue': 0.453}
+x.ustrs
+# [ustr(Red, 0.300), ustr(Blue, 0.453)]
+```
 
 ---
 
@@ -304,6 +426,9 @@ This package also provides Type A implementations, which are represented by type
 3. **s-type** datatype: sbool.
     A particular type of subjective uncertainty (Belief Uncertainty) when a user is not sure about the truth of a statement.
 -->
+
+---
+
 ## The abool type
 
 ---
