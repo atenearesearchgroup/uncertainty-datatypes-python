@@ -26,7 +26,26 @@ class ubool:
             self.c = c.c
         else:
             raise ValueError('Invalid parameter c: not bool, ubool, str or number[0.0, 1.0]. C=' + c)
+     
+    @property   
+    def u(self, u: int|float|str = None):
+        if u is None:
+            return self._c
+        
+        if not isinstance(u, (int, float, str)):
+            raise ValueError('Invalid parameter c: not a number[0.0, 1.0]. c=' + u)
+        self._c = float(u)
+    
+    @property
+    def c(self):
+        return self._c
 
+    @c.setter
+    def c(self, c: int|float|str):
+        if not isinstance(c, (int, float, str)):
+            raise ValueError('Invalid parameter c: not a number[0.0, 1.0]. c=' + c)
+        self._c = float(c)
+            
     def setCertainty(certainty: float|int):
         if not isinstance(certainty, (int, float)):
             raise ValueError('Invalid parameter: certainty is not an integer or float [0.0, 1.0].')
@@ -148,7 +167,7 @@ class ubool:
         return 'ubool({:5.3f})'.format(self.c)
     
     def __repr__(self) -> str:
-        return 'ubool({:5.3f})'.format(self.c)
+        return self.__str__()
 
     def tobool(self, c: float = None) -> bool:
         if c is None:

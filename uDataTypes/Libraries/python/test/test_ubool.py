@@ -6,41 +6,6 @@ import unittest
 from uncertainty.utypes import *
 from funcs_testing import *
 
-def execute(l, r, e, func, special_op, method, op, rev_op):
-    t(func(l, r), e)            #   AND(l, r)
-    t(l |special_op| r, e)      #   l |AND| r
-    if isinstance(l, ubool): 
-        t(method(l, r), e)      #   l.AND(r)
-        t(op(l, r),     e)      #   l & r
-    elif isinstance(r, ubool): 
-        t(rev_op(l, r), e)      #   True & r
-
-def ands(l, r, e):
-    execute(l, r, e, AND, AND, ubool.AND, ubool.__and__, ubool.__rand__)
-
-def ors(l, r, e):
-    execute(l, r, e, OR, OR, ubool.OR, ubool.__or__, ubool.__ror__)
-
-def xors(l, r, e):
-    execute(l, r, e, XOR, XOR, ubool.XOR, ubool.__xor__, ubool.__rxor__)
-
-def implies(l, r, e):
-    execute(l, r, e, IMPLIES, IMPLIES, ubool.IMPLIES, ubool.__rshift__, ubool.__rrshift__)
-
-def equivalent(l, r, e):
-    execute(l, r, e, EQUIVALENT, EQUIVALENT, ubool.EQUIVALENT, ubool.__eq__, ubool.__eq__)
-
-def equals(l, r, e):
-    execute(l, r, e, EQUALS, EQUALS, ubool.EQUALS, ubool.__eq__, ubool.__eq__)
-
-def distinct(l, r, e):
-    execute(l, r, e, DISTINCT, DISTINCT, ubool.DISTINCT, ubool.__ne__, ubool.__ne__)
-
-def nots(l, e):
-    t(NOT(l),  e)
-    t(l.NOT(), e)
-    t(~l,      e)
-
 class uboolTest(unittest.TestCase):
 
     def setUp(self):

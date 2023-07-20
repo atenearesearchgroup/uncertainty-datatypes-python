@@ -287,9 +287,9 @@ class uint:
 	''' Conversions '''
 	def __str__(self) -> str:
 		return "uint({:d}, {:5.3f})".format(self.x, self.u)
-	
+    
 	def __repr__(self) -> str:
-		return "uint({:d}, {:5.3f})".format(self.x, self.u)
+		return self.__str__()
 
 	def toint(self) -> int:
 		return self.x
@@ -742,6 +742,6 @@ class ufloat:
 	''' Conversions '''
 	def __str__(self) -> str:
 		return "ufloat({:5.3f}, {:5.3f})".format(self.x, self.u)
-	
+    
 	def __repr__(self) -> str:
-		return "ufloat({:5.3f}, {:5.3f})".format(self.x, self.u)
+		return self.__str__()
