@@ -94,8 +94,7 @@ Copyright (c) 2023 Atenea Research group.
 
 ## Version control
 
-The ``uTypes`` library was initially developed in Java 
-This is the first version of this Python library (September 2023).
+The ``uTypes`` library was initially [developed in Java](../Java/README.md). This is the first version of this Python library (July 2023).
 
 ---
 
@@ -110,11 +109,10 @@ The following papers contain all the details about these datatypes:
 Examples of applications of the uncertainty datatypes presented here can be found in the following papers:
 
 - Jean-Marc Jézéquel, Antonio Vallecillo. "Uncertainty-aware Simulation of Adaptive Systems"  ACM Transactions on Modeling and Computer Simulation, 33(3):8:1-8:19, 2023. https://doi.org/10.1145/3589517
-
 - Lola Burgueño, Paula Muñoz, Robert Clarisó, Jordi Cabot, Sébastien Gérard, Antonio Vallecillo. "Dealing with Belief Uncertainty in Domain Models" ACM Trans. Softw. Eng. Methodol. 32(2):31:1-31:34, 2023. https://doi.org/10.1145/3542947
 - Francisco J. Navarrete, Antonio Vallecillo.
 "Introducing Subjective Knowledge Graphs" In Proc. of EDOC 2021. pp. 61-70, 2021. https://doi.org/10.1109/EDOC52215.2021.00017
-- 	Nathalie Moreno, Manuel F. Bertoa, Loli Burgueño, Antonio Vallecillo. "Managing Measurement and Occurrence Uncertainty in Complex Event Processing Systems" IEEE Access 7:88026-88048, 2019. https://doi.org/10.1109/ACCESS.2019.2923953
+- Nathalie Moreno, Manuel F. Bertoa, Loli Burgueño, Antonio Vallecillo. "Managing Measurement and Occurrence Uncertainty in Complex Event Processing Systems" IEEE Access 7:88026-88048, 2019. https://doi.org/10.1109/ACCESS.2019.2923953
 - Victor Ortiz, Loli Burgueño, Antonio Vallecillo, Martin Gogolla. "Native Support for UML and OCL Primitive Datatypes Enriched with Uncertainty in USE" In Proc. of OCL@MoDELS 2019:59-66, 2019. https://ceur-ws.org/Vol-2513/paper5.pdf 
 - Nathalie Moreno, Manuel F. Bertoa, Gala Barquero, Loli Burgueño, Javier Troya, Adrián García-López, Antonio Vallecillo. "Managing Uncertain Complex Events in Web of Things Applications". In Proc. of ICWE 2018:349-357, 2018. https://doi.org/10.1007/978-3-319-91662-0_28
 - Loli Burgueño, Manuel F. Bertoa, Nathalie Moreno, Antonio Vallecillo. "Expressing Confidence in Models and in Model Transformation Elements" In Proc. of MoDELS 2018: 57-66, 2018. https://doi.org/10.1145/3239372.3239394
