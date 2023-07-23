@@ -2,7 +2,7 @@
 
 ``uTypes`` is a Python library that supports a set of uncertain primitive datatypes in Python, including [``ubool``](./UserGuide.md#type-ubool), [``sbool``](./UserGuide.md#type-sbool), [``uint``](./UserGuide.md#type-uint),  [``ufloat``](./UserGuide.md#type-ufloat), [``uenum``](./UserGuide.md#type-uenum) and [``ustr``](./UserGuide.md#type-ustr). They extend their corresponding Python counterparts (``bool``, ``int``,  ``float``, ``enum`` and ``str``) with uncertainty. The ``uTypes`` library implements linear error propagation theory in Python.
 
-Uncertain numerical values, [``ufloat``](./UserGuide.md#type-ufloat) and [``uint``](./UserGuide.md#type-uint), are represented by pairs (x,u) where ``x`` is the numerical (nominal) value and ``u`` is its associated uncertainty. For example, ``ufloat(3.5,0.1)`` represents the uncertain real number 3.5 +/- 0.1, and ``uint(30,1)`` represents the uncertain integer 30 +/- 1. 
+Uncertain numerical values, [``ufloat``](./UserGuide.md#type-ufloat) and [``uint``](./UserGuide.md#type-uint), are represented by pairs ``(x,u)`` where ``x`` is the numerical (nominal) value and ``u`` is its associated uncertainty. For example, ``ufloat(3.5,0.1)`` represents the uncertain real number 3.5 +/- 0.1, and ``uint(30,1)`` represents the uncertain integer 30 +/- 1. 
 
 This representation of uncertainty for numerical values follows the "ISO Guide to Measurement Uncertainty" ([JCMG 100:2008](https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf)), where values are represented by the mean and standard deviation of the assumed probability density function representing how measurements of ground truth values are distributed. For example, if we assume that the values of a variable X follow a normal distribution N(x, σ), then we set u = σ. If we can only assume a uniform or rectangular distribution of the possible values of X, then x is taken as the midpoint of the interval, x = (a + b)/2, and its associated standard deviation as u = (b - a)/(2 * sqrt(3)).
 
@@ -18,7 +18,7 @@ Type [``sbool``](./UserGuide.md#type-sbool) provides an extension of [``ubool``]
 These values are all real numbers in the range [0,1] and satisfy that *b+d+u=1*. The projected probability of a binomial opinion is defined as *P=b+au*. 
 
 Type [``ustr``](./UserGuide.md#type-ustr) can be used to represent Python strings with uncertainty. Thus, type [``ustr``](./UserGuide.md#type-ustr) extends type ``str``, adding to their values a degree of confidence on the contents of the string. This is useful, for example, when rendering strings obtained by inaccurate OCR devices or texts translated from other languages when there are doubts about specific words or phrases. Therefore, values of type [``ustr``](./UserGuide.md#type-ustr)  are
-pairs (S,c), where S is the string and c the associated confidence (a real number between 0 and 1). To calculate the confidence of a string S, the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) is normally used. For example, ``ustr('hell0 world!',0.92)`` means that we do not trust one of the characters of the string. Values of Python type ``str`` are embedded into [``ustr``](./UserGuide.md#type-ustr) values as ``ustr(S,1.0)``.
+pairs (S,c), where S is the string and c the associated confidence (a real number between 0 and 1). To calculate the confidence of a string S, the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) is normally used. For example, ``ustr('hell0 world!',0.92)`` means that we do not trust at most one of the 12 characters of the string. Values of Python type ``str`` are embedded into [``ustr``](./UserGuide.md#type-ustr) values as ``ustr(S,1.0)``.
 
 
 Finally, type [``uenum``](./UserGuide.md#type-uenum) is the embedding supertype for Python type ``enum`` that adds uncertainty to each of its values. A value of an
@@ -47,6 +47,8 @@ which other [uncertainty propagation packages](#related-libraries) implement.
 
 Hence we had to make certain assumptions that are important to consider when using the library. 
 In particular, although a basic support for correlation is is provided in ``uTypes``,  variables are generally assumed to be independent. Among other things, this means that users are expected to simplify numerical expressions as much as possible to avoid duplication of uncertain variables.
+
+The uncertain datatypes provided by the ``uTypes`` library is well suited for applications that require simple mechanisms for the propagation of uncertainty, efficient computation, and a closed algebra of datatypes (e.g., the comparison of two uncertain numeric values returns a probability, i.e., a [``ubool``](./UserGuide.md#type-ubool) value).  
 
 ## Installation
 
@@ -78,9 +80,9 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Copyright (c) 2023 Atenea Research group.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+*Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:*
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+*The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.*
 
 ## Version control
 
