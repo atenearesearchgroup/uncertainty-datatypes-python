@@ -178,7 +178,7 @@ print(w.uncertainty())
 
 #### Specifying the covariance of variables in operations
 
-***IMPORTANT***: Variables are assumed to be independent. Among other things, this means that expressions should be simplified and reduced in order for the results to be correct. In case of having to operate with dependent variables, it is possible to specify their covariance, as described next.
+***IMPORTANT**: Variables are assumed to be independent. Among other things, this means that expressions should be simplified and reduced in order for the results to be correct. In case of having to operate with dependent variables, it is possible to specify their covariance, as described next.*
 
 Operations ``add``, ``sub``, ``mul``, ``div``, and ``floordiv`` allow specifying the covariance of the operands as an additional parameter.
 
@@ -408,10 +408,15 @@ Given an uncertain string ``s`` that represents a ``float``, ``int``, ``bool``, 
 
 ## Type uenum
 
-A uenum can be instantiated in three ways:
-1. providing a dic where the key is the literal and the value the certainty;
-2. providing a list of strings with the literals and a list with certainties of each string; 
-3. providing a list of ustr. Certainty is a float[0, 1] where 1 is the highest possible certainty while 0 is the lowest.
+Type ``uenum`` is the embedding supertype for Python type ``enum`` that adds uncertainty to each of its values. A value of an uncertain enumeration type is not a single literal,
+but a set of pairs {(l<sub>1</sub>,c<sub>1</sub>),...,(l<sub>n</sub>,c<sub>n</sub>)}, where {c<sub>1</sub>,...,c<sub>n</sub>} are numbers in the range [0, 1] that represent
+the probabilities that the variable takes each literal as its
+value (i.e., the *confidences*), and c<sub>1</sub>+...+c<sub>n</sub>=1. 
+
+An ``uenum`` value can be created in three ways:
+1. providing a ``dict`` where the key is the literal and the value is the confidence;
+2. providing a list of strings with the literals and a list with the confidence of each literal; 
+3. providing a list of ``ustr`` values. 
 
 ```python
 x = uenum(["Red", "Blue"], [0.3, 0.453])
@@ -419,7 +424,7 @@ y = uenum({"red": 0.8, "green": 0.771})
 z = uenum([ustr("blue", 0.83), ustr("yellow", 0.7)])
 ```
 
-literals can be accessed using the property 'literals'. A copy of the dict can be obtained with the property 'elements'. A list of ustr with each element can be obtained with the property 'ustrs'
+The literals of an ``uenum`` value can be accessed using the property ``literals``. A copy of the ``dict`` can be obtained with the property ``elements``. A list with the ``ustr`` values of each element of the uncertain enumeration can be obtained with the property ``ustrs``.
 ```python
 x.literals
 # ['Red', 'Blue']
@@ -429,45 +434,31 @@ x.ustrs
 # [ustr(Red, 0.300), ustr(Blue, 0.453)]
 ```
 
+
+
 ---
 ## Type sbool
 
+Type ``sbool`` provides an extension of ``ubool`` to represent binomial *opinions* in [Subjective Logic](https://en.wikipedia.org/wiki/Subjective_logic). They allow expressing degrees of belief with epistemic uncertainty, and also trust. A binomial opinion about a given fact X by a belief agent A is represented as a quadruple ``sbool(b,d,u,a)`` where
+
+- ``b`` is the degree of belief that X is True
+- ``d`` is the degree of belief that X is False
+- ``u`` is the amount of uncommitted belief, also interpreted as epistemic uncertainty.
+- ``a`` is the prior probability in the absence of belief or disbelief.
+
+These values are all real numbers in the range [0,1] and satisfy that *b+d+u=1*. The "*projected*" probability of a binomial opinion is defined as *P=b+au*. 
+
+
 
 ---
-
 # Alternative representations
 
-We provide two different implementations for the extended numerical types values, using their corresponding Type-A and Type-B evaluations described in the "ISO Guide to Measurement Uncertainty" ([JCMG 100:2008](https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf)). 
+Package ``uTypes`` provides two different implementations for the extended numerical types values, using their corresponding Type-A and Type-B evaluations described in the "ISO Guide to Measurement Uncertainty" ([JCMG 100:2008](https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf)). 
 
-- In Type A implementations, uncertain values are represented by n independent observations X = {x1,...,xn} that have been
-obtained under the same conditions of measurement. The value of the corresponding uncertain number corresponds to the mean of the sample, and the uncertainty is given by the standard deviation.  
-- In Type B implementation, values are represented by the mean and standard deviation of the assumed probability density function that represents how the measurements of the ground truth values are expected to distribute (in case of floats and integers) or the degree of belief that an event will occur (in case of booleans).
+- In **Type A** implementations, uncertain values are represented by n independent observations X = {x1,...,xn} that have been obtained under the same conditions of measurement. The value of the corresponding uncertain number corresponds to the mean of the sample, and the uncertainty is given by the standard deviation.  
+- In **Type B** implementation, values are represented by the mean and standard deviation of the assumed probability density function that represents how the measurements of the ground truth values are expected to distribute (in case of floats and integers) or the degree of belief that an event will occur (in case of booleans).
 
-Types ``ubool``, ``ufloat`` and ``uint`` defined above are implemented using Type B evaluation, and all type operations are implemented using closed-form expressions.
+Types ``ubool``, ``ufloat`` and ``uint`` described above are implemented using **Type B** evaluation, and all type operations are implemented using closed-form expressions.
 
-This package also provides Type A implementations, which are represented by types abool, aint and afloat. These are described next.
-
-
-
-<!--- 
-1. ``u-type`` datatypes: ubool, uint, ufloat, ustr, uenum.
-    Type U is a pair (x, u), noted x ± u, that represents a random variable whose average is x and standard deviation is u.
-2. ``a-type`` datatypes: abool, aint, afloat.
-    Type A, maintain the set of the measured values as X = {x1,...,xn}, x ± u could be calculated as the mean and standard deviation.
-3. ``s-type`` datatype: sbool.
-    A particular type of subjective uncertainty (Belief Uncertainty) when a user is not sure about the truth of a statement.
--->
-
----
-
-## Type abool
-
----
-
-## Type afloat
-
----
-
-## Type aint
-
+This package also provides **Type A** implementations, which are represented by types [``abool``](./TypeA-implementations.md#type-abool), [``aint``](./TypeA-implementations.md#type-aint) and [``afloat``](./TypeA-implementations.md#type-afloat). They provide the extensions of Python types ``bool``, ``float`` and ``int`` with uncertainty, respectively. They are described in a separate [document](./TypeA-implementations.md).
 
