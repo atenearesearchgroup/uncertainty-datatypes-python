@@ -2,7 +2,8 @@
 
 Uncertainty is an inherent property of any measure or estimation performed in any physical setting, and therefore it needs to be considered when modeling systems that manage real data. Although several modeling languages permit the representation of measurement uncertainty for describing some system attributes, these aspects are not normally incorporated into their type systems. Thus, operating with uncertain values and propagating uncertainty are normally cumbersome processes, difficult to achieve at the model level. This library provides an extension of Python basic datatypes to incorporate data uncertainty coming from physical measurements or user estimations into the models, along with the set of operations defined for the values of these types.
 
-``uTypes`` is a Python library that supports a set of uncertain primitive datatypes, including ``ubool``, ``sbool``, ``uint``,  ``ufloat``, ``uenum`` and ``ustr``. They extend their corresponding Python counterparts (``bool``, ``int``,  ``float``, ``enum`` and ``str``) with uncertainty. 
+``uTypes`` is a Python library that supports a set of uncertain primitive datatypes, including [``ubool``](#type-ubool), [``sbool``](#type-sbool), [``uint``](#type-uint),  [``ufloat``](#type-ufloat), [``uenum``](#type-uenum) and [``ustr``](#type-ustr).
+They extend their corresponding Python counterparts (``bool``, ``int``,  ``float``, ``enum`` and ``str``) with uncertainty. 
 
 The ``uTypes`` library implements linear error propagation theory in Python.
 
@@ -441,9 +442,4 @@ This package also provides Type A implementations, which are represented by type
 
 ## Type aint
 
-
-
----
-
-# Final considerations 
 
