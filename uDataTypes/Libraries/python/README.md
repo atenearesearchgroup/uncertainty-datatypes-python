@@ -6,7 +6,7 @@ Uncertain numerical values, [``ufloat``](https://github.com/atenearesearchgroup/
 
 This representation of uncertainty for numerical values follows the "ISO Guide to Measurement Uncertainty" ([JCMG 100:2008](https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf)), where values are represented by the mean and standard deviation of the assumed probability density function representing how measurements of ground truth values are distributed. For example, if we assume that the values of a variable X follow a normal distribution N(x, σ), then we set u = σ. If we can only assume a uniform or rectangular distribution of the possible values of X, then x is taken as the midpoint of the interval, x = (a + b)/2, and its associated standard deviation as u = (b - a)/(2 * sqrt(3)).
 
-Type [``ubool``](https://github.com/atenearesearchgroup/uncertainty/blob/master/uDataTypes/Libraries/python/UserGuide.md#type-ubool) extends type ``bool`` by using propabilities instead of the traditional logical truth values (True, False), and by replacing truth tables by probability expressions. Thus, an [``ubool``](https://github.com/atenearesearchgroup/uncertainty/blob/master/uDataTypes/Libraries/python/UserGuide.md#type-ubool) value is expressed by a probability representing the degree of belief (i.e., the *confidence*) that a given statement is true. For example, ``ubool(0.7)`` means that there is a 70% chance of an event occurring. Python ``bool`` values True and False correspond to ``ubool(1.0)`` and ``ubool(0.0)``, respectively. ``ubool`` values can be used instead of ``bool`` values, by *projecting* the probability using a [``certainty`` threshold](https://github.com/atenearesearchgroup/uncertainty/blob/master/uDataTypes/Libraries/python/UserGuide.md#type-projection). 
+Type [``ubool``](https://github.com/atenearesearchgroup/uncertainty/blob/master/uDataTypes/Libraries/python/UserGuide.md#type-ubool) extends type ``bool`` by using propabilities instead of the traditional logical truth values (``True``, ``False``), and by replacing truth tables by probability expressions. Thus, an [``ubool``](https://github.com/atenearesearchgroup/uncertainty/blob/master/uDataTypes/Libraries/python/UserGuide.md#type-ubool) value is expressed by a probability representing the degree of belief (i.e., the *confidence*) that a given statement is true. For example, ``ubool(0.7)`` means that there is a 70% chance of an event occurring. Python ``bool`` values ``True`` and ``False`` correspond to ``ubool(1.0)`` and ``ubool(0.0)``, respectively. ``ubool`` values can be used instead of ``bool`` values, by *projecting* the probability using a [``certainty`` threshold](https://github.com/atenearesearchgroup/uncertainty/blob/master/uDataTypes/Libraries/python/UserGuide.md#type-projection). 
 
 Type [``sbool``](https://github.com/atenearesearchgroup/uncertainty/blob/master/uDataTypes/Libraries/python/UserGuide.md#type-sbool) provides an extension of [``ubool``](https://github.com/atenearesearchgroup/uncertainty/blob/master/uDataTypes/Libraries/python/UserGuide.md#type-ubool) to represent binomial *opinions* in [Subjective Logic](https://en.wikipedia.org/wiki/Subjective_logic). They allow expressing degrees of belief with epistemic uncertainty, and also trust. A binomial opinion about a given fact X by a belief agent A is represented as a quadruple ``sbool(b,d,u,a)`` where
 
@@ -22,10 +22,9 @@ pairs ``(s,c)``, where ``s`` is the nominal string and ``c`` the associated conf
 
 
 Finally, type [``uenum``](https://github.com/atenearesearchgroup/uncertainty/blob/master/uDataTypes/Libraries/python/UserGuide.md#type-uenum) is the embedding supertype for Python type ``enum`` that adds uncertainty to each of its values. A value of an
-uncertain enumeration type is not a single literal,
-but a set of pairs {(*l*<sub>1</sub>,*c*<sub>1</sub>),...,(*l*<sub>*n*</sub>,*c*<sub>*n*</sub>)}, where {*l*<sub>1</sub>,...,*l*<sub>*n*</sub>} are the enumeration literals and {*c*<sub>1</sub>,...,*c*<sub>*n*</sub>} are numbers in the range [0, 1] that represent
-the probabilities that the variable takes each literal as its
-value. They should fulfil that *c*<sub>1</sub>+...+*c*<sub>*n*</sub>=1. Pairs whose confidence *c*<sub>*i*</sub> is 0 can be omitted. 
+uncertain enumeration type ``enum`` is not a single literal,
+but a set of pairs $\{(l_1,c_1),...,(l_n,c_n)\}$, where $\{l_1,...,l_n\}$ are the enumeration literals and $\{c_1,...,c_n\}$ are numbers in the range [0, 1] that represent
+the probabilities that the variable takes each literal as its value. They should fulfil that $c_1+...+c_n=1$. Pairs whose confidence $c_i$ is 0 can be omitted. 
 
 All related operations and Mathematical functions on these datatypes are supported. Check the [uTypes User Guide](https://github.com/atenearesearchgroup/uncertainty/blob/master/uDataTypes/Libraries/python/UserGuide.md) for details.
 
@@ -81,17 +80,21 @@ The companion [uTypes User Guide](https://github.com/atenearesearchgroup/uncerta
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcome. For major changes, please open an issue to discuss what you would like to change.
 
 ## License
 
 [MIT Licence](https://choosealicense.com/licenses/mit/)
 
-Copyright (c) 2023 Atenea Research group.
+
+<ul> <li style="list-style-type: none;"> 
+
+Copyright (c) 2023 Atenea Research group:
 
 *Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:*
 
-*The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.*
+*The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.*</li>
+</uL>
 
 ## Version control
 
