@@ -18,7 +18,7 @@ Type [``sbool``](./UserGuide.md#type-sbool) provides an extension of [``ubool``]
 These values are all real numbers in the range [0,1] and satisfy that *b+d+u=1*. The "*projected*" probability of a binomial opinion is defined as *P=b+au*. 
 
 Type [``ustr``](./UserGuide.md#type-ustr) can be used to represent Python strings with uncertainty. I.e., type [``ustr``](./UserGuide.md#type-ustr) extends type ``str``, adding to their values a degree of confidence on the contents of the string. This is useful, for example, when rendering strings obtained by inaccurate OCR devices or texts translated from other languages if there are doubts about specific words or phrases. Therefore, values of type [``ustr``](./UserGuide.md#type-ustr)  are
-pairs ``(s,c)``, where ``s`` is the string and ``c`` the associated confidence (a real number between 0 and 1). To calculate the confidence of a string ``s``, the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) is normally used. For example, ``ustr('hell0 world!',0.92)`` means that we do not trust at most one of the 12 characters of the string. Values of Python type ``str`` are embedded into [``ustr``](./UserGuide.md#type-ustr) values as ``ustr(s,1.0)``.
+pairs ``(s,c)``, where ``s`` is the nominal string and ``c`` the associated confidence (a real number between 0 and 1). To calculate the confidence of a string ``s``, the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) is normally used. For example, ``ustr('hell0 world!',0.92)`` means that we do not trust at most one of the 12 characters of the string. Values of Python type ``str`` are embedded into [``ustr``](./UserGuide.md#type-ustr) values as ``ustr(s,1.0)``.
 
 
 Finally, type [``uenum``](./UserGuide.md#type-uenum) is the embedding supertype for Python type ``enum`` that adds uncertainty to each of its values. A value of an
@@ -36,26 +36,27 @@ Our goal was to support the basic mechanisms for the expression and propagation 
 
 A distinguishing feature of the ``uTypes`` library is that comparison operators return [``ubool``](./UserGuide.md#type-ubool) values. This is not supported by the rest of the related uncertainty libraries, such as the [uncertainties package](https://pythonhosted.org/uncertainties), "[soerp](https://pypi.python.org/pypi/soerp)" or "[mcerp](https://pypi.python.org/pypi/mcerp)".
 
-Unlike in these other packages, correlations between expressions are not automatically taken into account in ``uTypes``. This saves keeping track at all times of all correlations between quantities (variables and functions), improving the performance of the calculations. However, this implies that, ***by default, we assume that variables are independent***. Among other things, this means that users are expected to simplify numerical expressions as much as possible in order to avoid duplication of uncertain variables.
+Another distinctive feature of  ``uTypes`` library is that it naturally incorporates Subjective logic (type [``sbool``](./UserGuide.md#type-sbool)) into the type system, as a natural extension of probabilistic logic (type [``ubool``](./UserGuide.md#type-ubool)). This enables the seamless combination of different types of uncertainties under the same library, and in particular the representation of both second-order uncertainty and trust. The type embedding mechanisms used in ``uTypes`` allow operations to be closed in the algebra of types, and that the extended operations work as expected when values of  original types are used.
+
+Correlations between expressions are not automatically taken into account in ``uTypes``. This saves keeping track at all times of all correlations between quantities (variables and functions), improving the performance of the calculations. However, this implies that, ***by default, we assume that variables are independent***. Among other things, this means that users are expected to simplify numerical expressions as much as possible in order to avoid duplication of uncertain variables.
 
 In any case, should there be a need to deal with dependent variables, [``uint``](./UserGuide.md#type-uint) and 
 [``ufloat``](./UserGuide.md#type-ufloat) mathematical operations allow specifying the correlation between them.
 
 The derivatives of mathematical expressions are not automatically handled by the ``uTypes`` library. Again, this saves keeping track of the value of derivatives and automatically obtaining them, something that also impacts performance. Other unsuported features include automatic handling of arrays of uncertain numbers, or higher-order analysis to error propagation.
 
-There are more powerful libraries that provide these features. 
+In case derivatives are needed, there are other libraries that provide these features. 
  
  - For example, the [uncertainties package](https://pythonhosted.org/uncertainties) provides full support for uncertainty progagation, variable correlation, derivatives, and integration with the [NumPy](https://numpy.org/) package for scientific computation in Python. Most uncertainty calculations are performed analytically.
   
  - [soerp](https://pypi.python.org/pypi/soerp) is another uncertainty calculation package for Python that provides higher-order approximations of uncertainty. In particular, it supports a second-order analysis to error propagation. Advanced mathematical functions, similar to those in the standard [math](http://docs.python.org/library/math.html) module can also be evaluated directly.
 
 -  [mcerp](https://pypi.python.org/pypi/mcerp) provides a stochastic calculator for Monte Carlo methods that uses 
-latin-hypercube sampling to perform non-order specific 
-error propagation (or uncertainty analysis).
+latin-hypercube sampling to perform non-order specific error propagation (or uncertainty analysis).
 
 The problem is that these implementations are sometimes too slow, e.g., when used in iterative methods, and their comparison operations are not expressive enough -- that is, the return *crisp* boolean values. The ``uTypes`` package tries to address these limitations.
 
-In summary, the uncertain datatypes provided by the ``uTypes`` library is well suited for applications that require simple mechanisms for the propagation of uncertainty, efficient computation, and a closed algebra of datatypes (e.g., the comparison of two uncertain numeric values returns a probability, i.e., a [``ubool``](./UserGuide.md#type-ubool) value).  
+In summary, the uncertain datatypes provided by the ``uTypes`` library is well suited for applications that require the basic mechanisms for the propagation of uncertainty, efficient computation, and a closed algebra of datatypes. In particular, the comparison of two uncertain numeric values returns a probability, i.e., a [``ubool``](./UserGuide.md#type-ubool) value, and subjective logic is implemented as a natural extension of probabilistic logic, and in turn of Boolean logic: ``bool`` <: ``ubool`` <: ``sbool``. 
 
 
 ## Installation
