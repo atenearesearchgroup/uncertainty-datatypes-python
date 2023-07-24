@@ -23,16 +23,16 @@ pairs ``(s,c)``, where ``s`` is the nominal string and ``c`` the associated conf
 
 Finally, type [``uenum``](./UserGuide.md#type-uenum) is the embedding supertype for Python type ``enum`` that adds uncertainty to each of its values. A value of an
 uncertain enumeration type is not a single literal,
-but a set of pairs {(l<sub>1</sub>,c<sub>1</sub>),...,(l<sub>n</sub>,c<sub>n</sub>)}, where {c<sub>1</sub>,...,c<sub>n</sub>} are numbers in the range [0, 1] that represent
+but a set of pairs {(*l*<sub>1</sub>,*c*<sub>1</sub>),...,(*l*<sub>*n*</sub>,*c*<sub>*n*</sub>)}, where {*l*<sub>1</sub>,...,*l*<sub>*n*</sub>} are the enumeration literals and {*c*<sub>1</sub>,...,*c*<sub>*n*</sub>} are numbers in the range [0, 1] that represent
 the probabilities that the variable takes each literal as its
-value, and c<sub>1</sub>+...+c<sub>n</sub>=1. 
+value. They should fulfil that *c*<sub>1</sub>+...+*c*<sub>*n*</sub>=1. Pairs whose confidence *c*<sub>*i*</sub> is 0 can be omitted. 
 
 All related operations and Mathematical functions on these datatypes are supported. Check the [uTypes User Guide](./UserGuide.md) for details.
 
 ## Main features
 
-The ``uTypes`` library provides a simple implementation of uncertainty for Python primitive datatypes, and implements linear error propagation theory in Python.
-Our goal was to support the basic mechanisms for the expression and propagation of uncertainty, in a lightweight and efficient manner. 
+The ``uTypes`` library provides a simple implementation of uncertainty for Python primitive datatypes, and implements linear error propagation theory in Python. Uncertainty calculations are performed analytically.
+The goal of the library is to support the basic mechanisms for the expression and propagation of uncertainty, in a lightweight and efficient manner. 
 
 A distinguishing feature of the ``uTypes`` library is that comparison operators return [``ubool``](./UserGuide.md#type-ubool) values. This is not supported by the rest of the related uncertainty libraries, such as the [uncertainties package](https://pythonhosted.org/uncertainties), "[soerp](https://pypi.python.org/pypi/soerp)" or "[mcerp](https://pypi.python.org/pypi/mcerp)".
 
@@ -41,22 +41,22 @@ Another distinctive feature of  ``uTypes`` library is that it naturally incorpor
 Correlations between expressions are not automatically taken into account in ``uTypes``. This saves keeping track at all times of all correlations between quantities (variables and functions), improving the performance of the calculations. However, this implies that, ***by default, we assume that variables are independent***. Among other things, this means that users are expected to simplify numerical expressions as much as possible in order to avoid duplication of uncertain variables.
 
 In any case, should there be a need to deal with dependent variables, [``uint``](./UserGuide.md#type-uint) and 
-[``ufloat``](./UserGuide.md#type-ufloat) mathematical operations allow specifying the correlation between them.
+[``ufloat``](./UserGuide.md#type-ufloat) mathematical operations allow specifying the correlation between them (see the [User Guide](./UserGuide.md/#covariance-methods)).
 
-The derivatives of mathematical expressions are not automatically handled by the ``uTypes`` library. Again, this saves keeping track of the value of derivatives and automatically obtaining them, something that also impacts performance. Other unsuported features include automatic handling of arrays of uncertain numbers, or higher-order analysis to error propagation.
+The derivatives of mathematical expressions are not automatically handled by the ``uTypes`` library. Again, this saves keeping track of the value of derivatives, something that also impacts performance. Other unsuported features include automatic handling of arrays of uncertain numbers, or higher-order analysis to error propagation.
 
 In case derivatives are needed, there are other libraries that provide these features. 
  
- - For example, the [uncertainties package](https://pythonhosted.org/uncertainties) provides full support for uncertainty progagation, variable correlation, derivatives, and integration with the [NumPy](https://numpy.org/) package for scientific computation in Python. Most uncertainty calculations are performed analytically.
+ - For example, the [uncertainties package](https://pythonhosted.org/uncertainties) provides full support for uncertainty progagation, variable correlation, derivatives, and integration with the [NumPy](https://numpy.org/) package for scientific computation in Python. 
   
- - [soerp](https://pypi.python.org/pypi/soerp) is another uncertainty calculation package for Python that provides higher-order approximations of uncertainty. In particular, it supports a second-order analysis to error propagation. Advanced mathematical functions, similar to those in the standard [math](http://docs.python.org/library/math.html) module can also be evaluated directly.
+ - [soerp](https://pypi.python.org/pypi/soerp) is another uncertainty calculation package for Python that provides higher-order approximations of uncertainty. In particular, it supports a second-order analysis to error propagation. Advanced mathematical functions, similar to those in the standard [math](http://docs.python.org/library/math.html) module can also be evaluated directly using this package.
 
 -  [mcerp](https://pypi.python.org/pypi/mcerp) provides a stochastic calculator for Monte Carlo methods that uses 
 latin-hypercube sampling to perform non-order specific error propagation (or uncertainty analysis).
 
 The problem is that these implementations are sometimes too slow, e.g., when used in iterative methods, and their comparison operations are not expressive enough -- that is, the return *crisp* boolean values. The ``uTypes`` package tries to address these limitations.
 
-In summary, the uncertain datatypes provided by the ``uTypes`` library is well suited for applications that require the basic mechanisms for the propagation of uncertainty, efficient computation, and a closed algebra of datatypes. In particular, the comparison of two uncertain numeric values returns a probability, i.e., a [``ubool``](./UserGuide.md#type-ubool) value, and subjective logic is implemented as a natural extension of probabilistic logic, and in turn of Boolean logic: ``bool`` <: ``ubool`` <: ``sbool``. 
+In summary, the uncertain datatypes provided by the ``uTypes`` library is well suited for applications that require the basic mechanisms for the propagation of uncertainty, efficient computation, and a closed algebra of datatypes. In particular, the comparison of two uncertain numeric values returns a probability, i.e., a [``ubool``](./UserGuide.md#type-ubool) value, and subjective logic is implemented as a natural extension of probabilistic logic, and in turn of Boolean logic. More precisely, we implement the following type hierarchy:  ``bool`` <: ``ubool`` <: ``sbool``. 
 
 
 ## Installation
@@ -120,7 +120,7 @@ Examples of applications of the uncertainty datatypes presented here can be foun
  
 
 
-For more information, please visit our research group's websites: 
+For more information, please visit our research group's website: 
 - [Atenea Research Group](http://atenea.lcc.uma.es/) 
 - [Atenea: Uncertain UML/OCL Types](http://atenea.lcc.uma.es/projects/UncertainOCLTypes.html) 
 - [Atenea: Subjective Logic](http://atenea.lcc.uma.es/projects/SubjectiveLogic.html)
