@@ -273,7 +273,7 @@ z = y - ufloat(0.3, 10.3)
 
 Comparison between uncertain numerical values (of types ``uint`` or ``ufloat``) no longer return ``bool`` values, but become probabilities, i.e., values of type ``ubool``.
 
-For example, consider the real values $x=2.0$ and $y=2.5$. Using Real arithmetic, $x < y$ = true. However, assuming some given uncertainties, namely $x=2.0\pm 0.3$ and $y=2.5\pm 0.25$, then we obtain that $x<y$ with probability 0.893. 
+For example, consider the real values $x=2.0$ and $y=2.5$. Using Real arithmetic, $x < y$ = true. However, assuming some given uncertainties, namely $x=2.0\pm 0.3$ and $y=2.5\pm 0.25$, then we obtain that $x < y$ with probability 0.893. 
 
 ```python
 x = ufloat(2.0,0.3)
