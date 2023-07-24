@@ -282,8 +282,6 @@ z = x < y
 # z = ubool(0.893)
 ``` 
 
-Given that ``ufloat`` and ``uint`` values can be considered random variables, they are compared using *equality in distribution*: two variables are equal if their distributions are the same.
-
 Comparisons between ``uint`` and ``ufloat`` can be performed using the traditional comparison operators: ``<``, ``<=``, ``>``, ``>=``, ``==`` and ``!=``. These operators return ``ubool`` values.
 
 
@@ -296,7 +294,7 @@ Comparisons between ``uint`` and ``ufloat`` can be performed using the tradition
 | Equals            | ``` x == y ``` | ``` x.eq(y) ```  | ``` eq(x, y) ```|
 | Not Equals        | ``` x != y ``` | ``` x.ne(y) ```  | ``` ne(x, y) ```|
 
-
+Given that ``ufloat`` and ``uint`` values can be considered random variables, they are compared using *equality in distribution*: two variables are equal (``==``) if their distributions are the same. 
 
 Again, infix operators are recommended. 
 
