@@ -19,18 +19,16 @@ This package also provides the **Type A** implementations of these three datatyp
 -->
 
 ---
-
 ## Type abool
 
-<mark>To be done</mark>
+<mark>**OJO**: To be done</mark>
 
 ---
-
 ## Type afloat
 
-<mark>To be done</mark>
+<mark>**OJO**: To be done</mark>
 ---
 
 ## Type aint
 
-<mark>To be done</mark>
+<mark>**OJO**: To be done</mark>
