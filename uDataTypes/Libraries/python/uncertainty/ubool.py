@@ -19,29 +19,24 @@ class ubool:
             c = float(c)
             if c < 0.0 or c > 1.0: 
                 raise ValueError('Invalid parameter: c < 0.0 or c > 1.0. c=' + c)
-            self.c = float(c)
+            self._c = float(c)
         elif isinstance(c, bool):
-            self.c = 1.0 if c else 0.0
+            self._c = 1.0 if c else 0.0
         elif isinstance(c, ubool):
-            self.c = c.c
+            self._c = c.c
         else:
             raise ValueError('Invalid parameter c: not bool, ubool, str or number[0.0, 1.0]. C=' + c)
-     
-    @property   
-    def u(self, u: int|float|str = None):
-        if u is None:
-            return self._c
         
-        if not isinstance(u, (int, float, str)):
-            raise ValueError('Invalid parameter c: not a number[0.0, 1.0]. c=' + u)
-        self._c = float(u)
-    
     @property
-    def c(self):
+    def confidence(self):
         return self._c
 
-    @c.setter
-    def c(self, c: int|float|str):
+    @property
+    def uncertainty(self):
+        return self._c
+
+    @confidence.setter
+    def confidence(self, c: int|float|str):
         if not isinstance(c, (int, float, str)):
             raise ValueError('Invalid parameter c: not a number[0.0, 1.0]. c=' + c)
         self._c = float(c)
@@ -61,22 +56,19 @@ class ubool:
     ''' Type Operations '''
     ''' Not (c) = (1-c)'''
     def NOT(self) -> ubool:
-        return ubool(1 - self.c)
+        return ubool(1 - self._c)
     
     def __invert__(self) -> ubool:
         return self.NOT()
-    
-    def __neg__(self) -> ubool:
-        return self.NOT()
            
-    def AND(self, o) -> ubool:
+    def AND(self, o: ubool) -> ubool:
         if (id(self) == id(o)):
-            return ubool(self.c) # x and x
+            return ubool(self._c) # x and x
         
         if not isinstance(o, ubool):
             o = ubool(o)
 
-        return ubool(self.c * o.c)
+        return ubool(self._c * o._c)
 
     def __and__(self, other) -> ubool:
         return self.AND(other)
@@ -86,12 +78,12 @@ class ubool:
 
     def OR(self, o: ubool|bool|int|float) -> ubool:
         if (id(self) == id(o)):
-            return ubool(self.c) # x or x
+            return ubool(self._c) # x or x
         
         if not isinstance(o, ubool):
             o = ubool(o)
 
-        return ubool(self.c + o.c - (self.c * o.c))
+        return ubool(self._c + o._c - (self._c * o._c))
 
     def __or__(self, other) -> ubool:
         if callable(other):
@@ -101,11 +93,11 @@ class ubool:
     def __ror__(self, left) -> ubool:
         return ubool(left).OR(self)
     
-    def IMPLIES(self, o) -> ubool:
+    def IMPLIES(self, o: ubool) -> ubool:
         if (id(self) == id(o)):
-            return ubool(self.c) # x implies x
+            return ubool(self._c) # x implies x
 
-        return ubool((1-self.c) + o.c - ((1 - self.c) * o.c))
+        return ubool((1-self._c) + o._c - ((1 - self._c) * o._c))
     
     def __rshift__(self, other) -> ubool:
         return self.IMPLIES(other)
@@ -113,34 +105,49 @@ class ubool:
     def __rrshift__(self, left) -> ubool:
         return ubool(left).IMPLIES(self)
 
-    def EQUIVALENT(self, o) -> ubool:
-        return self.XOR(o).NOT()
-
-    def XOR(self, o) -> ubool:
+    def XOR(self, o: ubool) -> ubool:
         if not isinstance(o, ubool):
             o = ubool(o)
 
-        return ubool(abs(self.c - o.c))
+        return ubool(abs(self._c - o._c))
+
+    def XOR2(self, o: ubool) -> ubool:
+        if not isinstance(o, ubool):
+            o = ubool(o)
+
+        return self.EQUIVALENT(o).NOT()
+    
+    def XOR3(self, other: ubool) -> ubool:
+        u1: ubool = self.AND(other.NOT())
+        u2: ubool = self.NOT().AND(other)
+
+        return u1.OR(u2)
 
     def __xor__(self, other) -> ubool:
         return self.XOR(other)
     
     def __rxor__(self, left) -> ubool:
         return ubool(left).XOR(self)
+    
+    def EQUIVALENT(self, o: ubool) -> ubool:
+        return self.XOR(o).NOT()
+    
+    def EQUIVALENT2(self, o: ubool) -> ubool:
+        return self.IMPLIES(o).AND(o.IMPLIES(self))
 
-    def EQUALS(self, o) -> ubool:
+    def EQUALS(self, o: ubool) -> ubool:
         return self.EQUIVALENT(o)
     
-    def equals(self, o) -> ubool:
+    def equals(self, o: ubool) -> ubool:
         return self.EQUALS(o)
 
     def __eq__(self, other) -> ubool:
         return self.EQUALS(other)
     
-    def DISTINCT(self, o) -> ubool: 
+    def DISTINCT(self, o: ubool) -> ubool: 
         return self.EQUALS(o).NOT()
     
-    def distinct(self, o) -> ubool: 
+    def distinct(self, o: ubool) -> ubool: 
         return self.DISTINCT(o)
     
     def __ne__(self, other) -> ubool:
@@ -149,22 +156,22 @@ class ubool:
     ''' Comparison operations '''
 
     def equalsC(self, o, conf) -> bool:
-        return abs(self.c - o.c) <= (1 - conf)
+        return abs(self._c - o._c) <= (1 - conf)
 
     ''' Other Methods  '''
     def compareTo(self, o) -> int:
-        x = self.c - o.c
+        x = self._c - o._c
         if (abs(x) < 0.001): return 0
         if (x < 0): return -1
         
         return 1    
 
     def copy(self) -> ubool:
-        return ubool(self.c)
+        return ubool(self._c)
 
     ''' Conversions '''
     def __str__(self) -> str:
-        return 'ubool({:5.3f})'.format(self.c)
+        return 'ubool({:5.3f})'.format(self._c)
     
     def __repr__(self) -> str:
         return self.__str__()
@@ -172,7 +179,7 @@ class ubool:
     def tobool(self, c: float = None) -> bool:
         if c is None:
             c = self.__class__.CERTAINTY
-        return self.c >= c
+        return self._c >= c
     
     def __bool__(self) -> bool:
         return self.tobool()

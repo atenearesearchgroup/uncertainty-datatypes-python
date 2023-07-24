@@ -17,8 +17,7 @@ def err_msg(o, e):
     return 'Obtained: ' + str(o) + ' | Expected: ' + str(e)
 
 def t(o, e):
-    r = check_equals(o, e)
-    assert o.equals(e) if isinstance(o, (ustr, uint, ufloat, ubool)) else o == e, err_msg(o, e)
+    assert o.equals(e) if isinstance(o, (ustr, uint, ufloat, ubool, abool)) else o == e, err_msg(o, e)
 
 def execute(l, r, e, func, method, op, rev_op, special_op = None):
     t(func(l, r), e)            #   add(l, r)
@@ -131,25 +130,25 @@ def ges(l, r, e):
     comparison_execute(l, r, e, ge, l.__class__.ge,  l.__class__.__ge__)
     
 def ands(l, r, e):
-    execute(l, r, e, AND, ubool.AND, ubool.__and__, ubool.__rand__, AND)
+    execute(l, r, e, AND, l.__class__.AND if hasattr(l, 'AND') else None, l.__class__.__and__, r.__class__.__rand__, AND)
 
 def ors(l, r, e):
-    execute(l, r, e, OR, ubool.OR, ubool.__or__, ubool.__ror__, OR)
+    execute(l, r, e, OR, l.__class__.OR if hasattr(l, 'OR') else None, l.__class__.__or__, r.__class__.__ror__, OR)
 
 def xors(l, r, e):
-    execute(l, r, e, XOR, ubool.XOR, ubool.__xor__, ubool.__rxor__, XOR)
+    execute(l, r, e, XOR, l.__class__.XOR if hasattr(l, 'XOR') else None, l.__class__.__xor__, r.__class__.__rxor__, XOR)
 
-def implies(l, r, e):
-    execute(l, r, e, IMPLIES, ubool.IMPLIES, ubool.__rshift__, ubool.__rrshift__, IMPLIES)
+def impliess(l, r, e):
+    execute(l, r, e, IMPLIES, l.__class__.IMPLIES if hasattr(l, 'IMPLIES') else None, l.__class__.__rshift__, r.__class__.__rrshift__, IMPLIES)
 
-def equivalent(l, r, e):
-    execute(l, r, e, EQUIVALENT, ubool.EQUIVALENT, ubool.__eq__, ubool.__eq__, EQUIVALENT)
+def equivalents(l, r, e):
+    execute(l, r, e, EQUIVALENT, l.__class__.EQUIVALENT if hasattr(l, 'EQUIVALENT') else None, l.__class__.__eq__, r.__class__.__eq__, EQUIVALENT)
 
-def equals(l, r, e):
-    execute(l, r, e, EQUALS, ubool.EQUALS, ubool.__eq__, ubool.__eq__, EQUALS)
+def equalss(l, r, e):
+    execute(l, r, e, EQUALS, l.__class__.EQUALS if hasattr(l, 'EQUALS') else None, l.__class__.__eq__, r.__class__.__eq__, EQUALS)
 
-def distinct(l, r, e):
-    execute(l, r, e, DISTINCT, ubool.DISTINCT, ubool.__ne__, ubool.__ne__, DISTINCT)
+def distincts(l, r, e):
+    execute(l, r, e, DISTINCT, l.__class__.DISTINCT if hasattr(l, 'DISTINCT') else None, l.__class__.__ne__, r.__class__.__ne__, DISTINCT)
 
 def nots(l, e):
     t(NOT(l),  e)

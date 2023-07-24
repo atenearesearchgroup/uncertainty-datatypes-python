@@ -22,33 +22,23 @@ class ustr:
             raise ValueError('Invalid parameter: string is not str')
         
         self.string = string
-        self.c = c
+        self._c = c
 
     @property
-    def string(self):
+    def value(self):
         return self._string
 
-    @string.setter
-    def string(self, string: int|float|str):
-        self._string = str(string)
-
     @property
-    def c(self):
+    def confidence(self):
         return self._c
-
-    @c.setter
-    def c(self, c: int|float|str):
-        if not isinstance(c, (int, float, str)):
-            raise ValueError('Invalid parameter c: not a number[0.0, 1.0]. c=' + c)
-        self._c = float(c)
 
     ''' Auxiliary operations '''
     def __confToDist(self):
-        return len(self.string) * (1 - self.c)
+        return len(self.string) * (1 - self._c)
 
     def __confToDist(self, conf: float = None, size: int = None):
         if conf is None:
-            conf = self.c
+            conf = self._c
         if size is None:
             size = len(self.string)
 
@@ -60,7 +50,7 @@ class ustr:
         return max(1 - dist / size, 0.0)  
 
     def __str__(self) -> str:
-        return "ustr({:s}, {:5.3f})".format(self.string, self.c)
+        return 'ustr({:s}, {:5.3f})'.format(self.string, self._c)
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -102,7 +92,7 @@ class ustr:
         if upper is None:
             upper = len(self.string)
        
-        return ustr(self.string[lower: upper: step], self.c)
+        return ustr(self.string[lower: upper: step], self._c)
     
     def __getitem__(self, idx) -> ustr:
         if isinstance(idx, int):
@@ -143,7 +133,7 @@ class ustr:
             return True
         elif other is None or not isinstance(other, self.__class__): 
             return False
-        elif not math.isclose(self.c, other.c, rel_tol = 0.001, abs_tol = 0.001): 
+        elif not math.isclose(self._c, other.confidence, rel_tol = 0.001, abs_tol = 0.001): 
             return False
         return self.string == other.string
     
@@ -182,23 +172,23 @@ class ustr:
         return uint(len(self.string), self.__confToDist())
     
     def uUpper(self) -> ustr:
-        return ustr(self.string.upper(), self.c)
+        return ustr(self.string.upper(), self._c)
 
     def uLower(self) -> ustr:
-        return ustr(self.string.lower(), self.c)
+        return ustr(self.string.lower(), self._c)
     
     def uCapitalize(self) -> ustr:
-        return ustr(self.string.capitalize(), self.c)
+        return ustr(self.string.capitalize(), self._c)
 
     def uFirstLower(self) -> ustr:
-        return ustr(self.string[0].lower() + self.string[1:], self.c)
+        return ustr(self.string[0].lower() + self.string[1:], self._c)
 
     def index(self, s: str) -> uint:
         return self.string.index(s)
     
     def at(self, idx: int) -> str:
         if idx < 0 or idx > len(self.string):
-            raise IndexError("idx = " + idx)
+            raise IndexError('idx = ' + idx)
         return self.string[idx: idx + 1]
 
     def uAt(self, idx: int) -> ustr:
@@ -218,7 +208,7 @@ class ustr:
         return self.tofloat()
     
     def toufloat(self) -> float:
-        return ufloat(float(self.string), self.c)
+        return ufloat(float(self.string), self._c)
 
     def toint(self) -> int:
         return int(self.string) 
@@ -227,7 +217,7 @@ class ustr:
         return self.toint()
     
     def touint(self) -> float:
-        return uint(int(self.string), self.c)
+        return uint(int(self.string), self._c)
 
     def tobool(self) -> bool:
         if self.string.lower() == 'true' or self.string.lower() == 'false':
@@ -242,28 +232,28 @@ class ustr:
         rTrue: ubool = self.uLower().uEquals(ustr('true', 1.0))
         rFalse: ubool = self.uLower().uEquals(ustr('false', 1.0))
     
-        if rTrue.c >= 0.5:
-            return ubool(rTrue.c)
-        elif rFalse.c >= 0.5:
-            return ubool(rFalse.c)
+        if rTrue.confidence >= 0.5:
+            return ubool(rTrue.confidence)
+        elif rFalse.confidence >= 0.5:
+            return ubool(rFalse.confidence)
         
         raise ValueError('String is not True/False. string=' + str(self.string))
 
     '''
       La confianza es el producto de las confianzas del string
       Aparecen problemas para confianzas inferiores a 0.7 porque para resultados de confianza menor a 0.5
-      "conmuta" de True a False y viceversa
+      'conmuta' de True a False y viceversa
     '''
     def calculateConf(self, u: ustr) -> float:
-        return self.c * u.c 	# conf producto de las confianzas de cada string
+        return self._c * u.confidence 	# conf producto de las confianzas de cada string
     
     '''
         Posible implementacion alternativa, limitando para los casos peores a conf = 0.5
         No se usa en la ultima version
      '''
     def calculateConf_05(self, u: ustr) -> float:
-        conf : float = self.c * u.c 	# conf producto de las confianzas de cada string
+        conf : float = self._c * u.confidence 	# conf producto de las confianzas de cada string
         return conf if conf > 0.5 else 0.5 
 
     def copy(self) -> ustr:
-        return ustr(self.string, self.c)
+        return ustr(self.string, self._c)

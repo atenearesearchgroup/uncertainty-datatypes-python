@@ -79,33 +79,33 @@ class uboolTest(unittest.TestCase):
         nots(self.f, ubool(1.000))
 
     def test_implies(self):
-        ''' Implies '''
-        implies(self.w, self.x, ubool(0.910))
-        implies(self.x, self.w, ubool(0.510))
+        ''' impliess '''
+        impliess(self.w, self.x, ubool(0.910))
+        impliess(self.x, self.w, ubool(0.510))
 
     def test_equivalent(self):
         ''' Equivalent '''
-        equivalent(self.x, self.w, ubool(0.600))
-        equivalent(self.w, self.x, ubool(0.600))
-        equivalent(self.w, self.w, ubool(1.000))
-        equivalent(self.t, self.f, ubool(0.000))
-        equivalent(self.f, self.t, ubool(0.000))
+        equivalents(self.x, self.w, ubool(0.600))
+        equivalents(self.w, self.x, ubool(0.600))
+        equivalents(self.w, self.w, ubool(1.000))
+        equivalents(self.t, self.f, ubool(0.000))
+        equivalents(self.f, self.t, ubool(0.000))
     
     def test_equals(self):
         ''' Equals '''
-        equals(self.x, self.w, ubool(0.600))
-        equals(self.w, self.y, ubool(0.900))
-        equals(self.w, self.w, ubool(1.000))
-        equals(self.t, self.f, ubool(0.000))
-        equals(self.f, self.t, ubool(0.000))
+        equalss(self.x, self.w, ubool(0.600))
+        equalss(self.w, self.y, ubool(0.900))
+        equalss(self.w, self.w, ubool(1.000))
+        equalss(self.t, self.f, ubool(0.000))
+        equalss(self.f, self.t, ubool(0.000))
 
     def test_distinct(self):
         ''' Distinct '''   
-        distinct(self.w, self.y, ubool(0.100))
-        distinct(self.x, self.w, ubool(0.400))
-        distinct(self.w, self.x, ubool(0.400))
-        distinct(self.t, self.f, ubool(1.000))
-        distinct(self.f, self.t, ubool(1.000))
+        distincts(self.w, self.y, ubool(0.100))
+        distincts(self.x, self.w, ubool(0.400))
+        distincts(self.w, self.x, ubool(0.400))
+        distincts(self.t, self.f, ubool(1.000))
+        distincts(self.f, self.t, ubool(1.000))
 
 
 if __name__ == '__main__':

@@ -17,28 +17,25 @@ class uint:
 		if isinstance(x, tuple) and len(x) == 2:
 			x, u = x
 		elif isinstance(x, (uint, ufloat)):
-			u = x.u
-			x = x.x
+			u = x.uncertainty
+			x = x.value
 
 		if not isinstance(x, (int, str)):
-			raise ValueError("Invalid parameter: x is not int or int as string")
+			raise ValueError('Invalid parameter: x is not int or int as string')
 		if not isinstance(u, (int, float, str)):
-			raise ValueError("Invalid parameter: u is not int, float or float/int as string")
+			raise ValueError('Invalid parameter: u is not int, float or float/int as string')
 		
-		self.x = int(x)
-		self.u = abs(float(u))
+		self._x = int(x)
+		self._u = abs(float(u))
 
 	@property
-	def u(self):
+	def uncertainty(self):
 		return self._u
 
-	@u.setter
-	def u(self, u: float|str):
-		if not isinstance(u, (float, str)):
-			raise ValueError("Invalid parameter: u not float or float as string")
-		
-		self._u = abs(float(u))
-		
+	@property
+	def value(self):
+		return self._x
+
 	''' Type Operations '''
 
 	def add(self, r: int|uint|float|ufloat, covariance: float = 0.0) -> uint:
@@ -49,7 +46,7 @@ class uint:
 		elif isinstance(r, int):
 			r = uint(r)
 			
-		return uint(self.x + r.x, math.sqrt((self.u * self.u) + (r.u**2) + 2 * covariance))
+		return uint(self._x + r.value, math.sqrt((self._u * self._u) + (r.uncertainty**2) + 2 * covariance))
 	
 	def __add__(self, r: int|uint) -> uint:
 		return self.add(r)
@@ -71,9 +68,9 @@ class uint:
 			r = uint(r)
 
 		if id(r) == id(self): 
-			return uint(self.x - r.x, 0.0) 		# pathological case, x-x
+			return uint(self._x - r.value, 0.0) 		# pathological case, x-x
 		else: 
-			return uint(self.x - r.x, math.sqrt((self.u*self.u) + (r.u**2)  - 2 * covariance))
+			return uint(self._x - r.value, math.sqrt((self._u*self._u) + (r.uncertainty**2)  - 2 * covariance))
 	
 	def __sub__(self, r: int|uint|float|ufloat):
 		return self.sub(r)
@@ -94,11 +91,11 @@ class uint:
 		elif isinstance(r, int):
 			r = uint(r)
 
-		a = r.x**2 * self.u**2
-		b = self.x**2 * r.u**2
-		c = 2 * self.x * r.x * covariance
+		a = r.value**2 * self._u**2
+		b = self._x**2 * r.uncertainty**2
+		c = 2 * self._x * r.value * covariance
 
-		return uint(self.x * r.x, math.sqrt(a + b + c))
+		return uint(self._x * r.value, math.sqrt(a + b + c))
 
 	def __mul__(self, r) -> uint:
 		return self.mul(r)
@@ -115,16 +112,16 @@ class uint:
 	def __div(self, r: ufloat, covariance:float = 0.0) -> ufloat:
 		if r == self:    		# pathological cases x/x
 			return 1, 0.0
-		elif r.u == 0.0:  		# r is a scalar
-			return self.x / r.x, self.u / r.x 		# "self" may be a scalar, too
-		elif self.u == 0.0:  		# "self is a scalar, r is not
-			return self.x / r.x, r.u / (r.x**2)
+		elif r.uncertainty == 0.0:  		# r is a scalar
+			return self._x / r.value, self._u / r.value 		# 'self' may be a scalar, too
+		elif self._u == 0.0:  		# 'self is a scalar, r is not
+			return self._x / r.value, r.uncertainty / (r.value**2)
 		
 		# both variables have associated uncertainty
-		a: float = self.x / r.x		
-		c: float = abs(((self.u**2) / r.x))
-		d: float = (self.x**2 * r.u**2) / (r.x**4)
-		e: float = abs((self.x * covariance)/(r.x**3))
+		a: float = self._x / r.value		
+		c: float = abs(((self._u**2) / r.value))
+		d: float = (self._x**2 * r.uncertainty**2) / (r.value**4)
+		e: float = abs((self._x * covariance)/(r.value**3))
 		
 		return a, math.sqrt(c + d - e)
 	
@@ -149,7 +146,7 @@ class uint:
 		elif isinstance(r, (float, ufloat)):
 			return self.toufloat().floordiv(ufloat(r) if isinstance(r, float) else r, covariance)
 		else:
-			raise RuntimeError("Invalid divisor")
+			raise RuntimeError('Invalid divisor')
 		
 	def __floordiv__(self, r):
 		return self.floordiv(r, 0.0)
@@ -172,18 +169,18 @@ class uint:
 		if isinstance(r, (float, ufloat)):
 			return self.toufloat() % r
 		elif isinstance(r, int):  		# r is a scalar
-			return uint(self.x % r, self.u / r) 		# "self" may be a scalar, too
-		elif r.u == 0.0:  		# r is a scalar
-			return uint(self.x % r.x, self.u / r.x) 		# "self" may be a scalar, too
-		elif self.u == 0.0: 		# "self is a scalar, r is not
-			return uint(self.x % r.x, r.u / (r.x**2))
+			return uint(self._x % r, self._u / r) 		# 'self' may be a scalar, too
+		elif r.uncertainty == 0.0:  		# r is a scalar
+			return uint(self._x % r.value, self._u / r.value) 		# 'self' may be a scalar, too
+		elif self._u == 0.0: 		# 'self is a scalar, r is not
+			return uint(self._x % r.value, r.uncertainty / (r.value**2))
 		
 		# both variables have associated uncertainty
-		a = self.x % r.x
+		a = self._x % r.value
 		
-		c = abs(((self.u**2) / r.x))
-		d = (self.x**2 * r.u**2) / (r.x**4)
-		e = abs((self.x * covariance) / (r.x**3))
+		c = abs(((self._u**2) / r.value))
+		d = (self._x**2 * r.uncertainty**2) / (r.value**4)
+		e = abs((self._x * covariance) / (r.value**3))
 		
 		return uint(math.floor(a), math.sqrt(c + d - e))
 		
@@ -195,13 +192,13 @@ class uint:
 
 	''' Rest of the type operations '''
 	def abs(self) -> uint:
-		return uint(abs(self.x), self.u)
+		return uint(abs(self._x), self._u)
 	
 	def __abs__(self) -> ufloat:
 		return self.abs()
 	
 	def neg(self) -> uint:
-		return uint(-self.x, self.u)
+		return uint(-self._x, self._u)
 	
 	def __neg__(self) -> uint:
 		return self.neg()
@@ -286,29 +283,29 @@ class uint:
 
 	''' Conversions '''
 	def __str__(self) -> str:
-		return "uint({:d}, {:5.3f})".format(self.x, self.u)
+		return 'uint({:d}, {:5.3f})'.format(self._x, self._u)
     
 	def __repr__(self) -> str:
 		return self.__str__()
 
 	def toint(self) -> int:
-		return self.x
+		return self._x
 	
 	def touint(self) -> uint:
 		return self
 	
 	def tofloat(self) -> float: 
-		return self.x
+		return self._x
 	
 	def toufloat(self) -> ufloat:
-		return ufloat(self.x, self.u)
+		return ufloat(self._x, self._u)
 	
 	''' Other Methods '''
 	def __hash__(self) -> int:
-		return round(float(self.x))
+		return round(float(self._x))
 
 	def copy(self) -> uint:
-		return uint(self.x,self.u)
+		return uint(self._x,self._u)
 
 class ufloat:
 	
@@ -321,32 +318,30 @@ class ufloat:
 		if isinstance(x, tuple) and len(x) == 2:
 			x, u = x
 		elif isinstance(x, (uint, ufloat)):
-			u = x.u
-			x = x.x
+			u = x.uncertainty
+			x = x.value
 	
 		if not isinstance(x, (float, int, str)):
-			raise ValueError("Invalid parameter: x is not float, not int or float/int as string")
+			raise ValueError('Invalid parameter: x is not float, not int or float/int as string')
 		elif not isinstance(u, (float, int, str)):
-			raise ValueError("Invalid parameter: u is not float, not int or float/int as string")
+			raise ValueError('Invalid parameter: u is not float, not int or float/int as string')
 		
-		self.x = float(x)
-		self.u = abs(float(u))
+		self._x = float(x)
+		self._u = abs(float(u))
 
 	@property
-	def u(self):
+	def uncertainty(self):
 		return self._u
 
-	@u.setter
-	def u(self, u: float):
-		if not isinstance(u, float):
-			raise ValueError("Invalid parameter: u not float")
-		self._u = abs(u)
-
+	@property
+	def value(self):
+		return self._x
+	
 	def add(self, r: int|uint|float|ufloat, covariance: float = 0.0) -> ufloat:
 		if isinstance(r, (int, uint, float)):
 			r = ufloat(r)
 
-		return ufloat(self.x + r.x, math.sqrt(self.u**2 + r.u**2  + 2 * covariance))
+		return ufloat(self._x + r.value, math.sqrt(self._u**2 + r.uncertainty**2  + 2 * covariance))
 
 	def __add__(self, r) -> ufloat:
 		return self.add(r)
@@ -359,9 +354,9 @@ class ufloat:
 			r = ufloat(r)
 
 		if id(r) == id(self):
-			return ufloat(self.x - r.x, 0.0)
+			return ufloat(self._x - r.value, 0.0)
 		else:
-			return ufloat(self.x - r.x, math.sqrt(self.u**2 + r.u**2 - 2 * covariance))
+			return ufloat(self._x - r.value, math.sqrt(self._u**2 + r.uncertainty**2 - 2 * covariance))
 
 	def __sub__(self, other) -> ufloat:
 		return self.sub(other)
@@ -373,11 +368,11 @@ class ufloat:
 		if isinstance(r, (int, uint, float)):
 			r = ufloat(r)
 			
-		x = self.x * r.x
+		x = self._x * r.value
 
-		a = r.x**2 * self.u**2
-		b = self.x**2 * r.u**2
-		c = 2 * self.x * r.x * covariance
+		a = r.value**2 * self._u**2
+		b = self._x**2 * r.uncertainty**2
+		c = 2 * self._x * r.value * covariance
 
 		return ufloat(x, math.sqrt(a + b + c))
 	
@@ -390,21 +385,21 @@ class ufloat:
 	def __div(self, r: ufloat, covariance: float = 0.0) -> ufloat:
 		if id(r) == id(self): # pathological cases: x/x
 			return 1.0, 0.0
-		elif r.u == 0.0: # r is a scalar
-			return self.x / r.x, self.u / r.x # "self" may be a scalar, too
-		elif self.u == 0.0: # "this is a scalar, r is not
-			return self.x / r.x, r.u / (r.x**2)
+		elif r.uncertainty == 0.0: # r is a scalar
+			return self._x / r.value, self._u / r.value # 'self' may be a scalar, too
+		elif self._u == 0.0: # 'this is a scalar, r is not
+			return self._x / r.value, r.uncertainty / (r.value**2)
 		
 		# both variables have associated uncertainty	
 		
-		a: float = self.x / r.x
-		c: float = (self.u**2) / abs(r.x)
-		d: float = (self.x**2 * r.u**2) / (r.x**4)
+		a: float = self._x / r.value
+		c: float = (self._u**2) / abs(r.value)
+		d: float = (self._x**2 * r.uncertainty**2) / (r.value**4)
 		if covariance == 0.0:	
 			return a, math.sqrt(c + d)
 		else:
-			b: float = (self.x * r.u**2) / (r.x**3)
-			e: float = (self.x * covariance) / abs(r.x**3)			
+			b: float = (self._x * r.uncertainty**2) / (r.value**3)
+			e: float = (self._x * covariance) / abs(r.value**3)			
 			return a + b, math.sqrt(c + d - e)
 	
 	def div(self, r: uint|ufloat|int|float, covariance: float = 0.0) -> ufloat:
@@ -413,7 +408,7 @@ class ufloat:
 		elif isinstance(r, (float, ufloat)):
 			return ufloat(self.__div(ufloat(r) if isinstance(r, float) else r, covariance))
 		else:
-			raise RuntimeError("Invalid divisor")
+			raise RuntimeError('Invalid divisor')
 
 	def __truediv__(self, other) -> ufloat:
 		return self.div(other, 0.0)
@@ -429,7 +424,7 @@ class ufloat:
 			x, u = self.__div(ufloat(r) if isinstance(r, float) else r, covariance)
 			return ufloat(math.floor(x), u)
 		else:
-			raise RuntimeError("Invalid divisor")
+			raise RuntimeError('Invalid divisor')
 
 	def __floordiv__(self, r):
 		return self.floordiv(r, 0.0)
@@ -438,20 +433,20 @@ class ufloat:
 		return ufloat(left).__floordiv__(self)
 
 	def abs(self) -> ufloat:
-		return ufloat(abs(self.x), self.u)
+		return ufloat(abs(self._x), self._u)
 	
 	def __abs__(self) -> ufloat:
 		return self.abs()
 
 	def neg(self) -> ufloat:
-		return ufloat(-self.x, self.u)
+		return ufloat(-self._x, self._u)
 
 	def __neg__(self) -> ufloat:
 		return self.neg()
 	
 	def power(self, s: float|int) -> ufloat:
-		a = self.x**s
-		c = s * self.u * (self.x**(s-1))
+		a = self._x**s
+		c = s * self._u * (self._x**(s-1))
 
 		return ufloat(a, c)
 	
@@ -459,50 +454,50 @@ class ufloat:
 		return self.power(s)
 	
 	def sqrt(self) -> ufloat:
-		if self.x == 0.0 and self.u == 0.0:
+		if self._x == 0.0 and self._u == 0.0:
 			return ufloat(0.0, 0.0)
-		elif self.x < 0.0:
+		elif self._x < 0.0:
 			raise ValueError('math domain error: negative number')
 		
-		x = math.sqrt(self.x)
-		u = (self.u) / (2 * math.sqrt(self.x))
+		x = math.sqrt(self._x)
+		u = (self._u) / (2 * math.sqrt(self._x))
 		
 		return ufloat(x, u)
 
 	def sin(self) -> ufloat:
-		return ufloat(math.sin(self.x), self.u * math.cos(self.x))
+		return ufloat(math.sin(self._x), self._u * math.cos(self._x))
 
 	def cos(self) -> ufloat:
-		return ufloat(math.cos(self.x), self.u * math.sin(self.x))
+		return ufloat(math.cos(self._x), self._u * math.sin(self._x))
 	
 	def tan(self) -> ufloat:
 		return self.sin().div(self.cos()) 
 	
 	def atan(self) -> ufloat:
-		return ufloat(math.atan(self.x), self.u / (1 + self.x**2))
+		return ufloat(math.atan(self._x), self._u / (1 + self._x**2))
 	
 	''' Type Operations '''
 
 	def acos(self) -> ufloat:
-		if abs(self.x) == 1.0:
-			return ufloat(math.acos(self.x), self.u)
+		if abs(self._x) == 1.0:
+			return ufloat(math.acos(self._x), self._u)
 		else:
-			return ufloat(math.acos(self.x), self.u / math.sqrt(1 - self.x**2))
+			return ufloat(math.acos(self._x), self._u / math.sqrt(1 - self._x**2))
 
 	def asin(self) -> ufloat:
-		if abs(self.x) == 1.0:
-			return ufloat(math.asin(self.x), self.u)
+		if abs(self._x) == 1.0:
+			return ufloat(math.asin(self._x), self._u)
 		else:
-			return ufloat(math.asin(self.x), self.u/math.sqrt((1 - self.x**2)))
+			return ufloat(math.asin(self._x), self._u/math.sqrt((1 - self._x**2)))
 
 	def inverse(self) -> ufloat: #inverse (reciprocal)
 		return ufloat(1.0, 0.0) / self
 
 	def floor(self) -> ufloat: #returns (i,u) with i the largest int such that (i,u)<=(x,u)
-		return ufloat(math.floor(self.x),self.u)
+		return ufloat(math.floor(self._x),self._u)
 
 	def round(self) -> ufloat: #returns (i,u) with i the closest int to x
-		return ufloat(round(self.x), self.u)
+		return ufloat(round(self._x), self._u)
 
 	''' Comparison operations '''
 	def equals(self, other) -> bool:
@@ -510,20 +505,20 @@ class ufloat:
 		 	see http:#faculty.washington.edu/tamre/IsHumanHeightBimodal.pdf '''
 		if id(self) == id(other): return True
 		
-		s1 = self.u
-		s2 = other.u
+		s1 = self._u
+		s2 = other.uncertainty
 		# non-ufloat cases first
 		if s1 == 0 or s2 == 0:
-			return self.x == other.x
+			return self._x == other.value
 		# if both numbers have some uncertainty
 		r = (s1 * s1) / (s2 * s2)
 
 		S = math.sqrt(-2.0 + 3*r + 3*r*r - 2*r*r*r + 2 * math.pow(1 - r + r*r, 1.5) ) / (math.sqrt(r) * (1 + math.sqrt(r)))
 		if math.isnan(S): # similar to s1==0 or s2==0. No way to compute the separation test
-			return (self.x == other.x)
+			return (self._x == other.value)
 		
 		separation = S * (s1 + s2)
-		return abs(other.x - self.x) <= separation # they are indistinguishable
+		return abs(other.value - self._x) <= separation # they are indistinguishable
 
 	def distinct(self, other) -> bool:
 		return not self.equals(other)
@@ -599,10 +594,10 @@ class ufloat:
 		r = Result()
 		m1 = 0.0; m2 = 0.0; s1 = 0.0; s2 = 0.0; swap = False
 
-		if self.x <= number.x: # m1 is less or equal than m2
-			m1 = self.x; m2 = float(number.x); s1 = self.u; s2 = number.u
+		if self._x <= number.value: # m1 is less or equal than m2
+			m1 = self._x; m2 = float(number.value); s1 = self._u; s2 = number.uncertainty
 		else:
-			m2 = self.x; m1 = float(number.x); s2 = self.u; s1 = number.u
+			m2 = self._x; m1 = float(number.value); s2 = self._u; s1 = number.uncertainty
 			swap = True # to return values in the correct order
 
 		if s1 == 0.0 and s2 == 0.0: #comparison between Real numbers
@@ -714,34 +709,34 @@ class ufloat:
 
 	''' Conversions '''
 	def toint(self) -> int:
-		return int(math.floor(self.x))
+		return int(math.floor(self._x))
 
 	def touint(self) -> uint:
-		x = int(math.floor(self.x))
-		u = math.sqrt((self.u * self.u) + (self.x - x) * (self.x - x))
+		x = int(math.floor(self._x))
+		u = math.sqrt((self._u * self._u) + (self._x - x) * (self._x - x))
 		return uint(x, u)
 	
 	def tofloat(self) -> float: 
-		return self.x
+		return self._x
 	
 	def toufloat(self) -> ufloat: 
 		return self
 
 	def toBestuint(self) -> uint:
-		x = int(round(self.x))
-		u = math.sqrt((self.u * self.u) + (self.x - x) * (self.x - x))
+		x = int(round(self._x))
+		u = math.sqrt((self._u * self._u) + (self._x - x) * (self._x - x))
 		return uint(x, u)
 
 	''' Other Methods '''
 	def __hash__(self):
-		return round(self.x)
+		return round(self._x)
 	
 	def copy(self) -> ufloat:
-		return ufloat(self.x, self.u)
+		return ufloat(self._x, self._u)
 
 	''' Conversions '''
 	def __str__(self) -> str:
-		return "ufloat({:5.3f}, {:5.3f})".format(self.x, self.u)
+		return 'ufloat({:5.3f}, {:5.3f})'.format(self._x, self._u)
     
 	def __repr__(self) -> str:
 		return self.__str__()
