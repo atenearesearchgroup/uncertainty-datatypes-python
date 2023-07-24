@@ -61,7 +61,7 @@ In summary, the uncertain datatypes provided by the ``uTypes`` library is well s
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
+To install the ``uType`` library, use the package manager [pip](https://pip.pypa.io/en/stable/):
 
 ```bash
 pip install uncertainty-datatypes
@@ -71,7 +71,7 @@ pip install uncertainty-datatypes
 
 ## Usage
 
-Import all the datatypes and functions using:
+You can import all the datatypes and functions defined by ``uTypes`` as follows:
 
 ```python
 from uncertainty.utypes import *
