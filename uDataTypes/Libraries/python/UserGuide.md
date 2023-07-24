@@ -5,11 +5,17 @@ Uncertainty is an inherent property of any measure or estimation performed in an
 ``uTypes`` is a Python library that supports a set of uncertain primitive datatypes, including [``ubool``](#type-ubool), [``sbool``](#type-sbool), [``uint``](#type-uint),  [``ufloat``](#type-ufloat), [``uenum``](#type-uenum) and [``ustr``](#type-ustr).
 They extend their corresponding Python types (``bool``, ``int``,  ``float``, ``enum`` and ``str``) with uncertainty. 
 
-The ``uTypes`` library implements linear error propagation theory in Python.
+The ``uTypes`` library implements linear error propagation theory in Python. Uncertainty calculations are performed analytically.
 
-## Usage
+## Installation and Usage
 
-Import all the datatypes and functions using:
+To install the ``uType`` library, use the package manager [pip](https://pip.pypa.io/en/stable/).
+
+```bash
+pip install uncertainty-datatypes
+```
+
+You can then import all the datatypes and functions as follows:
 
 ```python
 from uncertainty.utypes import *
@@ -20,9 +26,7 @@ from uncertainty.utypes import *
 
 ## Type ubool
 
-Type ``ubool`` extends type ``bool`` by using propabilities instead of the traditional logical truth values (True, False), and by replacing truth tables by probability expressions. Thus, an ``ubool`` value is expressed by a probability representing the degree of belief (i.e., the *confidence*) that a given statement is true. For example, ``ubool(0.7)`` means that there is a 70% chance of an event occurring. Python ``bool`` values True and False correspond to ``ubool(1.0)`` and ``ubool(0.0)``, respectively. 
-
-Type ``ubool`` extends traditional logic truth values (True, False) with probabilities, and truth tables are replaced with probability expressions. Thus, an ``ubool`` value is expressed by means of a probability that represents a confidence, e.g., 
+Type ``ubool`` is an embedding of type ``bool`` that extends traditional logic truth values (``True``, ``False``), with probabilities, and truth tables are replaced with probability expressions. Thus, an ``ubool`` value is expressed by a probability representing the degree of belief (i.e., the *confidence*) that a given statement is true. For example, ``ubool(0.7)`` means that there is a 70% chance of an event occurring. Python ``bool`` values ``True`` and ``False`` correspond to ``ubool(1.0)`` and ``ubool(0.0)``, respectively. 
 
 ```python
 x = ubool(0.7) 
@@ -31,9 +35,9 @@ z = ubool(1)      # int 0 or 1 can be used too.
 w = ubool(False)  # True or False can be also used. 
                    #True -> ubool(1.0) and False -> ubool(0.0).
 ```
-#### Type projection
+### Type projection
 
-``ubool`` values can be projected to ``bool`` values, using a threshold that determines when the ``ubool`` value becomes True or False. This threshold is called "level of certainty" and by default is 0.9. That is, ``ubool(z)`` becomes True if ``z > 0.9``.  The level of certainty can be changed using ``ubool.setCertainty(z)`` function. 
+``ubool`` values can be projected to ``bool`` values, using a threshold that determines when the ``ubool`` value becomes ``True`` or ``False``. This threshold is called "level of certainty" and by default is 0.9. That is, ``ubool(z)`` becomes ``True`` if ``z > 0.9``.  The level of certainty can be changed using ``ubool.setCertainty(z)`` function. 
 
 ```python
 y = ubool(0.7)
@@ -47,6 +51,8 @@ if y:   # y is ubool(0.7) >= 0.5
     'executed'
 ```
 
+<mark>Como se conoce el valor de certainty? Hay alguna propiedad? Alguna operacion?</mark>
+
 In this manner, ``ubool`` values can be used as booleans in conditional statements.
 
 ```python
@@ -54,24 +60,29 @@ if x:
     'executed'
 ```
 
-It is also possible to know the confidence of an ``ubool`` value using the ``confidence()`` method:
+It is also possible to know the confidence of an ``ubool`` value using the ``confidence`` property:
+
+<mark>Me gustan mas las properties "confidence" que las operaciones "confidence()"...</mark>
+
 
 ```python
 x = ubool(0.7)
-print (x.confidence())
+print (x.confidence)
 # 0.7
 ```
 
-#### Logical operators
+
+
+### Logical operators
 
 Operations on ``ubool`` values extend those of ``bool`` values. This means that, when working with ``bool`` values, the behavior of ``ubool`` operations is exactly the same as their boolean versions. 
 
 
 ``ubool`` logical operators include: ``AND``, ``OR``, ``NOT``, ``XOR``, ``IMPLIES``, and ``EQUIVALENT``. The library offers the following four ways of using logical operators: 
-* Infix symbol operator: ``` x & y ``` 
-* Infix textual operator: ``` x |AND| y ``` 
-* Instance method: ``` x.AND(y) ``` 
-* Dunction: ``` AND(x, y) ```
+* Infix symbol operators: ``` x & y ``` 
+* Infix textual operators: ``` x |AND| y ``` 
+* Instance methods: ``` x.AND(y) ``` 
+* Functions: ``` AND(x, y) ```
 
 
 The table below summarizes all the possible usages.
@@ -83,9 +94,12 @@ The table below summarizes all the possible usages.
 | XOR        | ``` x ^ y ```   | ``` x \|XOR\| y ```        | ``` x.XOR(y) ```        | ``` XOR(x, y) ```        |
 | NOT        | ``` ~x ```      |                            | ``` x.NOT() ```         | ``` NOT(x) ```           |
 | IMPLIES    | ``` x >> y ```  | ``` x \|IMPLIES\| y ```    | ``` x.IMPLIES(y) ```    | ``` IMPLIES(x, y) ```    |
-| EQUIVALENT | ``` x == y ```  | ``` x \|EQUIVALENT\| y ``` | ``` x.EQUIVALENT(y) ``` | ``` EQUIVALENT(x, y) ``` |
+| EQUIVALENT | ``` ~(x^y) ```  | ``` x \|EQUIVALENT\| y ``` | ``` x.EQUIVALENT(y) ``` | ``` EQUIVALENT(x, y) ``` |
 | EQUALS     | ``` x == y ```  | ``` x \|EQUALS\| y ```     | ``` x.EQUALS(y) ```     | ``` EQUALS(x, y) ```     |
 | DISTINCT   | ``` x != y ```  | ``` x \|DISTINCT\| y ```   | ``` x.DISTINCT(y) ```   | ``` DISTINCT(x, y) ```   |
+
+
+<mark>Ojo: "EQUIVALENT" no es lo mismo que "=="</mark>
 
 ***IMPORTANT***: 
 
@@ -100,11 +114,11 @@ y = ubool(0.8)
 z = ubool(0.5)
 t = ubool(0.2)
 
-w = (~x & y) |IMPLIES| (z ^ t)
+w = (~x & y) |IMPLIES| (z | t)
 # w = ubool(0.776)
 ```
 
-#### Using ubools with bools
+### Using ubools with bools
 
 ``ubool`` values can be used together with ``bool`` values, but always using ``ubool`` operators. 
 
@@ -119,9 +133,9 @@ while x.AND(3 > 2):
     # do something
 ```
 
-Note that Python logical operations ``(3 > 2)`` must be enclosed in paretheses. True values (result of ``3 > 2``) are converted into ``ubool(1.0)`` and False into ``ubool(0.0)``.
+Note that Python logical operations ``(3 > 2)`` must be enclosed in paretheses. Boolean ``True`` (e.g., the result of ``3 > 2``) is automatically converted into ``ubool(1.0)`` and ``False`` into ``ubool(0.0)``.
 
-***IMPORTANT***: The Python logical operators (``and``, ``or``, and ``not``)  have a different meaning when they are used with objects. Therefore, ***ubool special logical operators must ALWAYS be used to deal with ubool values***.   
+***IMPORTANT***: The Python logical operators (``and``, ``or``, and ``not``)  have a different meaning when they are used with objects. Therefore, ***``ubool`` special logical operators must ALWAYS be used to deal with ubool values***.   
 
 <!---
 ``ubool never should be used with Python logical operators`` (and, or and not keywords). ``ubool special logical operators must be used instead`` 
@@ -139,12 +153,12 @@ y = ufloat(233, '0.7')  # Data can be provided as str, int or float.
 # y = ufloat(233.0, 0.7)
 ```
 
-This representation of uncertainty for numerical values follows the "ISO Guide to Measurement Uncertainty" ([JCMG 100:2008](https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf)), where values are represented by the mean and standard deviation of the assumed probability density function representing how measurements of ground truth values are distributed. For example, if we assume that the values of a variable X follow a normal distribution N(x, σ), then we set u = σ. If we can only assume a uniform or rectangular distribution of the possible values of X, then x is taken as the midpoint of the interval, x = (a + b)/2, and its associated standard deviation as u = (b - a)/(2 * sqrt(3)).
+This representation of uncertainty for numerical values follows the "ISO Guide to Measurement Uncertainty" ([JCMG 100:2008](https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf)), where values are represented by the mean and standard deviation of the assumed probability density function representing how measurements of ground truth values are distributed. For example, if we assume that the values of a variable $X$ follow a normal distribution $N(x, \sigma)$, then we set $u = \sigma$. If we can only assume a uniform or rectangular distribution of the possible values of $X$, then the nominal value $x$ is taken as the midpoint of the interval, $x = (a + b)/2$, and its associated standard deviation as $u = (b - a)/(2 * \sqrt{3})$.
 
 
-#### Operators
+### Operators
 
-``ufloat`` operators include: ``ADD``, ``SUB``, ``MUL``, ``DIV``, ``FLOOR DIV``, ``NEG``, and ``POWER``. The table below summarizes all the possible operations.
+``ufloat`` operators include: ``ADD``, ``SUB``, ``MUL``, ``DIV``, ``FLOOR DIV``, ``NEG``, and ``POWER``. The table below summarizes all the possible operations. Uncertainty propagates through all the operations performed on variables with uncertainty.
 
 | Operation | Operator      | Method                | Function               |
 |:---------:|:-------------:|:---------------------:|:----------------------:|
@@ -154,12 +168,13 @@ This representation of uncertainty for numerical values follows the "ISO Guide t
 | DIV       | ``` x / y ``` | ``` x.div(y) ```      | ``` div(x, y) ```      |
 | FLOOR DIV | ``` x // y ```| ``` x.floordiv(y) ``` | ``` floordiv(x, y) ``` |
 | NEG       | ``` -x ```    | ``` x.neg(y) ```      | ``` neg(x, y) ```      |
-| POW       | ``` x `` y ```| ``` x.power(y) ```    | ``` pow(x, y) ```      |
+| POW       | ``` x ** y ```| ``` x.power(y) ```    | ``` pow(x, y) ```      |
 
 Infix operators are recommended. When using the traditional operators, precedence is respected and it works the same as with ``float`` values. 
 
-In addition, any ``ufloat`` variable can be interrogated for its nominal value (x) and its uncertainty (u), using methods ``value()`` and ``uncertainty()``, respectively.
+In addition, any ``ufloat`` variable can be interrogated for its nominal value (x) and its uncertainty (u), using properties ``value`` and ``uncertainty``, respectively.
 
+<mark>Mejor properties que methods!</mark>
 
 #### Examples
 ```python
@@ -170,13 +185,13 @@ z = ufloat(-3404, 4.76)
 w = (x / y)**2 - z
 # w = ufloat(3406.977, 5.946)
 
-print(w.value())
+print(w.value)
 # 3406.977
-print(w.uncertainty())
+print(w.uncertainty)
 # 5.964
 ```
 
-#### Specifying the covariance of variables in operations
+### Specifying the covariance of variables in operations
 
 ***IMPORTANT**: Variables are assumed to be independent. Among other things, this means that expressions should be simplified and reduced in order for the results to be correct. In case of having to operate with dependent variables, it is possible to specify their covariance, as described next.*
 
@@ -193,9 +208,9 @@ z = x.add(y, covariance = 12.4)
 ```
 
 
-#### Usage with uint, int and float.
+### Usage with uint, int and float.
 
-``ufloat`` values can be used together with values of type ``uint``, as well as with Python's ``float`` and ``int`` values (these ones act as scalars in this case).
+``ufloat`` values can be used together with values of type ``uint``, as well as with Python's ``float`` and ``int`` values ("crisp" values of types ``float`` and ``int`` act as scalars in this case).
 
 ```python
 x = ufloat(5.69, 23.8)
@@ -207,7 +222,7 @@ y = x + 3.1
 
 ## Type uint
 
-An ``uint`` is represented by an ``int`` value and and associated uncertainty. They work basically as ``ufloat`` values, but their nominal value is an ``int``. 
+An ``uint`` is represented by an ``int`` value and an associated uncertainty. They work basically as ``ufloat`` values, but their nominal value is an ``int``. 
 
 ```python
 x = uint(-654, 2.4) 
@@ -216,7 +231,7 @@ y = uint(432, '5.7')  # Data can be provided as str, int or float.
 # y = uint(432, 5.7)
 ```
 
-#### Operators
+### Operators
 
 In addition to the operators defined also for ``ufloat``, type ``uint`` also supports operator ``MOD``. 
 
@@ -224,7 +239,7 @@ In addition to the operators defined also for ``ufloat``, type ``uint`` also sup
 |:---------:|:-------------:|:-----------------:|:----------------:|
 | MOD       | ``` x % y ``` | ``` x.mod(y) ```  | ``` mod(x, y) ```|
 
-Again, infix operators are recommended. 
+Again, infix operators are recommended for type ``uint``. 
 
 
 #### Example
@@ -234,15 +249,15 @@ x = uint(145, 3.4)
 y = uint(56, 4.35)
 z = uint(23, 5.2)
 
-w = (x // y)``3 % z
+w = (x // y)**3 % z
 # w = uint(8, 1.246)
 ```
 
-#### Covariance methods
+### Covariance methods
 
-Covariance can also be specified in ``uint`` operations.
+Covariance can also be specified in ``uint`` operations, exactly the same as with ``ufloat`` operations.
 
-#### Usage with ufloat, int and float
+### Usage with ufloat, int and float
 
 ``uint`` values can be used together with ``ufloat`` values and with Python's ``float`` and ``int`` values.
 
@@ -254,9 +269,22 @@ z = y - ufloat(0.3, 10.3)
 # z = ufloat(1.700, 25.933)
 ```
 
-## Comparison Operators
+## Comparison operators between uncertain numeric values
 
-Comparisons between ``uint`` and ``ufloat`` can be performed using the typical comparison operators: ``<``, ``<=``, ``>``, ``>=``, ``==`` and ``!=``. These operators return ``ubool`` values.
+Comparison between uncertain numerical values (of types ``uint`` or ``ufloat``) no longer return ``bool`` values, but become probabilities, i.e., values of type ``ubool``.
+
+For example, consider the real values $x=2.0$ and $y=2.5$. Using Real arithmetic, $x<y=$ true. However, assuming some given uncertainties, namely $x=2.0\pm 0.3$ and $y=2.5\pm 0.25$, then we obtain that $x<y$ with probability 0.893. 
+
+```python
+x = ufloat(2.0,0.3)
+y = ufloat(2.5,0.25)
+z = x < y
+# z = ubool(0.893)
+``` 
+
+Given that ``ufloat`` and ``uint`` values can be considered random variables, they are compared using *equality in distribution*: two variables are equal if their distributions are the same.
+
+Comparisons between ``uint`` and ``ufloat`` can be performed using the traditional comparison operators: ``<``, ``<=``, ``>``, ``>=``, ``==`` and ``!=``. These operators return ``ubool`` values.
 
 
 | Operation         | Operator       | Method           | Function        |
@@ -267,6 +295,8 @@ Comparisons between ``uint`` and ``ufloat`` can be performed using the typical c
 | Greater than or Equals | ``` x >= y ``` | ``` x.ge(y) ```  | ``` ge(x, y) ```|
 | Equals            | ``` x == y ``` | ``` x.eq(y) ```  | ``` eq(x, y) ```|
 | Not Equals        | ``` x != y ``` | ``` x.ne(y) ```  | ``` ne(x, y) ```|
+
+
 
 Again, infix operators are recommended. 
 
@@ -302,7 +332,6 @@ m = max(
 ---
 ## Type ustr
 
-A ustr can be instantiated providing the string value and the certainty. Certainty is a float[0, 1] where 1 is the highest possible certainty while 0 is the lowest.
 Values of type ``ustr`` are used to represent Python strings with uncertainty. That is, type ``ustr`` extends type ``str``, adding to their values a degree of confidence on the contents of the string. This is useful, for example, when rendering strings obtained by inaccurate OCR devices or texts translated from other languages if there are doubts about specific words or phrases. 
 
 Values of type ``ustr`` are pairs ``(s,c)``, where ``s`` is the string and ``c`` the associated confidence (a real number between 0 and 1). To calculate the confidence of a string ``s``, the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) is normally used. For example, ``ustr('hell0 world!',0.92)`` means that we do not trust at most one of the 12 characters of the string. Values of Python type ``str`` are embedded into ``ustr`` values as ``ustr(s,1.0)``.
@@ -312,8 +341,8 @@ Values of type ``ustr`` are pairs ``(s,c)``, where ``s`` is the string and ``c``
 x = ustr('What is Lorem Ipsum?', 0.97)
 ```
 
-#### Accesing elements
-Individual elements of an uncertain string (i.e., values of type ``ustr``) can be accesed using ``uAt(index)`` or the ``[index]`` operator. The character on the position can be obtained using ``at(index)``.
+### Accesing individual characters
+Individual characters of an uncertain string can be accesed using operation ``[index]`` or method ``uAt(index)``. The character on a given position can also be obtained using method ``at(index)``.
 
 ```python
 x = ustr('What is Lorem Ipsum?', 0.97)
@@ -326,9 +355,9 @@ x.at(0)
 # 'W'
 ```
 
-#### Slicing
+### Slicing
 
-The ``[start, stop, step]`` operator and the ``uSubstring(start, stop, step)`` method can be used to split an uncertain string. The ``start`` and ``stop`` indexes are optional, their default values are 0 and the lenght of the string. The third parameter is also optional with a default value of 1. Negative indexes are valid.
+Both operator ``[start, stop, step]`` and method ``uSubstring(start, stop, step)`` can be used to split an uncertain string. The ``start`` and ``stop`` indexes are optional, their default values being 0 and the lenght of the string, respectively. The third parameter is also optional with a default value of 1. Negative indexes are valid, they indicate positions from the right end of the string.
 
 ```python
 x = ustr('What is Lorem Ipsum?', 0.97)
@@ -343,9 +372,9 @@ x.uSubstring(-6)
 #ustr('Ipsum?', 0.97)
 ```
 
-#### Concatenating ustrs
+### Concatenating ustrs
 
-Method ``.add(ustr)``, function ``add(ustr, ustr)`` or  operator ``+`` can be used to concatenate different uncertain strung (or strings), as the example below shows:
+Method ``.add(ustr)``, function ``add(ustr, ustr)`` or  operator ``+`` can be used to concatenate either uncertain string, or strings, or both, as the example below shows:
 
 ```python
 x = ustr('What is Lorem Ipsum?', 0.97)
@@ -362,9 +391,9 @@ x.concat(' Lorem Ipsum is simply dummy text')
 # ustr(What is Lorem Ipsum? Lorem Ipsum is simply dummy text, 0.989)
 ```
 
-#### Comparison Operators
+### Comparison Operators
 
-Comparisons between uncertain strings can be performed using the operators defined for booleans. An ``ubool`` value is returned in all comparison operations.
+Comparisons between uncertain strings can also be performed using the traditional operators, which now return  ``ubool`` values.
 
 ```python
 x = ustr('What is Lorem Ipsum?', 0.97)
@@ -380,20 +409,22 @@ le(x, y)
 # ubool(0.321)
 ```
 
-#### ustr Methods
+### ustr Methods
 
-Further operations available for uncertain strings ``s`` include:
+Further operations available for any uncertain string ``s`` include:
 
-- ``s.len(ustr)``: returns the size of ``s`` as an ``int``.
+- ``s.len())``: returns the size of ``s`` as an ``int``.
 - ``s.uLen()``: returns the size of ``s`` as ``uint``.
 - ``s.uUpper()``: returns a new ``ustr`` with all characters of ``s`` converted into upper case.
 - ``s.uLower()``: returns a new ``ustr`` with all characters of ``s`` converted into lower case.
 - ``s.uCapitalize()``: returns a new ``ustr`` with the first character of ``s`` capitalized.
 - ``s.uFirstLower()``: returns a new ``ustr`` with the first character of ``s`` in lower case.
-- ``s.index(t: str)``: returns the index of the string ``t`` within ``s``.
+- ``s.index(t)``: returns the index of the uncertain string ``t`` within ``s``.
 - ``s.uCharacters()``: returns a list of ``ustr`` with each character of ``s``.
 
-#### Conversion Methods
+<mark>Queremos metodos o properties? Lo que se use en Python para eso...</mark>
+
+### Conversion Methods
 
 Given an uncertain string ``s`` that represents a ``float``, ``int``, ``bool``, ``ufloat``, ``unit``, or ``ubool`` value, the following methods provide conversion operations to the corresponding types.
 
@@ -404,17 +435,20 @@ Given an uncertain string ``s`` that represents a ``float``, ``int``, ``bool``, 
 - ``s.tobool()`` or ``ustr.bool(s)``: converts ``s`` into a ``bool`` value. 
 - ``s.toubool()``: converts ``s`` into an ``ubool`` value. 
 
+<mark>Queremos metodos o properties? Lo que se use en Python para eso...</mark>
+
 ---
 
 ## Type uenum
 
-Type ``uenum`` is the embedding supertype for Python type ``enum`` that adds uncertainty to each of its values. A value of an uncertain enumeration type is not a single literal,
-but a set of pairs {(l<sub>1</sub>,c<sub>1</sub>),...,(l<sub>n</sub>,c<sub>n</sub>)}, where {c<sub>1</sub>,...,c<sub>n</sub>} are numbers in the range [0, 1] that represent
-the probabilities that the variable takes each literal as its
-value (i.e., the *confidences*), and c<sub>1</sub>+...+c<sub>n</sub>=1. 
+Type ``uenum`` is the embedding supertype for Python type ``enum`` that adds uncertainty to each of its values.
+A value of an
+uncertain enumeration type ``enum`` is not a single literal,
+but a set of pairs $\{(l_1,c_1),...,(l_n,c_n)\}$, where $\{l_1,...,l_n\}$ are the enumeration literals and $\{c_1,...,c_n\}$ are numbers in the range [0, 1] that represent
+the probabilities that the variable takes each literal as its value. They should fulfil that $c_1+...+c_n=1$. Pairs whose confidence $c_i$ is 0 can be omitted.
 
 An ``uenum`` value can be created in three ways:
-1. providing a ``dict`` where the key is the literal and the value is the confidence;
+1. providing a Dictionary in Python whose keys are the literals and the values are their confidences;
 2. providing a list of strings with the literals and a list with the confidence of each literal; 
 3. providing a list of ``ustr`` values. 
 
@@ -424,7 +458,7 @@ y = uenum({"red": 0.8, "green": 0.771})
 z = uenum([ustr("blue", 0.83), ustr("yellow", 0.7)])
 ```
 
-The literals of an ``uenum`` value can be accessed using the property ``literals``. A copy of the ``dict`` can be obtained with the property ``elements``. A list with the ``ustr`` values of each element of the uncertain enumeration can be obtained with the property ``ustrs``.
+The literals of an ``uenum`` value can be accessed using the property ``literals``. A copy of the Dictionary can be obtained with the property ``elements``. A list with the ``ustr`` values of each element of the uncertain enumeration can be obtained with the property ``ustrs``.
 ```python
 x.literals
 # ['Red', 'Blue']
@@ -448,17 +482,17 @@ Type ``sbool`` provides an extension of ``ubool`` to represent binomial *opinion
 
 These values are all real numbers in the range [0,1] and satisfy that *b+d+u=1*. The "*projected*" probability of a binomial opinion is defined as *P=b+au*. 
 
-
+<mark>To be done...</mark>
 
 ---
 # Alternative representations
 
 Package ``uTypes`` provides two different implementations for the extended numerical types values, using their corresponding Type-A and Type-B evaluations described in the "ISO Guide to Measurement Uncertainty" ([JCMG 100:2008](https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf)). 
 
-- In **Type A** implementations, uncertain values are represented by n independent observations X = {x1,...,xn} that have been obtained under the same conditions of measurement. The value of the corresponding uncertain number corresponds to the mean of the sample, and the uncertainty is given by the standard deviation.  
+- In **Type A** implementations, uncertain values are represented by n independent observations $X = \{x_1,...,x_n\}$ that have been obtained under the same conditions of measurement. The value of the corresponding uncertain number corresponds to the mean of the sample, and the uncertainty is given by the standard deviation.  
 - In **Type B** implementation, values are represented by the mean and standard deviation of the assumed probability density function that represents how the measurements of the ground truth values are expected to distribute (in case of floats and integers) or the degree of belief that an event will occur (in case of booleans).
 
-Types ``ubool``, ``ufloat`` and ``uint`` described above are implemented using **Type B** evaluation, and all type operations are implemented using closed-form expressions.
+Types ``ubool``, ``ufloat`` and ``uint`` previously described are implemented using **Type B** evaluation, and all type operations are implemented using closed-form expressions.
 
 This package also provides **Type A** implementations, which are represented by types [``abool``](./TypeA-implementations.md#type-abool), [``aint``](./TypeA-implementations.md#type-aint) and [``afloat``](./TypeA-implementations.md#type-afloat). They provide the extensions of Python types ``bool``, ``float`` and ``int`` with uncertainty, respectively. They are described in a separate [document](./TypeA-implementations.md).
 
