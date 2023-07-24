@@ -51,7 +51,7 @@ if y:   # y is ubool(0.7) >= 0.5
     'executed'
 ```
 
-<mark>Como se conoce el valor de certainty? Hay alguna propiedad? Alguna operacion?</mark>
+<mark>**OJO**: Cómo se conoce el valor de certainty? Hay alguna propiedad? Alguna operación?</mark>
 
 In this manner, ``ubool`` values can be used as booleans in conditional statements.
 
@@ -62,7 +62,7 @@ if x:
 
 It is also possible to know the confidence of an ``ubool`` value using the ``confidence`` property:
 
-<mark>Me gustan mas las properties "confidence" que las operaciones "confidence()"...</mark>
+<mark>**OJO**: Me gustan mas las properties "confidence" que las operaciones "confidence()"...</mark>
 
 
 ```python
@@ -99,7 +99,7 @@ The table below summarizes all the possible usages.
 | DISTINCT   | ``` x != y ```  | ``` x \|DISTINCT\| y ```   | ``` x.DISTINCT(y) ```   | ``` DISTINCT(x, y) ```   |
 
 
-<mark>Ojo: "EQUIVALENT" no es lo mismo que "=="</mark>
+<mark>**OJO**: "EQUIVALENT" no es lo mismo que "=="</mark>
 
 ***IMPORTANT***: 
 
@@ -174,7 +174,7 @@ Infix operators are recommended. When using the traditional operators, precedenc
 
 In addition, any ``ufloat`` variable can be interrogated for its nominal value (x) and its uncertainty (u), using properties ``value`` and ``uncertainty``, respectively.
 
-<mark>Mejor properties que methods!</mark>
+<mark>**OJO**: Mejor properties que methods!</mark>
 
 #### Examples
 ```python
@@ -422,7 +422,7 @@ Further operations available for any uncertain string ``s`` include:
 - ``s.index(t)``: returns the index of the uncertain string ``t`` within ``s``.
 - ``s.uCharacters()``: returns a list of ``ustr`` with each character of ``s``.
 
-<mark>Queremos metodos o properties? Lo que se use en Python para eso...</mark>
+<mark>**OJO**: Queremos metodos o properties? Lo que se use en Python para eso...</mark>
 
 ### Conversion Methods
 
@@ -435,7 +435,7 @@ Given an uncertain string ``s`` that represents a ``float``, ``int``, ``bool``, 
 - ``s.tobool()`` or ``ustr.bool(s)``: converts ``s`` into a ``bool`` value. 
 - ``s.toubool()``: converts ``s`` into an ``ubool`` value. 
 
-<mark>Queremos metodos o properties? Lo que se use en Python para eso...</mark>
+<mark>**OJO**: Queremos metodos o properties? Lo que se use en Python para eso...</mark>
 
 ---
 
@@ -482,7 +482,7 @@ Type ``sbool`` provides an extension of ``ubool`` to represent binomial *opinion
 
 These values are all real numbers in the range [0,1] and satisfy that *b+d+u=1*. The "*projected*" probability of a binomial opinion is defined as *P=b+au*. 
 
-<mark>To be done...</mark>
+<mark>**OJO**: To be done...</mark>
 
 ---
 # Alternative representations
