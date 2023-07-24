@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 
 from uncertainty.ubool import ubool
+from uncertainty.abool import abool
 from uncertainty.result import Result
 from uncertainty.unumbers import uint
 from uncertainty.unumbers import ufloat
@@ -101,12 +102,12 @@ def __search(rs: Iterable, eval):
         return rs[0]
     
     ev = eval(rs[0], rs[1]); rev = eval(rs[1], rs[0])
-    best = rs[0] if ev.c > rev.c else rs[1]
+    best = rs[0] if ev.uncertainty > rev.uncertainty else rs[1]
     for i in range(2, len(rs)):
         r = rs[i]
         ur = r if is_utype(r) else ufloat(r)
         ev = eval(best, ur); rev = eval(ur, best)
-        if ev.c < rev.c:
+        if ev.uncertainty < rev.uncertainty:
             best = r
     
     if is_utype(best):
