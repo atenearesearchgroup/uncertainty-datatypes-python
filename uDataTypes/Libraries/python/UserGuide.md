@@ -20,7 +20,7 @@ from uncertainty.utypes import *
 
 ## Type ubool
 
-Type [``ubool``] extends type ``bool`` by using propabilities instead of the traditional logical truth values (True, False), and by replacing truth tables by probability expressions. Thus, an ``ubool`` value is expressed by a probability representing the degree of belief (i.e., the *confidence*) that a given statement is true. For example, ``ubool(0.7)`` means that there is a 70% chance of an event occurring. Python ``bool`` values True and False correspond to ``ubool(1.0)`` and ``ubool(0.0)``, respectively. 
+Type ``ubool`` extends type ``bool`` by using propabilities instead of the traditional logical truth values (True, False), and by replacing truth tables by probability expressions. Thus, an ``ubool`` value is expressed by a probability representing the degree of belief (i.e., the *confidence*) that a given statement is true. For example, ``ubool(0.7)`` means that there is a 70% chance of an event occurring. Python ``bool`` values True and False correspond to ``ubool(1.0)`` and ``ubool(0.0)``, respectively. 
 
 Type ``ubool`` extends traditional logic truth values (True, False) with probabilities, and truth tables are replaced with probability expressions. Thus, an ``ubool`` value is expressed by means of a probability that represents a confidence, e.g., 
 
