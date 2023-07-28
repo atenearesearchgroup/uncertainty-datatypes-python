@@ -35,9 +35,21 @@ z = ubool(1)      # int 0 or 1 can be used too.
 w = ubool(False)  # True or False can be also used. 
                    #True -> ubool(1.0) and False -> ubool(0.0).
 ```
-### Type projection
+It is always possible to know the confidence of an ``ubool`` value using the ``confidence`` property:
 
-``ubool`` values can be projected to ``bool`` values, using a threshold that determines when the ``ubool`` value becomes ``True`` or ``False``. This threshold is called "level of certainty" and by default is 0.9. That is, ``ubool(x)`` becomes ``True`` if ``x > 0.9``.  The level of certainty can be changed using ``ubool.setCertainty(x)`` function and queried using ``ubool.getCertainty()``. 
+```python
+x = ubool(0.7)
+print (x.confidence)
+# 0.7
+```
+
+### Type conversion and projection
+
+``ubool`` values can be converted to ``bool`` values, using a threshold that determines when the ``ubool`` value is evaluated as ``True`` or ``False``. This threshold is called "*level of certainty*" and its default value is ``0.9``.  The *level of certainty* can be changed using ``ubool.setCertainty(x)`` function and queried using ``ubool.getCertainty()``. 
+
+Then, method ``u.tobool()`` to convert ``ubool`` variable ``u`` into ``bool``. It is defined as follows: ``u.tobool() = (x.confidence > ubool.getCertainty())``
+
+In addition, ``ubool`` values and variables can be used in ``if`` statements because they can be automatically evaluated as ``bool`` values in this case. Thus,  an ``ubool`` variable ``x`` is evaluated to ``True`` (when considered as a ``bool``) if ``x.confidence > ubool.getCertainty()``.  
 
 ```python
 y = ubool(0.7)
@@ -54,20 +66,11 @@ if y:   # y is ubool(0.7) >= 0.5
 ubool.getCertainty()
 # 0.5
 ```
-
-In this manner, ``ubool`` values can be used as booleans in conditional statements.
+In this way, ``ubool`` values can be used as booleans in conditional statements.
 
 ```python
 if x:
     'executed'
-```
-
-It is also possible to know the confidence of an ``ubool`` value using the ``confidence`` property:
-
-```python
-x = ubool(0.7)
-print (x.confidence)
-# 0.7
 ```
 
 ### Logical operators
@@ -76,7 +79,7 @@ Operations on ``ubool`` values extend those of ``bool`` values. This means that,
 
 ``ubool`` logical operators include: ``AND``, ``OR``, ``NOT``, ``XOR``, ``IMPLIES``, and ``EQUIVALENT``. The library offers the following four ways of using logical operators: 
 * Infix symbol operators: ``` x & y ``` 
-* f: ``` x |AND| y ``` 
+* Infix textual operators: ``` x |AND| y ``` 
 * Instance methods: ``` x.AND(y) ``` 
 * Functions: ``` AND(x, y) ```
 
@@ -412,7 +415,7 @@ Further operations available for any uncertain string ``s`` include:
 - ``s.index(t)`` method returns the index of the uncertain string ``t`` within ``s``.
 - ``s.uCharacters()`` method returns a list of ``ustr`` with each character of ``s``.
 
-### Conversion Methods
+### Conversion methods
 
 Given an uncertain string ``s`` that represents a ``float``, ``int``, ``bool``, ``ufloat``, ``unit``, or ``ubool`` value, the following methods provide conversion operations to the corresponding types.
 
@@ -464,7 +467,7 @@ Type ``sbool`` provides an extension of ``ubool`` to represent binomial *opinion
 - Uncertainty: ``u`` is the amount of uncommitted belief, also interpreted as epistemic uncertainty.
 - Base rate: ``a`` is the prior probability in the absence of belief or disbelief.
 
-These values are all real numbers in the range [0,1] and satisfy that *b+d+u=1*. The "*projected*" probability of a binomial opinion is defined as *P=b+au*. 
+These values are all real numbers in the range [0,1] and satisfy that ``b+d+u=1``. The "*projected*" probability of a binomial opinion is defined as ``P=b+au``. 
 
 Type ``sbool`` can be initialized providing the for 4 values, a bool or a ``ubool``.
 ```python
@@ -492,36 +495,60 @@ z.base_rate
 # 0.500
 ```
 
-### Logical operators
+### Conversion methods
 
-Operations on ``sbool`` values are the same as bool values. Therefore, the behavior of ``sbool`` operations is exactly the same as ``ubool`` and boolean versions. This include the opreations: ``AND``, ``OR``, ``NOT``, ``XOR``, ``IMPLIES``, and ``EQUIVALENT``. Also, the same four ways of using logical operators are provided: Infix symbol operators (``` x & y ```), Infix textual operators (``` x |AND| y ```), Instance methods (``` x.AND(y) ```) and functions (``` AND(x, y) ```).
+Values of type ``sbool`` can be converted into ``ubool`` or ``bool`` values. 
 
-Infix operator are recommended.
+Method ``s.toubool()`` converts an ``sboolean`` variable ``s`` into an ``ubool`` value. It does so by projecting it. That is, ``s.toubool() = s.projection()``
 
-### Conversion Methods
-
-The following conversion operations are provided for ``sbool``.
+Method ``s.tobool()`` converts an ``sboolean`` variable ``s`` into a ``bool`` value. It does so by projecting it and then using the degree of certainty: ``s.tobool() = (s.projection() >= ubool.getCertainty())``.
 
 <!--
+The following conversion operations are provided for ``sbool``.
+
 - ``createDogmaticOpinion``: convert a ``sbool`` into a dogmatic opinion: an opinion with complete certainty (uncertainty = 0).
 - ``createVacuousOpinion``: convert a ``sbool`` into a vacuous opinion: an opinion with a uncertainty of 1.
 - ``uncertainOpinion``: returns the equivalent ``sbool`` with maximum uncertainty. 
--->
-- ``s.tobool()`` or ``bool(s)``: converts a ``sbool`` into a ``bool`` value. 
+- ``s.tobool()`` or ``bool(s)``: converts an ``sbool`` into a ``bool`` value. 
 - ``s.toubool()``: converts a ``sbool`` into an ``ubool`` value. 
+-->
 
 ### Information access methods
 
-- ``s.projection()`` method returns the projected probability.
-- ``s.projectiveDistance()`` method returns the projected distance.
-- ``s.isAbsolute()`` method returns ``True`` if the ``sbool`` has ``Belief == 1`` or ``Disbelief == 1``.
-- ``s.uncertaintyMaximized()`` method returns the equivalent ``sbool`` with maximum uncertainty. 
-- ``s.isMaximizedUncertainty()`` method returns ``True`` if the ``sbool`` has ``Belief == 0`` or ``Disbelief == 0``.
-- ``s.isVacuous()`` method returns ``True`` if the ``sbool`` has ``uncertainty == 1``.
-- ``s.isDogmatic()`` method returns ``True`` if the ``sbool`` has ``uncertainty == 0``.
-- ``s.isCertain(threshold)`` method returns ``True`` if the ``sbool`` has ``uncertainty >= threshold``.
-- ``s.isUncertain(threshold)`` method returns ``True`` if the ``sbool`` has ``uncertainty < threshold``.
-- ``s.certainty()`` method returns the certainty. (i.e., 1 - u).
+In addition, type ``sbool`` supports the following methods to query their values.
+
+- ``s.projection() -> bool`` returns the projected probability (``s.belief + s.uncertainty*s.base_rate``).
+- ``s.isAbsolute() -> bool``  returns ``True`` iff ``s.belief == 1 or s.disbelief == 1``.
+- ``s.uncertaintyMaximized() -> sbool`` returns the equivalent ``sbool`` with maximum uncertainty. 
+- ``s.isMaximizedUncertainty() -> bool``  returns ``True`` iff ``s.belief == 0 or s.disbelief == 0``.
+- ``s.isVacuous() -> bool`` returns ``True`` iff ``s.uncertainty == 1``.
+- ``s.isDogmatic() -> bool``  returns ``True`` iff ``s.uncertainty == 0``.
+<!-- 
+- ``s.isCertain(threshold) -> bool`` method returns ``True`` if the ``sbool`` has ``uncertainty >= threshold``.
+- ``s.isUncertain(threshold) -> bool`` method returns ``True`` if the ``sbool`` has ``uncertainty < threshold``.
+- ``s.certainty() ->`` method returns the certainty. (i.e., 1 - u).
+-->
+
+### Logical operators
+
+Type ``sbool`` extends all the logical operations that type ``bool`` supports. This is a proper extension, which means that the behavior of ``sbool`` operations is exactly the same as their ``ubool`` and ``bool`` versions when applied to values of these latter types, although they now return ``sbool`` values.
+
+Basic operations include ``AND``, ``OR``, ``NOT``, ``XOR``, ``IMPLIES``, and ``EQUIVALENT``. The same four ways of using these logical operators are supported: Infix symbol operators (``` x & y ```), Infix textual operators (``` x |AND| y ```), Instance methods (``` x.AND(y) ```) and functions (``` AND(x, y) ```).
+
+| Operation  | Infix (symbol)       | Infix (textual)            | Method                  | Function                 |
+|:----------:|:---------------:|:--------------------------:|:-----------------------:|:------------------------:|
+| AND        | ``` x & y ```   | ``` x \|AND\| y ```        | ``` x.AND(y) ```        | ``` AND(x, y) ```        |
+| OR         | ``` x \| y ```  | ``` x \|OR\| y ```         | ``` x.OR(y) ```         | ``` OR(x, y) ```         |
+| XOR        | ``` x ^ y ```   | ``` x \|XOR\| y ```        | ``` x.XOR(y) ```        | ``` XOR(x, y) ```        |
+| NOT        | ``` ~x ```      |                            | ``` x.NOT() ```         | ``` NOT(x) ```           |
+| IMPLIES    | ``` x >> y ```  | ``` x \|IMPLIES\| y ```    | ``` x.IMPLIES(y) ```    | ``` IMPLIES(x, y) ```    |
+| EQUIVALENT | ``` ~(x^y) ```  | ``` x \|EQUIVALENT\| y ``` | ``` x.EQUIVALENT(y) ``` | ``` EQUIVALENT(x, y) ``` |
+| EQUALS     | ``` x == y ```  | ``` x \|EQUALS\| y ```     | ``` x.EQUALS(y) ```     | ``` EQUALS(x, y) ```     |
+| DISTINCT   | ``` x != y ```  | ``` x \|DISTINCT\| y ```   | ``` x.DISTINCT(y) ```   | ``` DISTINCT(x, y) ```   |
+
+<sub> Note that equal and equivalent operations are not the same. The equivalent operation can be performed with ~(x^y), the equal operation can be performed with the == operator </sub>
+
+Infix operator are recommended.
 
 ### Operations
 <!--
