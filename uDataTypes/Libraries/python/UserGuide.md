@@ -37,7 +37,7 @@ w = ubool(False)  # True or False can be also used.
 ```
 ### Type projection
 
-``ubool`` values can be projected to ``bool`` values, using a threshold that determines when the ``ubool`` value becomes ``True`` or ``False``. This threshold is called "level of certainty" and by default is 0.9. That is, ``ubool(z)`` becomes ``True`` if ``z > 0.9``.  The level of certainty can be changed using ``ubool.setCertainty(z)`` function. 
+``ubool`` values can be projected to ``bool`` values, using a threshold that determines when the ``ubool`` value becomes ``True`` or ``False``. This threshold is called "level of certainty" and by default is 0.9. That is, ``ubool(z)`` becomes ``True`` if ``z > 0.9``.  The level of certainty can be changed using ``ubool.setCertainty(z)`` function or queried using ``ubool.getCertainty()``. 
 
 ```python
 y = ubool(0.7)
@@ -49,9 +49,11 @@ if y:   # y is ubool(0.7) < 0.9
 ubool.setCertainty(0.5)
 if y:   # y is ubool(0.7) >= 0.5
     'executed'
-```
 
-<mark>**OJO**: Cómo se conoce el valor de certainty? Hay alguna propiedad? Alguna operación?</mark>
+# Get certainty
+ubool.getCertainty()
+# 0.5
+```
 
 In this manner, ``ubool`` values can be used as booleans in conditional statements.
 
@@ -62,25 +64,19 @@ if x:
 
 It is also possible to know the confidence of an ``ubool`` value using the ``confidence`` property:
 
-<mark>**OJO**: Me gustan mas las properties "confidence" que las operaciones "confidence()"...</mark>
-
-
 ```python
 x = ubool(0.7)
 print (x.confidence)
 # 0.7
 ```
 
-
-
 ### Logical operators
 
 Operations on ``ubool`` values extend those of ``bool`` values. This means that, when working with ``bool`` values, the behavior of ``ubool`` operations is exactly the same as their boolean versions. 
 
-
 ``ubool`` logical operators include: ``AND``, ``OR``, ``NOT``, ``XOR``, ``IMPLIES``, and ``EQUIVALENT``. The library offers the following four ways of using logical operators: 
 * Infix symbol operators: ``` x & y ``` 
-* Infix textual operators: ``` x |AND| y ``` 
+* f: ``` x |AND| y ``` 
 * Instance methods: ``` x.AND(y) ``` 
 * Functions: ``` AND(x, y) ```
 
@@ -98,8 +94,7 @@ The table below summarizes all the possible usages.
 | EQUALS     | ``` x == y ```  | ``` x \|EQUALS\| y ```     | ``` x.EQUALS(y) ```     | ``` EQUALS(x, y) ```     |
 | DISTINCT   | ``` x != y ```  | ``` x \|DISTINCT\| y ```   | ``` x.DISTINCT(y) ```   | ``` DISTINCT(x, y) ```   |
 
-
-<mark>**OJO**: "EQUIVALENT" no es lo mismo que "=="</mark>
+<sub> Note that equal and equivalent operations are not the same. The equivalent operation can be performed with ~(x^y), the equal operation can be performed with the == operator </sub>
 
 ***IMPORTANT***: 
 
@@ -173,8 +168,6 @@ This representation of uncertainty for numerical values follows the "ISO Guide t
 Infix operators are recommended. When using the traditional operators, precedence is respected and it works the same as with ``float`` values. 
 
 In addition, any ``ufloat`` variable can be interrogated for its nominal value (x) and its uncertainty (u), using properties ``value`` and ``uncertainty``, respectively.
-
-<mark>**OJO**: Mejor properties que methods!</mark>
 
 #### Examples
 ```python
@@ -340,15 +333,14 @@ x = ustr('What is Lorem Ipsum?', 0.97)
 ```
 
 ### Accesing individual characters
-Individual characters of an uncertain string can be accesed using operation ``[index]`` or method ``uAt(index)``. The character on a given position can also be obtained using method ``at(index)``.
+Individual characters of an uncertain string can be accesed using operation ``[index]`` or method ``at(index)``.
 
 ```python
 x = ustr('What is Lorem Ipsum?', 0.97)
 
-x.uAt(0)
-# ustr('W', 0.97)
 x[0]
-# ustr('W', 0.97)
+# 'W'
+
 x.at(0)
 # 'W'
 ```
@@ -363,12 +355,13 @@ x = ustr('What is Lorem Ipsum?', 0.97)
 x[0: 4]
 x[: 4]
 x.uSubstring(0, 4)
-#ustr('What', 0.97)
+# ustr(What, 0.993)
 
 x[-6: ]
 x.uSubstring(-6)
-#ustr('Ipsum?', 0.97)
+# ustr(Ipsum?, 0.979)
 ```
+
 
 ### Concatenating ustrs
 
@@ -420,20 +413,16 @@ Further operations available for any uncertain string ``s`` include:
 - ``s.index(t)``: returns the index of the uncertain string ``t`` within ``s``.
 - ``s.uCharacters()``: returns a list of ``ustr`` with each character of ``s``.
 
-<mark>**OJO**: Queremos metodos o properties? Lo que se use en Python para eso...</mark>
-
 ### Conversion Methods
 
 Given an uncertain string ``s`` that represents a ``float``, ``int``, ``bool``, ``ufloat``, ``unit``, or ``ubool`` value, the following methods provide conversion operations to the corresponding types.
 
-- ``s.tofloat()`` or ``ustr.float(s)``: converts ``s`` into a ``float`` value. 
+- ``s.tofloat()`` or ``float(s)``: converts ``s`` into a ``float`` value. 
 - ``s.toufloat()``: converts ``s`` into an ``ufloat`` value. 
-- ``s.toint()`` or ``ustr.int(s)``: converts ``s`` into an ``int`` value. 
+- ``s.toint()`` or ``int(s)``: converts ``s`` into an ``int`` value. 
 - ``s.touint()``: converts ``s`` into an ``uint`` value. 
-- ``s.tobool()`` or ``ustr.bool(s)``: converts ``s`` into a ``bool`` value. 
+- ``s.tobool()`` or ``bool(s)``: converts ``s`` into a ``bool`` value. 
 - ``s.toubool()``: converts ``s`` into an ``ubool`` value. 
-
-<mark>**OJO**: Queremos metodos o properties? Lo que se use en Python para eso...</mark>
 
 ---
 
@@ -466,21 +455,138 @@ x.ustrs
 # [ustr(Red, 0.300), ustr(Blue, 0.453)]
 ```
 
-
-
 ---
 ## Type sbool
 
 Type ``sbool`` provides an extension of ``ubool`` to represent binomial *opinions* in [Subjective Logic](https://en.wikipedia.org/wiki/Subjective_logic). They allow expressing degrees of belief with epistemic uncertainty, and also trust. A binomial opinion about a given fact X by a belief agent A is represented as a quadruple ``sbool(b,d,u,a)`` where
 
-- ``b`` is the degree of belief that X is True
-- ``d`` is the degree of belief that X is False
-- ``u`` is the amount of uncommitted belief, also interpreted as epistemic uncertainty.
-- ``a`` is the prior probability in the absence of belief or disbelief.
+- Belief: ``b`` is the degree of belief that X is True
+- Disbelief: ``d`` is the degree of belief that X is False
+- Uncertainty: ``u`` is the amount of uncommitted belief, also interpreted as epistemic uncertainty.
+- Base rate: ``a`` is the prior probability in the absence of belief or disbelief.
 
 These values are all real numbers in the range [0,1] and satisfy that *b+d+u=1*. The "*projected*" probability of a binomial opinion is defined as *P=b+au*. 
 
-<mark>**OJO**: To be done...</mark>
+Type ``sbool`` can be initialized providing the for 4 values, a bool or a ``ubool``.
+```python
+x = sbool() # Same as: sbool(True)
+# sbool(1.000, 0.000, 0.000, 1.000)
+y = sbool(False)
+# sbool(0.000, 1.000, 0.000, 0.000)
+z = sbool(0.7, 0.1, 0.2, 0.5)
+# sbool(0.700, 0.100, 0.200, 0.500)
+w = sbool(ubool(0.7))
+# sbool(0.700, 0.300, 0.000, 0.700)
+```
+
+And the values can be accesed using its name:
+```python
+z = sbool(0.7, 0.1, 0.2, 0.5)
+# sbool(0.700, 0.100, 0.200, 0.500)
+z.belief
+# 0.700
+z.disbelief
+# 0.100
+z.uncertainty
+# 0.200
+z.base_rate
+# 0.500
+```
+
+### Logical operators
+
+Operations on ``sbool`` values are the same as bool values. Therefore, the behavior of ``sbool`` operations is exactly the same as ``ubool`` and boolean versions. This include the opreations: ``AND``, ``OR``, ``NOT``, ``XOR``, ``IMPLIES``, and ``EQUIVALENT``. Also, the same four ways of using logical operators are provided: Infix symbol operators (``` x & y ```), Infix textual operators (``` x |AND| y ```), Instance methods (``` x.AND(y) ```) and functions (``` AND(x, y) ```).
+
+Infix operator are recommended.
+
+### Conversion Methods
+
+The following conversion operations are provided for ``sbool``.
+
+- ``createDogmaticOpinion``: convert a ``sbool`` into a dogmatic opinion: an opinion with complete certainty (uncertainty = 0).
+- ``createVacuousOpinion``: convert a ``sbool`` into a vacuous opinion: an opinion with a uncertainty of 1.
+- ``uncertainOpinion``: returns the equivalent ``sbool`` with maximum uncertainty. 
+- ``s.tobool()`` or ``bool(s)``: converts ``s`` into a ``bool`` value. 
+- ``s.toubool()``: converts ``s`` into an ``ubool`` value. 
+
+### Information access methods
+
+- ``projection()``: Returns the projected probability.
+- ``projectiveDistance()``: Returns the projected distance.
+- ``isAbsolute()``: Return if the ``sbool`` has ``Belief == 1`` or ``Disbelief == 1``.
+- ``uncertaintyMaximized()``: Returns the equivalent ``sbool`` with maximum uncertainty. 
+- ``isMaximizedUncertainty()``: Return if the ``sbool`` has ``Belief == 0`` or ``Disbelief == 0``.
+- ``isVacuous()``: Return if the ``sbool`` has ``uncertainty == 1``.
+- ``isDogmatic()``: Return if the ``sbool`` has ``uncertainty == 0``.
+- ``isCertain(threshold)``: Return if the ``sbool`` has ``uncertainty >= threshold``.
+- ``isUncertain(threshold)``: Return if the ``sbool`` has ``uncertainty < threshold``.
+- ``certainty()``: Returns the certainty. (i.e., 1 - u).
+
+### Operations
+
+- ``applyOn(sbool)`` Returns the ``sbool`` that results from adjusting the base rate to be the one given in the parameter.
+- ``deduceY(sboolyGivenX, sboolyGivenNotX)``:  Deduction, returns Y, acting "self sbool" as X.
+- ``union(sbool)``: Return the Union of two ``sbool``, according to Josang's book.
+- ``weightedUnion(sbool)``: Return the Weighted Union of two ``sbool``, according to Josang's book.
+- ``weightedUnion(Collection[sbool])``: Return the Weighted Union of a collection of opinions.
+    
+**Binary Fusion implemenentation**
+The following methods of the class sbool returns a ``sbool`` that represent the fused evidence of two opinions:
+- ``bcFusion(sbool)``: implements theconstraint belief fusion (CBF).
+- ``cumulativeFusion(sbool)``: implements the cumulative belief fusion (CBF).
+- ``epistemicCumulativeFusion(sbool)``:  implements the epistemic cumulative belief fusion (eCBF).
+- ``minimumFusion(sbool)``: implements the min fusion.
+- ``majorityFusion(sbool)``: implements the majority fusion.
+- ``averageFusion(sbool)``: implements the average fusion.
+- ``weightedFusion(sbool)``: implements the weighted belief fusion (WBF).
+- ``ccFusion(sbool)``: implements the consensus & compromise fusion (CCF).
+
+bcFusion code example:
+```python
+x = sbool(0.0, 0.40, 0.6, 0.5)
+y = sbool(0.55, 0.3, 0.15, 0.38)
+x.bcFusion(y)
+# sbool(0.423, 0.462, 0.115, 0.418)
+```
+
+**Fusion implemenentation of a collection of opinions**
+The following functions returns a ``sbool`` that represent the fused evidence of a collection of opinions from different sources.
+
+- ``beliefConstraintFusion(Collection[sbool])``: implements theconstraint belief fusion (CBF).
+- ``cumulativeBeliefFusion(Collection[sbool])``: implements the cumulative belief fusion (CBF).
+- ``epistemicCumulativeBeliefFusion(Collection[sbool])``: implements the epistemic cumulative belief fusion (eCBF).
+- ``minimumBeliefFusion(Collection[sbool])``:  implements the min fusion.
+- ``majorityBeliefFusion(Collection[sbool])``: implements the majority fusion.
+- ``averageBeliefFusion(Collection[sbool])``: implements the average fusion.
+- ``weightedBeliefFusion``: implements the weighted belief fusion (WBF).
+- ``consensusAndCompromiseFusion(Collection[sbool])``: implements the consensus & compromise fusion (CCF).
+
+beliefConstraintFusion code example:
+```python
+opinions = [
+    sbool(0.0, 0.40, 0.6, 0.5), 
+    sbool(0.55, 0.3, 0.15, 0.38), 
+    sbool(0.1, 0.75, 0.15, 0.38),
+    sbool(0.151, 0.48, 0.369, 0.382) 
+]
+beliefConstraintFusion(opinions)
+# sbool(0.126, 0.861, 0.013, 0.393)
+```
+
+**Discount implemenentation**
+The following methods and functions of the class sbool returns a ``sbool`` that represent the discount of two opinions:
+- ``discount(sbool)`` or discount(Collection[sbool]): implements the "probability-sensitive trust discounting operator".
+- ``discountB(sbool)`` or discountB(Collection[sbool]): implements the discounting operator from the Trustyfeer 2018 paper bu Kurdi et al.
+
+discount code example:
+```python
+x = sbool(0.95, 0, 0.05, 0.20) 
+y = sbool(0.0, 0.0, 1, 0.9) 
+x.discount(y)
+# sbool(0.855, 0.000, 0.145, 0.200)
+```
+
+<!--
 
 ---
 # Alternative representations
@@ -494,3 +600,4 @@ Types ``ubool``, ``ufloat`` and ``uint`` previously described are implemented us
 
 This package also provides **Type A** implementations, which are represented by types [``abool``](./TypeA-implementations.md#type-abool), [``aint``](./TypeA-implementations.md#type-aint) and [``afloat``](./TypeA-implementations.md#type-afloat). They provide the extensions of Python types ``bool``, ``float`` and ``int`` with uncertainty, respectively. They are described in a separate [document](./TypeA-implementations.md).
 
+-->

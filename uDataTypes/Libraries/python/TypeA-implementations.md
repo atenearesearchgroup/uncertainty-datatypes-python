@@ -9,15 +9,15 @@ Types [``ubool``](./UserGuide.md#type-ubool), [``ufloat``](./UserGuide.md#type-u
 
 This package also provides the **Type A** implementations of these three datatypes, which are represented by types ``abool``, ``aint`` and ``afloat``. These are described next.
 
-<!--- 
 1. ``u-type`` datatypes: ubool, uint, ufloat, ustr, uenum.
     Type U is a pair (x, u), noted x ± u, that represents a random variable whose average is x and standard deviation is u.
 2. ``a-type`` datatypes: abool, aint, afloat.
     Type A, maintain the set of the measured values as X = {x1,...,xn}, x ± u could be calculated as the mean and standard deviation.
 3. ``s-type`` datatype: sbool.
     A particular type of subjective uncertainty (Belief Uncertainty) when a user is not sure about the truth of a statement.
--->
 
+
+<!--- 
 ---
 ## Type abool
 
@@ -32,3 +32,4 @@ This package also provides the **Type A** implementations of these three datatyp
 ## Type aint
 
 <mark>**OJO**: To be done</mark>
+-->
