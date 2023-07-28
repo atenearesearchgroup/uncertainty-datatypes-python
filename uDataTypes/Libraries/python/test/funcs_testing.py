@@ -17,16 +17,17 @@ def err_msg(o, e):
     return 'Obtained: ' + str(o) + ' | Expected: ' + str(e)
 
 def t(o, e):
-    assert o.equals(e) if isinstance(o, (ustr, uint, ufloat, ubool, abool)) else o == e, err_msg(o, e)
+    assert o.equals(e) if isinstance(o, (ustr, uint, ufloat, ubool, abool, aint, afloat, sbool)) else o == e, err_msg(o, e)
 
 def execute(l, r, e, func, method, op, rev_op, special_op = None):
     t(func(l, r), e)            #   add(l, r)
     if special_op is not None:
         t(l |special_op| r, e)  #   l |AND| r
-    if is_utype(l): 
+    if method is not None and is_utype(l): 
         t(method(l, r), e)      #   l.add(r)
+    if op is not None and is_utype(l): 
         t(op(l, r),     e)      #   l + r
-    elif is_utype(r): 
+    elif rev_op is not None and is_utype(r): 
         t(rev_op(r, l), e)      #   5 + r
 
 def negs(l, e):
@@ -142,7 +143,7 @@ def impliess(l, r, e):
     execute(l, r, e, IMPLIES, l.__class__.IMPLIES if hasattr(l, 'IMPLIES') else None, l.__class__.__rshift__, r.__class__.__rrshift__, IMPLIES)
 
 def equivalents(l, r, e):
-    execute(l, r, e, EQUIVALENT, l.__class__.EQUIVALENT if hasattr(l, 'EQUIVALENT') else None, l.__class__.__eq__, r.__class__.__eq__, EQUIVALENT)
+    execute(l, r, e, EQUIVALENT, l.__class__.EQUIVALENT if hasattr(l, 'EQUIVALENT') else None, None, None, EQUIVALENT)
 
 def equalss(l, r, e):
     execute(l, r, e, EQUALS, l.__class__.EQUALS if hasattr(l, 'EQUALS') else None, l.__class__.__eq__, r.__class__.__eq__, EQUALS)

@@ -93,19 +93,20 @@ class uboolTest(unittest.TestCase):
     
     def test_equals(self):
         ''' Equals '''
-        equalss(self.x, self.w, ubool(0.600))
-        equalss(self.w, self.y, ubool(0.900))
-        equalss(self.w, self.w, ubool(1.000))
-        equalss(self.t, self.f, ubool(0.000))
-        equalss(self.f, self.t, ubool(0.000))
+        equalss(self.x, self.w, False)
+        equalss(self.w, self.y, False)
+        equalss(self.w, self.w, True)
+        equalss(self.t, self.f, False)
+        equalss(self.f, self.t, False)
 
     def test_distinct(self):
         ''' Distinct '''   
-        distincts(self.w, self.y, ubool(0.100))
-        distincts(self.x, self.w, ubool(0.400))
-        distincts(self.w, self.x, ubool(0.400))
-        distincts(self.t, self.f, ubool(1.000))
-        distincts(self.f, self.t, ubool(1.000))
+        distincts(self.w, self.y, True)
+        distincts(self.x, self.w, True)
+        distincts(self.w, self.x, True)
+        distincts(self.w, self.w, False)
+        distincts(self.t, self.f, True)
+        distincts(self.f, self.t, True)
 
 
 if __name__ == '__main__':

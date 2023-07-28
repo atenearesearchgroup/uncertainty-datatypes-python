@@ -29,40 +29,37 @@ class ustrTest(unittest.TestCase):
 
     def test_substring(self):
         ''' substring '''
-        t(self.ustr1.uSubstring(0, 4), ustr('What', 0.97))
-        t(self.ustr1[0: 4], ustr('What', 0.97))
+        t(self.ustr1.uSubstring(0, 4), ustr('What', 0.993))
+        t(self.ustr1[0: 4], ustr('What', 0.993))
 
-        t(self.ustr1.uSubstring(0, 4, 2), ustr('Wa', 0.97))
-        t(self.ustr1[0: 4: 2], ustr('Wa', 0.97))
+        t(self.ustr1.uSubstring(0, 4, 2), ustr('Wa', 0.996))
+        t(self.ustr1[0: 4: 2], ustr('Wa', 0.996))
 
-        t(self.ustr1.uSubstring(5, 7), ustr('is', 0.97))
-        t(self.ustr1[5: 7], ustr('is', 0.97))
+        t(self.ustr1.uSubstring(5, 7), ustr('is', 0.996))
+        t(self.ustr1[5: 7], ustr('is', 0.996))
 
-        t(self.ustr2.uSubstring(-5), ustr('dummy', 0.75))
-        t(self.ustr2[-5:], ustr('dummy', 0.75))
+        t(self.ustr2.uSubstring(-5), ustr('dummy', 0.796))
+        t(self.ustr2[-5:], ustr('dummy', 0.796))
         
-        t(self.ustr2.uSubstring(12), ustr('is simply dummy', 0.75))
-        t(self.ustr2[12:], ustr('is simply dummy', 0.75))
+        t(self.ustr2.uSubstring(12), ustr('is simply dummy', 0.861))
+        t(self.ustr2[12:], ustr('is simply dummy', 0.861))
 
-        t(self.ustr3.uSubstring(-9, -1), ustr('industry', 0.85))
-        t(self.ustr3[-9: -1], ustr('industry', 0.85))
+        t(self.ustr3.uSubstring(-9, -1), ustr('industry', 0.973))
+        t(self.ustr3[-9: -1], ustr('industry', 0.973))
 
-        t(self.ustr3.uSubstring(5, 7), ustr('of', 0.85))
-        t(self.ustr3[5: 7], ustr('of', 0.85))
+        t(self.ustr3.uSubstring(5, 7), ustr('of', 0.993))
+        t(self.ustr3[5: 7], ustr('of', 0.993))
 
     def test_at(self):
         ''' at '''
         t(self.ustr1.at(0), 'W')
-        t(self.ustr1.uAt(0), ustr('W', 0.97))
-        t(self.ustr1[0], ustr('W', 0.97))
+        t(self.ustr1[0], 'W')
 
         t(self.ustr2.at(3), 'e')
-        t(self.ustr2.uAt(3), ustr('e', 0.75))
-        t(self.ustr2[3], ustr('e', 0.75))
+        t(self.ustr2[3], 'e')
 
         t(self.ustr3.at(3), 't')
-        t(self.ustr3.uAt(3), ustr('t', 0.85))
-        t(self.ustr3[3], ustr('t', 0.85))
+        t(self.ustr3[3], 't')
 
     def test_usize(self):
         ''' uSize '''

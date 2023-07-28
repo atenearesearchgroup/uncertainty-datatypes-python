@@ -21,7 +21,7 @@ class ustr:
         else:
             raise ValueError('Invalid parameter: string is not str')
         
-        self.string = string
+        self._string = string
         self._c = c
 
     @property
@@ -29,18 +29,19 @@ class ustr:
         return self._string
 
     @property
+    def string(self):
+        return self._string
+
+    @property
     def confidence(self):
         return self._c
 
     ''' Auxiliary operations '''
-    def __confToDist(self):
-        return len(self.string) * (1 - self._c)
-
     def __confToDist(self, conf: float = None, size: int = None):
         if conf is None:
             conf = self._c
         if size is None:
-            size = len(self.string)
+            size = len(self._string)
 
         if conf < 0.0 or conf > 1.0:
             raise ValueError('Invalid parameter: c is c < 0 or c > 1. conf=' + conf)
@@ -50,7 +51,7 @@ class ustr:
         return max(1 - dist / size, 0.0)  
 
     def __str__(self) -> str:
-        return 'ustr({:s}, {:5.3f})'.format(self.string, self._c)
+        return 'ustr({:s}, {:5.3f})'.format(self._string, self._c)
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -75,9 +76,10 @@ class ustr:
         if not isinstance(u, ustr):
             u = ustr(u)
 
-        s: str = self.string + u.string
+        s: str = self._string + u.string
         auxDist: float = self.__confToDist() + u.__confToDist()
-        c: float = self.__distToConf(auxDist, len(self.string) + len(u.string))
+        c: float = self.__distToConf(auxDist, len(self._string) + len(u.string))
+
         return ustr(s, c)
 
     def __add__(self, other) -> ustr:
@@ -88,15 +90,20 @@ class ustr:
             left = ustr(left)
         return left.concat(self)
 
-    def uSubstring(self, lower: int = 0, upper: int = None, step: int = 1) -> ustr:
+    def uSubstring(self, lower: int = 0, upper: int = None, step: int = None) -> ustr:
         if upper is None:
-            upper = len(self.string)
-       
-        return ustr(self.string[lower: upper: step], self._c)
+            upper = len(self._string)
+
+        newSize: int = abs((abs(upper) - (0 if lower is None else abs(lower))) / 1 if step is None else abs(step))
+        length: int  = len(self._string)
+
+        c = self._c + (0.999 - self._c) / (length / (length - newSize))
+
+        return ustr(self._string[lower: upper: step], c)
     
-    def __getitem__(self, idx) -> ustr:
+    def __getitem__(self, idx) -> ustr|str:
         if isinstance(idx, int):
-            return self.uAt(idx)
+            return self.at(idx)
         elif isinstance(idx, slice):
             return self.uSubstring(idx.start, idx.stop, idx.step)
 
@@ -105,7 +112,7 @@ class ustr:
             return ubool(1.0)
         
         c = self.calculateConf(u)
-        if self.string == u.string:
+        if self._string == u.string:
             return ubool(c)
         else:
             return ubool(1 - c)
@@ -135,95 +142,89 @@ class ustr:
             return False
         elif not math.isclose(self._c, other.confidence, rel_tol = 0.001, abs_tol = 0.001): 
             return False
-        return self.string == other.string
+        return self._string == other.string
     
     def lt(self, u: ustr) -> ubool:
         c = self.calculateConf(u)
-        return ubool(c if self.string < u.string else 1 - c)
+        return ubool(c if self._string < u.string else 1 - c)
 
     def __lt__(self, u: ustr) -> ubool:
         return self.lt(u)
 
     def gt(self, u: ustr) -> ubool:
         c = self.calculateConf(u)
-        return ubool(c if self.string > u.string else 1 - c)
+        return ubool(c if self._string > u.string else 1 - c)
 
     def __gt__(self, u: ustr) -> ubool:
         return self.gt(u)
 
     def le(self, u: ustr) -> ubool:
         c = self.calculateConf(u)
-        return ubool(c if self.string <= u.string else 1 - c)
+        return ubool(c if self._string <= u.string else 1 - c)
 
     def __le__(self, u: ustr) -> ubool:
         return self.le(u)
 
     def ge(self, u: ustr) -> ubool:
         c = self.calculateConf(u)
-        return ubool(c if self.string >= u.string else 1 - c)
+        return ubool(c if self._string >= u.string else 1 - c)
 
     def __ge__(self, u: ustr) -> ubool:
         return self.ge(u)
     
     def __len__(self) -> int:
-        return len(self.string)
+        return len(self._string)
     
     def ulen(self) -> uint:
-        return uint(len(self.string), self.__confToDist())
+        return uint(len(self._string), self.__confToDist())
     
     def uUpper(self) -> ustr:
-        return ustr(self.string.upper(), self._c)
+        return ustr(self._string.upper(), self._c)
 
     def uLower(self) -> ustr:
-        return ustr(self.string.lower(), self._c)
+        return ustr(self._string.lower(), self._c)
     
     def uCapitalize(self) -> ustr:
-        return ustr(self.string.capitalize(), self._c)
+        return ustr(self._string.capitalize(), self._c)
 
     def uFirstLower(self) -> ustr:
-        return ustr(self.string[0].lower() + self.string[1:], self._c)
+        return ustr(self._string[0].lower() + self._string[1:], self._c)
 
     def index(self, s: str) -> uint:
-        return self.string.index(s)
+        return self._string.index(s)
     
     def at(self, idx: int) -> str:
-        if idx < 0 or idx > len(self.string):
+        if idx < 0 or idx > len(self._string):
             raise IndexError('idx = ' + idx)
-        return self.string[idx: idx + 1]
-
-    def uAt(self, idx: int) -> ustr:
-        return self.uSubstring(idx, idx + 1)
-
-    def uCharacters(self) -> list[str]:
-        return [self.uAt(i) for i in range(len(self.string))]
+        return self._string[idx: idx + 1]
     
     ''' Conversion operations '''
     def toString(self) -> str:
-        return self.string
+        return self._string
     
     def tofloat(self) -> float:
-        return float(self.string)
+        return float(self._string)
     
     def __float__(self) -> int:
         return self.tofloat()
     
     def toufloat(self) -> float:
-        return ufloat(float(self.string), self._c)
+        return ufloat(float(self._string), self._c)
 
     def toint(self) -> int:
-        return int(self.string) 
+        return int(self._string) 
     
     def __int__(self) -> int:
         return self.toint()
     
     def touint(self) -> float:
-        return uint(int(self.string), self._c)
+        return uint(int(self._string), self._c)
 
     def tobool(self) -> bool:
-        if self.string.lower() == 'true' or self.string.lower() == 'false':
-            return bool(self.string.lower() == 'true')
+        if self._string.lower() == 'true' or self._string.lower() == 'false':
+            return bool(self._string.lower() == 'true')
     
-        raise ValueError('String is not True/False. string=' + str(self.string))
+        raise ValueError('String is not True/False. string=' + str(self._string))
     
     def __bool__(self) -> int:
         return self.toint()
@@ -237,7 +238,7 @@ class ustr:
         elif rFalse.confidence >= 0.5:
             return ubool(rFalse.confidence)
         
-        raise ValueError('String is not True/False. string=' + str(self.string))
+        raise ValueError('String is not True/False. string=' + str(self._string))
 
     '''
       La confianza es el producto de las confianzas del string
@@ -256,4 +257,4 @@ class ustr:
         return conf if conf > 0.5 else 0.5 
 
     def copy(self) -> ustr:
-        return ustr(self.string, self._c)
+        return ustr(self._string, self._c)

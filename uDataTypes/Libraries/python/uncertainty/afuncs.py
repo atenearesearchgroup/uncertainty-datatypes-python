@@ -10,8 +10,8 @@ from collections.abc import Iterable
 from uncertainty.utypes import *
 
 MAX_LENGTH: int = 100000
-#BOOL_SAMPLE_SIZE: int = 10000
-BOOL_SAMPLE_SIZE: int = 10000000
+BOOL_SAMPLE_SIZE: int = 10000
+#BOOL_SAMPLE_SIZE: int = 10000000
 
 class Distribution(Enum):
     UNIFORM = 1; TRIANGULAR = 2; TRUNCATED = 3; NORMAL = 4; USHAPED = 5
@@ -41,24 +41,24 @@ def createSample(s: Iterable[float|int], x1: float, u1: float, dist: Distributio
         case Distribution.UNIFORM:
             for i in range(length):
                 value = (x1 - d) + 2 * d * random.random()
-                s[i] = round(value) if toInt else value
+                s[i] = math.trunc(value) if toInt else value
         case Distribution.NORMAL:
             for i in range(length):
                 value = x1 + random.gauss() * u1
-                s[i] = round(value) if toInt else value
+                s[i] = math.trunc(value) if toInt else value
         case Distribution.TRIANGULAR:
             for i in range(length):
                 value = nextTriangular(x1, u1)
-                s[i] = round(value) if toInt else value
+                s[i] = math.trunc(value) if toInt else value
         case Distribution.TRUNCATED:
             beta: float = 2/3 # ratio between the lengths of the top of the trapezoid and of the base
             for i in range(length):
                 value = nextTruncated(x1, u1, beta)
-                s[i] = round(value) if toInt else value
+                s[i] = math.trunc(value) if toInt else value
         case Distribution.USHAPED:
             for i in range(length):
                 value = nextUShaped(x1, u1)
-                s[i] = round(value) if toInt else value
+                s[i] = math.trunc(value) if toInt else value
         #  Uniform distribution by deafult
         case _:
             for i in range(length):

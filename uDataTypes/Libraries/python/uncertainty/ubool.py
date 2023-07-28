@@ -26,7 +26,18 @@ class ubool:
             self._c = c.c
         else:
             raise ValueError('Invalid parameter c: not bool, ubool, str or number[0.0, 1.0]. C=' + c)
+    
+    def getCertainty():
+        return ubool.CERTAINTY
+    
+    def setCertainty(certainty: float|int):
+        if not isinstance(certainty, (int, float)):
+            raise ValueError('Invalid parameter: certainty is not an integer or float [0.0, 1.0].')
+        if certainty < 0.0 or certainty > 1.0:
+            raise ValueError('Invalid parameter: certainty is an integer and c < 0 or c > 1. C=')
         
+        ubool.CERTAINTY = float(certainty)
+
     @property
     def confidence(self):
         return self._c
@@ -40,19 +51,7 @@ class ubool:
         if not isinstance(c, (int, float, str)):
             raise ValueError('Invalid parameter c: not a number[0.0, 1.0]. c=' + c)
         self._c = float(c)
-            
-    def setCertainty(certainty: float|int):
-        if not isinstance(certainty, (int, float)):
-            raise ValueError('Invalid parameter: certainty is not an integer or float [0.0, 1.0].')
-        
-        if certainty < 0.0 or certainty > 1.0:
-            raise ValueError('Invalid parameter: certainty is an integer and c < 0 or c > 1. C=')
-        
-        ubool.CERTAINTY = float(certainty)
-
-    def certainty() -> float:
-        return ubool.CERTAINTY
-
+    
     ''' Type Operations '''
     ''' Not (c) = (1-c)'''
     def NOT(self) -> ubool:
@@ -96,6 +95,9 @@ class ubool:
     def IMPLIES(self, o: ubool) -> ubool:
         if (id(self) == id(o)):
             return ubool(self._c) # x implies x
+        
+        if not isinstance(o, ubool):
+            o = ubool(o)
 
         return ubool((1-self._c) + o._c - ((1 - self._c) * o._c))
     
@@ -115,13 +117,7 @@ class ubool:
         if not isinstance(o, ubool):
             o = ubool(o)
 
-        return self.EQUIVALENT(o).NOT()
-    
-    def XOR3(self, other: ubool) -> ubool:
-        u1: ubool = self.AND(other.NOT())
-        u2: ubool = self.NOT().AND(other)
-
-        return u1.OR(u2)
+        return self.EQUIVALENT2(o).NOT()
 
     def __xor__(self, other) -> ubool:
         return self.XOR(other)
@@ -136,7 +132,12 @@ class ubool:
         return self.IMPLIES(o).AND(o.IMPLIES(self))
 
     def EQUALS(self, o: ubool) -> ubool:
-        return self.EQUIVALENT(o)
+        if id(self) == id(o):
+            return True
+        if o is None or self.__class__ != o.__class__:
+            return False
+
+        return abs(o.confidence - self.confidence) < 0.001
     
     def equals(self, o: ubool) -> ubool:
         return self.EQUALS(o)
@@ -145,7 +146,7 @@ class ubool:
         return self.EQUALS(other)
     
     def DISTINCT(self, o: ubool) -> ubool: 
-        return self.EQUALS(o).NOT()
+        return not self.EQUALS(o)
     
     def distinct(self, o: ubool) -> ubool: 
         return self.DISTINCT(o)

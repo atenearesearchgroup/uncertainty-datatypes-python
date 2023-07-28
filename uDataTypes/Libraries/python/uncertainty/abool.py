@@ -29,7 +29,8 @@ class abool:
             self._c = c.uncertainty
             self._sample = createboolSample(np.empty(shape=BOOL_SAMPLE_SIZE, dtype=bool), self._c)
         elif isinstance(c, Iterable):
-            self._sample = np.empty(shape=BOOL_SAMPLE_SIZE, dtype=bool)
+            c_temp = self.__extractConfidence(c)
+            self._sample = createboolSample(np.empty(shape=BOOL_SAMPLE_SIZE, dtype=bool), c_temp)
             for i in range(len(c)):
                 self._sample[i] = c[i]
             self._c = self.__extractConfidence()
