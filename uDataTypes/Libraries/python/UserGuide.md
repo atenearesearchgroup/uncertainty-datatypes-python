@@ -37,7 +37,7 @@ w = ubool(False)  # True or False can be also used.
 ```
 ### Type projection
 
-``ubool`` values can be projected to ``bool`` values, using a threshold that determines when the ``ubool`` value becomes ``True`` or ``False``. This threshold is called "level of certainty" and by default is 0.9. That is, ``ubool(z)`` becomes ``True`` if ``z > 0.9``.  The level of certainty can be changed using ``ubool.setCertainty(z)`` function or queried using ``ubool.getCertainty()``. 
+``ubool`` values can be projected to ``bool`` values, using a threshold that determines when the ``ubool`` value becomes ``True`` or ``False``. This threshold is called "level of certainty" and by default is 0.9. That is, ``ubool(x)`` becomes ``True`` if ``x > 0.9``.  The level of certainty can be changed using ``ubool.setCertainty(x)`` function and queried using ``ubool.getCertainty()``. 
 
 ```python
 y = ubool(0.7)
@@ -186,9 +186,9 @@ print(w.uncertainty)
 
 ### Specifying the covariance of variables in operations
 
-***IMPORTANT**: Variables are assumed to be independent. Among other things, this means that expressions should be simplified and reduced in order for the results to be correct. In case of having to operate with dependent variables, it is possible to specify their covariance, as described next.*
+By default, variables are assumed to be independent. Among other things, this means that expressions should be simplified and reduced in order for the results to be correct. <!--  (for example, ``x-x`` is not the same as ``ufloat(0,0)``, but ``ufloat(0,1.4142*x.uncertainty)``). -->
 
-Operations ``add``, ``sub``, ``mul``, ``div``, and ``floordiv`` allow specifying the covariance of the operands as an additional parameter.
+In case of having to operate with dependent variables, it is possible to specify their covariance. In particular, operations ``add``, ``sub``, ``mul``, ``div``, and ``floordiv`` allow specifying the covariance of the operands as an additional parameter.
 
 ```python
 x = ufloat(92.69, 3.8)
@@ -199,7 +199,6 @@ w = x.add(y, covariance = 0.0)
 z = x.add(y, covariance = 12.4)
 # z = ufloat(149.190, 6.526)
 ```
-
 
 ### Usage with uint, int and float.
 
@@ -347,7 +346,7 @@ x.at(0)
 
 ### Slicing
 
-Both operator ``[start, stop, step]`` and method ``uSubstring(start, stop, step)`` can be used to split an uncertain string. The ``start`` and ``stop`` indexes are optional, their default values being 0 and the lenght of the string, respectively. The third parameter is also optional with a default value of 1. Negative indexes are valid, they indicate positions from the right end of the string.
+Both operator ``[start, stop, step]`` and method ``uSubstring(start, stop, step)`` can be used to split an uncertain string. The ``start`` and ``stop`` indexes are optional, their default values being 0 and the lenght of the string, respectively. The third parameter is also optional with a default value of 1. Negative indexes are valid, they indicate positions from the right end of the string. Note that the ``confidence`` is adjusted according to the length of the substring. 
 
 ```python
 x = ustr('What is Lorem Ipsum?', 0.97)
@@ -384,7 +383,7 @@ x.concat(' Lorem Ipsum is simply dummy text')
 
 ### Comparison Operators
 
-Comparisons between uncertain strings can also be performed using the traditional operators, which now return  ``ubool`` values.
+Comparisons between uncertain strings can also be performed using the traditional comparison operators (using their infix versions, as methods or as functions), which now return  ``ubool`` values.
 
 ```python
 x = ustr('What is Lorem Ipsum?', 0.97)
@@ -404,7 +403,7 @@ le(x, y)
 
 Further operations available for any uncertain string ``s`` include:
 
-- ``s.len())``: returns the size of ``s`` as an ``int``.
+- ``s.len()``: returns the size of ``s`` as an ``int``.
 - ``s.uLen()``: returns the size of ``s`` as ``uint``.
 - ``s.uUpper()``: returns a new ``ustr`` with all characters of ``s`` converted into upper case.
 - ``s.uLower()``: returns a new ``ustr`` with all characters of ``s`` converted into lower case.
