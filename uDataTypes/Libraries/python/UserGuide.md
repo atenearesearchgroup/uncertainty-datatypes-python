@@ -277,14 +277,14 @@ z = x < y
 Comparisons between ``uint`` and ``ufloat`` can be performed using the traditional comparison operators: ``<``, ``<=``, ``>``, ``>=``, ``==`` and ``!=``. These operators return ``ubool`` values.
 
 
-| Operation         | Operator       | Method           | Function        |
-|:-----------------:|:--------------:|:----------------:|:---------------:|
-| Less than             | ``` x < y ```  | ``` x.lt(y) ```  | ``` lt(x, y) ```|
-| Less than or Equals    | ``` x <= y ``` | ``` x.le(y) ```  | ``` le(x, y) ```|
-| Greater than          | ``` x > y ```  | ``` x.gt(y) ```  | ``` gt(x, y) ```|
-| Greater than or Equals | ``` x >= y ``` | ``` x.ge(y) ```  | ``` ge(x, y) ```|
-| Equals            | ``` x == y ``` | ``` x.eq(y) ```  | ``` eq(x, y) ```|
-| Not Equals        | ``` x != y ``` | ``` x.ne(y) ```  | ``` ne(x, y) ```|
+| Operation               | Operator       | Method           | Function        |
+|:-----------------------:|:--------------:|:----------------:|:---------------:|
+| Less than               | ``` x < y ```  | ``` x.lt(y) ```  | ``` lt(x, y) ```|
+| Less than or Equals     | ``` x <= y ``` | ``` x.le(y) ```  | ``` le(x, y) ```|
+| Greater than            | ``` x > y ```  | ``` x.gt(y) ```  | ``` gt(x, y) ```|
+| Greater than or Equals  | ``` x >= y ``` | ``` x.ge(y) ```  | ``` ge(x, y) ```|
+| Equals                  | ``` x == y ``` | ``` x.eq(y) ```  | ``` eq(x, y) ```|
+| Not Equals              | ``` x != y ``` | ``` x.ne(y) ```  | ``` ne(x, y) ```|
 
 Given that ``ufloat`` and ``uint`` values can be considered random variables, they are compared using *equality in distribution*: two variables are equal (``==``) if their distributions are the same. 
 
@@ -403,25 +403,25 @@ le(x, y)
 
 Further operations available for any uncertain string ``s`` include:
 
-- ``s.len()``: returns the size of ``s`` as an ``int``.
-- ``s.uLen()``: returns the size of ``s`` as ``uint``.
-- ``s.uUpper()``: returns a new ``ustr`` with all characters of ``s`` converted into upper case.
-- ``s.uLower()``: returns a new ``ustr`` with all characters of ``s`` converted into lower case.
-- ``s.uCapitalize()``: returns a new ``ustr`` with the first character of ``s`` capitalized.
-- ``s.uFirstLower()``: returns a new ``ustr`` with the first character of ``s`` in lower case.
-- ``s.index(t)``: returns the index of the uncertain string ``t`` within ``s``.
-- ``s.uCharacters()``: returns a list of ``ustr`` with each character of ``s``.
+- ``s.len()`` method returns the size of ``s`` as an ``int``.
+- ``s.uLen()`` method returns the size of ``s`` as ``uint``.
+- ``s.uUpper()`` method returns a new ``ustr`` with all characters of ``s`` converted into upper case.
+- ``s.uLower()`` method returns a new ``ustr`` with all characters of ``s`` converted into lower case.
+- ``s.uCapitalize()`` method returns a new ``ustr`` with the first character of ``s`` capitalized.
+- ``s.uFirstLower()`` method returns a new ``ustr`` with the first character of ``s`` in lower case.
+- ``s.index(t)`` method returns the index of the uncertain string ``t`` within ``s``.
+- ``s.uCharacters()`` method returns a list of ``ustr`` with each character of ``s``.
 
 ### Conversion Methods
 
 Given an uncertain string ``s`` that represents a ``float``, ``int``, ``bool``, ``ufloat``, ``unit``, or ``ubool`` value, the following methods provide conversion operations to the corresponding types.
 
-- ``s.tofloat()`` or ``float(s)``: converts ``s`` into a ``float`` value. 
-- ``s.toufloat()``: converts ``s`` into an ``ufloat`` value. 
-- ``s.toint()`` or ``int(s)``: converts ``s`` into an ``int`` value. 
-- ``s.touint()``: converts ``s`` into an ``uint`` value. 
-- ``s.tobool()`` or ``bool(s)``: converts ``s`` into a ``bool`` value. 
-- ``s.toubool()``: converts ``s`` into an ``ubool`` value. 
+- ``s.tofloat()`` method or the function ``float(s)`` converts ``s`` into a ``float`` value. 
+- ``s.toufloat()`` method converts ``s`` into an ``ufloat`` value. 
+- ``s.toint()`` method  or the function ``int(s)`` converts ``s`` into an ``int`` value. 
+- ``s.touint()`` method converts ``s`` into an ``uint`` value. 
+- ``s.tobool()``  method or the function ``bool(s)`` converts ``s`` into a ``bool`` value. 
+- ``s.toubool()``  method  converts ``s`` into an ``ubool`` value. 
 
 ---
 
@@ -502,43 +502,46 @@ Infix operator are recommended.
 
 The following conversion operations are provided for ``sbool``.
 
+<!--
 - ``createDogmaticOpinion``: convert a ``sbool`` into a dogmatic opinion: an opinion with complete certainty (uncertainty = 0).
 - ``createVacuousOpinion``: convert a ``sbool`` into a vacuous opinion: an opinion with a uncertainty of 1.
 - ``uncertainOpinion``: returns the equivalent ``sbool`` with maximum uncertainty. 
-- ``s.tobool()`` or ``bool(s)``: converts ``s`` into a ``bool`` value. 
-- ``s.toubool()``: converts ``s`` into an ``ubool`` value. 
+-->
+- ``s.tobool()`` or ``bool(s)``: converts a ``sbool`` into a ``bool`` value. 
+- ``s.toubool()``: converts a ``sbool`` into an ``ubool`` value. 
 
 ### Information access methods
 
-- ``projection()``: Returns the projected probability.
-- ``projectiveDistance()``: Returns the projected distance.
-- ``isAbsolute()``: Return if the ``sbool`` has ``Belief == 1`` or ``Disbelief == 1``.
-- ``uncertaintyMaximized()``: Returns the equivalent ``sbool`` with maximum uncertainty. 
-- ``isMaximizedUncertainty()``: Return if the ``sbool`` has ``Belief == 0`` or ``Disbelief == 0``.
-- ``isVacuous()``: Return if the ``sbool`` has ``uncertainty == 1``.
-- ``isDogmatic()``: Return if the ``sbool`` has ``uncertainty == 0``.
-- ``isCertain(threshold)``: Return if the ``sbool`` has ``uncertainty >= threshold``.
-- ``isUncertain(threshold)``: Return if the ``sbool`` has ``uncertainty < threshold``.
-- ``certainty()``: Returns the certainty. (i.e., 1 - u).
+- ``s.projection()`` method returns the projected probability.
+- ``s.projectiveDistance()`` method returns the projected distance.
+- ``s.isAbsolute()`` method returns ``True`` if the ``sbool`` has ``Belief == 1`` or ``Disbelief == 1``.
+- ``s.uncertaintyMaximized()`` method returns the equivalent ``sbool`` with maximum uncertainty. 
+- ``s.isMaximizedUncertainty()`` method returns ``True`` if the ``sbool`` has ``Belief == 0`` or ``Disbelief == 0``.
+- ``s.isVacuous()`` method returns ``True`` if the ``sbool`` has ``uncertainty == 1``.
+- ``s.isDogmatic()`` method returns ``True`` if the ``sbool`` has ``uncertainty == 0``.
+- ``s.isCertain(threshold)`` method returns ``True`` if the ``sbool`` has ``uncertainty >= threshold``.
+- ``s.isUncertain(threshold)`` method returns ``True`` if the ``sbool`` has ``uncertainty < threshold``.
+- ``s.certainty()`` method returns the certainty. (i.e., 1 - u).
 
 ### Operations
-
-- ``applyOn(sbool)`` Returns the ``sbool`` that results from adjusting the base rate to be the one given in the parameter.
-- ``deduceY(sboolyGivenX, sboolyGivenNotX)``:  Deduction, returns Y, acting "self sbool" as X.
-- ``union(sbool)``: Return the Union of two ``sbool``, according to Josang's book.
-- ``weightedUnion(sbool)``: Return the Weighted Union of two ``sbool``, according to Josang's book.
-- ``weightedUnion(Collection[sbool])``: Return the Weighted Union of a collection of opinions.
+<!--
+- ``s.applyOn(sbool)`` Returns the ``sbool`` that results from adjusting the base rate to be the one given in the parameter.
+- ``s.deduceY(sboolyGivenX, sboolyGivenNotX)``:  Deduction, returns Y, acting "self sbool" as X.
+-->
+- ``s.union(sbool)`` method returns a ``sbool`` with the union of two ``sbool``.
+- ``s.weightedUnion(sbool)`` method returns a ``sbool`` with the weighted union of two ``sbool``.
+- ``weightedUnion(Collection[sbool])`` fucntion returns a ``sbool`` with the weighted union of a collection of ``sbools``.
     
-**Binary Fusion implemenentation**
+**Binary Fusion implementation**
 The following methods of the class sbool returns a ``sbool`` that represent the fused evidence of two opinions:
-- ``bcFusion(sbool)``: implements theconstraint belief fusion (CBF).
-- ``cumulativeFusion(sbool)``: implements the cumulative belief fusion (CBF).
-- ``epistemicCumulativeFusion(sbool)``:  implements the epistemic cumulative belief fusion (eCBF).
-- ``minimumFusion(sbool)``: implements the min fusion.
-- ``majorityFusion(sbool)``: implements the majority fusion.
-- ``averageFusion(sbool)``: implements the average fusion.
-- ``weightedFusion(sbool)``: implements the weighted belief fusion (WBF).
-- ``ccFusion(sbool)``: implements the consensus & compromise fusion (CCF).
+- ``s.bcFusion(sbool)`` method returns a ``sbool`` and implements the constraint belief fusion (CBF).
+- ``s.cumulativeFusion(sbool)``method returns a ``sbool`` and  implements the cumulative belief fusion (CBF).
+- ``s.epistemicCumulativeFusion(sbool)`` method returns a ``sbool`` and implements the epistemic cumulative belief fusion (eCBF).
+- ``s.minimumFusion(sbool)`` method returns a ``sbool`` and implements the min fusion.
+- ``s.majorityFusion(sbool)`` method returns a ``sbool`` and implements the majority fusion.
+- ``s.averageFusion(sbool)`` method returns a ``sbool`` and implements the average fusion.
+- ``s.weightedFusion(sbool)`` method returns a ``sbool`` and implements the weighted belief fusion (WBF).
+- ``s.ccFusion(sbool)`` method returns a ``sbool`` and implements the consensus & compromise fusion (CCF).
 
 bcFusion code example:
 ```python
@@ -548,17 +551,17 @@ x.bcFusion(y)
 # sbool(0.423, 0.462, 0.115, 0.418)
 ```
 
-**Fusion implemenentation of a collection of opinions**
+**Fusion implementation of a collection of opinions**
 The following functions returns a ``sbool`` that represent the fused evidence of a collection of opinions from different sources.
 
-- ``beliefConstraintFusion(Collection[sbool])``: implements theconstraint belief fusion (CBF).
-- ``cumulativeBeliefFusion(Collection[sbool])``: implements the cumulative belief fusion (CBF).
-- ``epistemicCumulativeBeliefFusion(Collection[sbool])``: implements the epistemic cumulative belief fusion (eCBF).
-- ``minimumBeliefFusion(Collection[sbool])``:  implements the min fusion.
-- ``majorityBeliefFusion(Collection[sbool])``: implements the majority fusion.
-- ``averageBeliefFusion(Collection[sbool])``: implements the average fusion.
-- ``weightedBeliefFusion``: implements the weighted belief fusion (WBF).
-- ``consensusAndCompromiseFusion(Collection[sbool])``: implements the consensus & compromise fusion (CCF).
+- ``beliefConstraintFusion(Collection[sbool])`` function returns a ``sbool`` and implements the constraint belief fusion (CBF).
+- ``cumulativeBeliefFusion(Collection[sbool])`` function returns a ``sbool`` and implements the cumulative belief fusion (CBF).
+- ``epistemicCumulativeBeliefFusion(Collection[sbool])`` function returns a ``sbool`` and implements the epistemic cumulative belief fusion (eCBF).
+- ``minimumBeliefFusion(Collection[sbool])`` function returns a ``sbool`` and implements the min fusion.
+- ``majorityBeliefFusion(Collection[sbool])`` function returns a ``sbool`` and implements the majority fusion.
+- ``averageBeliefFusion(Collection[sbool])`` function returns a ``sbool`` and implements the average fusion.
+- ``weightedBeliefFusion`` function returns a ``sbool`` and implements the weighted belief fusion (WBF).
+- ``consensusAndCompromiseFusion(Collection[sbool])`` function returns a ``sbool`` and implements the consensus & compromise fusion (CCF).
 
 beliefConstraintFusion code example:
 ```python
@@ -572,12 +575,12 @@ beliefConstraintFusion(opinions)
 # sbool(0.126, 0.861, 0.013, 0.393)
 ```
 
-**Discount implemenentation**
+**Discount implementation**
 The following methods and functions of the class sbool returns a ``sbool`` that represent the discount of two opinions:
-- ``discount(sbool)`` or discount(Collection[sbool]): implements the "probability-sensitive trust discounting operator".
-- ``discountB(sbool)`` or discountB(Collection[sbool]): implements the discounting operator from the Trustyfeer 2018 paper bu Kurdi et al.
+- The method ``s.discount(sbool)`` (binary implementation) and the function ``discount(Collection[sbool])`` (applied to the collection): implements the "probability-sensitive trust discounting operator".
+- The method ``s.discountB(sbool)`` (binary implementation) and the function ``discountB(Collection[sbool])`` (applied to the collection): implements the discounting operator from the Trustyfeer 2018 paper bu Kurdi et al.
 
-discount code example:
+Discount code example:
 ```python
 x = sbool(0.95, 0, 0.05, 0.20) 
 y = sbool(0.0, 0.0, 1, 0.9) 

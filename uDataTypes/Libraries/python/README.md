@@ -120,13 +120,9 @@ Examples of applications of the uncertainty datatypes presented here can be foun
 - Victor Ortiz, Loli Burgueño, Antonio Vallecillo, Martin Gogolla. "Native Support for UML and OCL Primitive Datatypes Enriched with Uncertainty in USE" In Proc. of OCL@MoDELS 2019:59-66, 2019. https://ceur-ws.org/Vol-2513/paper5.pdf 
 - Nathalie Moreno, Manuel F. Bertoa, Gala Barquero, Loli Burgueño, Javier Troya, Adrián García-López, Antonio Vallecillo. "Managing Uncertain Complex Events in Web of Things Applications". In Proc. of ICWE 2018:349-357, 2018. https://doi.org/10.1007/978-3-319-91662-0_28
 - Loli Burgueño, Manuel F. Bertoa, Nathalie Moreno, Antonio Vallecillo. "Expressing Confidence in Models and in Model Transformation Elements" In Proc. of MoDELS 2018: 57-66, 2018. https://doi.org/10.1145/3239372.3239394
- 
 
 
 For more information, please visit our research group's website: 
 - [Atenea Research Group](http://atenea.lcc.uma.es/) 
 - [Atenea: Uncertain UML/OCL Types](http://atenea.lcc.uma.es/projects/UncertainOCLTypes.html) 
 - [Atenea: Subjective Logic](http://atenea.lcc.uma.es/projects/SubjectiveLogic.html)
-
-
----
