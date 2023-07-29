@@ -45,7 +45,7 @@ print (x.confidence)
 
 ### Type conversion and projection
 
-``ubool`` values can be converted to ``bool`` values, using a threshold that determines when the ``ubool`` value is evaluated as ``True`` or ``False``. This threshold is called "*level of certainty*" and its default value is ``0.9``.  The *level of certainty* can be changed using ``ubool.setCertainty(x)`` and queried using ``ubool.getCertainty()``. 
+``ubool`` values can be converted to ``bool`` values, using a threshold that determines when the ``ubool`` value is evaluated as ``True`` or ``False``. This threshold is called "*level of certainty*" and its default value is ``0.9``.  The *level of certainty* can be changed using ``ubool.setCertainty(c: float)`` and queried using ``ubool.getCertainty()``. 
 
 ```python
 y = ubool(0.7)
@@ -69,11 +69,11 @@ In this way, ``ubool`` values and variables can be used as booleans in condition
 if x:
     'executed'
 ```
-In addition, method ``u.tobool()`` explicitly converts an ``ubool`` variable into a ``bool``, using the level of certainty: ``u.tobool() = (x.confidence > ubool.getCertainty())``
+In addition, method ``u.tobool() -> bool`` explicitly converts an ``ubool`` variable into a ``bool``, using the level of certainty: ``u.tobool() = (x.confidence > ubool.getCertainty())``.
 
 ### Logical operators
 
-Operations on ``ubool`` values extend those of ``bool`` values. This means that, when working with ``bool`` values, the behavior of ``ubool`` operations is exactly the same as their boolean versions. 
+Operations on ``ubool`` values are proper extensions of those of type ``bool``. This means that, when working with ``bool`` values, the behavior of ``ubool`` operations is exactly the same as their boolean versions. 
 
 ``ubool`` logical operators include: ``AND``, ``OR``, ``NOT``, ``XOR``, ``IMPLIES``, and ``EQUIVALENT``. The library offers the following four ways of using logical operators: 
 * Infix symbol operators: ``` x & y ``` 
@@ -95,14 +95,14 @@ The table below summarizes all the possible usages.
 | EQUALS     | ``` x == y ```  | ``` x \|EQUALS\| y ```     | ``` x.EQUALS(y) ```     | ``` EQUALS(x, y) ```     |
 | DISTINCT   | ``` x != y ```  | ``` x \|DISTINCT\| y ```   | ``` x.DISTINCT(y) ```   | ``` DISTINCT(x, y) ```   |
 
-<sub> Note that equal and equivalent operations are not the same. The equivalent operation can be performed with ~(x^y), the equal operation can be performed with the == operator </sub>
+<sub> Note that equal and equivalent operations are not the same. Equivalence corresponds to ``~(x^y)`` (i.e., the negation of ``xor``), while the equal operation (``==``) requires that the two values are the same.</sub>
 
 ***IMPORTANT***: 
 
 - This library assumes variables are independent.
 - All ``ubool`` operators must be enclosed in parentheses to ensure correct operator precedence. 
 
-``ubool`` Code example:
+``ubool`` code example:
 
 ```python
 x = ubool(0.3)
@@ -129,7 +129,7 @@ while x.AND(3 > 2):
     # do something
 ```
 
-Note that Python logical operations ``(3 > 2)`` must be enclosed in paretheses. Boolean ``True`` (e.g., the result of ``3 > 2``) is automatically converted into ``ubool(1.0)`` and ``False`` into ``ubool(0.0)``.
+Note that Python logical operations ``(3 > 2)`` must be enclosed in parentheses. Boolean ``True`` (e.g., the result of ``3 > 2``) is automatically converted into ``ubool(1.0)`` and ``False`` into ``ubool(0.0)``.
 
 ***IMPORTANT***: The Python logical operators (``and``, ``or``, and ``not``)  have a different meaning when they are used with objects. Therefore, ***``ubool`` special logical operators must ALWAYS be used to deal with ubool values***.   
 
@@ -325,7 +325,7 @@ m = max(
 
 Values of type ``ustr`` are used to represent Python strings with uncertainty. That is, type ``ustr`` extends type ``str``, adding to their values a degree of confidence on the contents of the string. This is useful, for example, when rendering strings obtained by inaccurate OCR devices or texts translated from other languages if there are doubts about specific words or phrases. 
 
-Values of type ``ustr`` are pairs ``(s,c)``, where ``s`` is the string and ``c`` the associated confidence (a real number between 0 and 1). To calculate the confidence of a string ``s``, the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) is normally used. For example, ``ustr('hell0 world!',0.92)`` means that we do not trust at most one of the 12 characters of the string. Values of Python type ``str`` are embedded into ``ustr`` values as ``ustr(s,1.0)``.
+Values of type ``ustr`` are pairs ``(s, c)``, where ``s`` is the string and ``c`` the associated confidence (a real number between 0 and 1). To calculate the confidence of a string ``s``, the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) is normally used. For example, ``ustr('hell0 world!', 0.92)`` means that we do not trust at most one of the 12 characters of the string. Values of Python type ``str`` are embedded into ``ustr`` values as ``ustr(s, 1.0)``.
 
 
 ```python
@@ -365,7 +365,7 @@ x.uSubstring(-6)
 
 ### Concatenating ustrs
 
-Method ``.add(ustr)``, function ``add(ustr, ustr)`` or  operator ``+`` can be used to concatenate either uncertain string, or strings, or both, as the example below shows:
+Method ``.add(ustr)``, function ``add(ustr, ustr)``, or  operator ``+`` can be used to concatenate either uncertain string, or strings, or both, as the example below shows:
 
 ```python
 x = ustr('What is Lorem Ipsum?', 0.97)
@@ -384,7 +384,7 @@ x.concat(' Lorem Ipsum is simply dummy text')
 
 ### Comparison Operators
 
-Comparisons between uncertain strings can also be performed using the traditional comparison operators (using their infix versions, as methods or as functions), which now return  ``ubool`` values.
+Comparisons between uncertain strings can also be performed using the traditional comparison operators (using their infix versions, as methods, or as functions), which now return  ``ubool`` values.
 
 ```python
 x = ustr('What is Lorem Ipsum?', 0.97)
@@ -404,25 +404,27 @@ le(x, y)
 
 Further operations available for any uncertain string ``s`` include:
 
-- ``s.len()`` method returns the size of ``s`` as an ``int``.
-- ``s.uLen()`` method returns the size of ``s`` as ``uint``.
-- ``s.uUpper()`` method returns a new ``ustr`` with all characters of ``s`` converted into upper case.
-- ``s.uLower()`` method returns a new ``ustr`` with all characters of ``s`` converted into lower case.
-- ``s.uCapitalize()`` method returns a new ``ustr`` with the first character of ``s`` capitalized.
-- ``s.uFirstLower()`` method returns a new ``ustr`` with the first character of ``s`` in lower case.
-- ``s.index(t)`` method returns the index of the uncertain string ``t`` within ``s``.
-- ``s.uCharacters()`` method returns a list of ``ustr`` with each character of ``s``.
+- ``s.len() -> int`` returns the size of ``s`` as an ``int``.
+- ``s.uLen() -> uint`` returns the size of ``s`` as ``uint``.
+- ``s.uUpper() -> ustr`` returns a new ``ustr`` with all characters of ``s`` converted into upper case.
+- ``s.uLower() -> ustr`` returns a new ``ustr`` with all characters of ``s`` converted into lower case.
+- ``s.uCapitalize() -> ustr`` returns a new ``ustr`` with the first character of ``s`` capitalized.
+- ``s.uFirstLower() -> ustr`` returns a new ``ustr`` with the first character of ``s`` in lower case.
+- ``s.index(t: str) -> int`` returns the index of string ``t`` within ``s``.
+<!-- - ``s.uCharacters()`` method returns a list of ``ustr`` with each character of ``s``. -->
 
 ### Conversion methods
 
 Given an uncertain string ``s`` that represents a ``float``, ``int``, ``bool``, ``ufloat``, ``unit``, or ``ubool`` value, the following methods provide conversion operations to the corresponding types.
 
-- ``s.tofloat()`` method or the function ``float(s)`` converts ``s`` into a ``float`` value. 
-- ``s.toufloat()`` method converts ``s`` into an ``ufloat`` value. 
-- ``s.toint()`` method  or the function ``int(s)`` converts ``s`` into an ``int`` value. 
-- ``s.touint()`` method converts ``s`` into an ``uint`` value. 
-- ``s.tobool()``  method or the function ``bool(s)`` converts ``s`` into a ``bool`` value. 
-- ``s.toubool()``  method  converts ``s`` into an ``ubool`` value. 
+- ``s.tofloat() -> float`` converts ``s`` into a ``float`` value. 
+- ``s.toufloat() -> ufloat`` converts ``s`` into an ``ufloat`` value. 
+- ``s.toint()`` converts ``s`` into an ``int`` value. 
+- ``s.touint()`` converts ``s`` into an ``uint`` value. 
+- ``s.tobool()``  converts ``s`` into a ``bool`` value. 
+- ``s.toubool()``  converts ``s`` into an ``ubool`` value. 
+
+These instance methods also have their *function* counterparts: ``float(s: ustr) -> float``, ``int(s: ustr) -> int``, ``bool(s: ustr) -> bool``, ``ufloat(s: str) -> ufloat``, ``uint(s: ustr) -> uint``, ``ubool(s: ustr) -> ubool``.
 
 ---
 
