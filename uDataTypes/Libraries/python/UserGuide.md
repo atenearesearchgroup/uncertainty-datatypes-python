@@ -460,7 +460,9 @@ x.ustrs
 ---
 ## Type sbool
 
-Type ``sbool`` provides an extension of ``ubool`` to represent binomial *opinions* in [Subjective Logic](https://en.wikipedia.org/wiki/Subjective_logic). They allow expressing degrees of belief with epistemic uncertainty, and also trust. A binomial opinion $w_X^A$ about a given fact $X$ by a belief agent $A$ is represented as a quadruple $w_X^A = $ ``sbool(b,d,u,a)`` where
+Type ``sbool`` provides an extension of ``ubool`` to represent binomial *opinions* in [Subjective Logic](https://en.wikipedia.org/wiki/Subjective_logic). They allow expressing degrees of belief with epistemic uncertainty, and also trust.
+
+A binomial opinion $w_X^A$ about a given fact $X$ by a belief agent $A$ is represented as a quadruple $w_X^A = $ ``sbool(b,d,u,a)`` where
 
 - Belief: ``b`` is the degree of belief that X is True
 - Disbelief: ``d`` is the degree of belief that X is False
@@ -494,6 +496,8 @@ z.uncertainty
 z.base_rate
 # 0.500
 ```
+
+All information about Subjective Logic and the operations it defines to reason about opinions and trust can be found in Audun Jøsang's book "[Subjective Logic: A formalism to reason about uncertainty](https://link.springer.com/book/10.1007/978-3-319-42337-1)". 
 
 ### Conversion methods
 
@@ -575,30 +579,25 @@ These two methods also have versions as functions, which allow calculating the u
 
 [Belief fusion](https://www.mn.uio.no/ifi/english/people/aca/josang/publications/jwz2017-fusion.pdf) is a central concept in subjective logic. It allows opinions from different source agents $A_1,...A_n$ about the same fact $X$ to be merged, in order to provide an opinion representing a consensus agreement, or at least a single compromise opinion.
 
-The ``uTypes`` Python library provides all the [fusion operations](https://www.mn.uio.no/ifi/english/people/aca/josang/publications/jwz2017-fusion.pdf) defined in Subjective logic.  
-
-| Fusion operation | Binary version (method) | 
-|:----------------:|:-----------------------:|
-| Constraint Belief Fusion (CBF) | ``o1.bcFusion(o2: sbool) -> sbool`` |
-| Aleatory Cumulative Fusion (ACBF) | ``o1.cumulativeFusion(o2: sbool) -> sbool`` |
-| Epistemic Cumulative Fusion (ECBF) | ``o1.epistemicCumulativeFusion(o2: sbool) -> sbool`` |
+The ``uTypes`` Python library provides all the [fusion operations](https://www.mn.uio.no/ifi/english/people/aca/josang/publications/jwz2017-fusion.pdf) defined in Subjective logic. 
 
 
 #### Binary fusion operators
 
+Given two ``sbool`` opinions ``o1`` and ``o2``, the following methods return their fusion using the different operators.
 
+| Fusion operation | Binary version (method) | 
+|----------------|-----------------------|
+| Constraint Belief Fusion (CBF) | ``o1.bcFusion(o2: sbool) -> sbool`` |
+| Consensus & Compromise Fusion (CCF) | ``o1.ccFusion(o2: sbool) -> sbool`` |
+| Aleatory Cumulative Fusion (aCBF) | ``o1.aleatoryCumulativeFusion(o2: sbool) -> sbool`` |
+| Epistemic Cumulative Fusion (eCBF) | ``o1.epistemicCumulativeFusion(o2: sbool) -> sbool`` |
+| Averaging Belief Fusion (ABF) | ``o1.averagingFusion(o2: sbool) -> sbool`` |
+| Weighted Belief Fusion (WBF) | ``o1.weightedFusion(o2: sbool) -> sbool`` |
+| Minimum Belief Fusion (MinBF) | ``o1.minimumFusion(o2: sbool) -> sbool`` |
+| Majority Belief Fusion (MajBF) | ``o1.majorityFusion(o2: sbool) -> sbool`` |
 
-The following methods of the class sbool returns a ``sbool`` that represent the fused evidence of two opinions:
-- ``s.bcFusion(sbool)`` method returns a ``sbool`` and implements the constraint belief fusion (CBF).
-- ``s.cumulativeFusion(sbool)``method returns a ``sbool`` and  implements the cumulative belief fusion (CBF).
-- ``s.epistemicCumulativeFusion(sbool)`` method returns a ``sbool`` and implements the epistemic cumulative belief fusion (eCBF).
-- ``s.minimumFusion(sbool)`` method returns a ``sbool`` and implements the min fusion.
-- ``s.majorityFusion(sbool)`` method returns a ``sbool`` and implements the majority fusion.
-- ``s.averageFusion(sbool)`` method returns a ``sbool`` and implements the average fusion.
-- ``s.weightedFusion(sbool)`` method returns a ``sbool`` and implements the weighted belief fusion (WBF).
-- ``s.ccFusion(sbool)`` method returns a ``sbool`` and implements the consensus & compromise fusion (CCF).
-
-bcFusion code example:
+Example of use of ``bcFusion()`` operator:
 ```python
 x = sbool(0.0, 0.40, 0.6, 0.5)
 y = sbool(0.55, 0.3, 0.15, 0.38)
@@ -606,19 +605,22 @@ x.bcFusion(y)
 # sbool(0.423, 0.462, 0.115, 0.418)
 ```
 
-**Fusion implementation of a collection of opinions**
-The following functions returns a ``sbool`` that represent the fused evidence of a collection of opinions from different sources.
+#### Fusion of collections of opions
 
-- ``beliefConstraintFusion(Collection[sbool])`` function returns a ``sbool`` and implements the constraint belief fusion (CBF).
-- ``cumulativeBeliefFusion(Collection[sbool])`` function returns a ``sbool`` and implements the cumulative belief fusion (CBF).
-- ``epistemicCumulativeBeliefFusion(Collection[sbool])`` function returns a ``sbool`` and implements the epistemic cumulative belief fusion (eCBF).
-- ``minimumBeliefFusion(Collection[sbool])`` function returns a ``sbool`` and implements the min fusion.
-- ``majorityBeliefFusion(Collection[sbool])`` function returns a ``sbool`` and implements the majority fusion.
-- ``averageBeliefFusion(Collection[sbool])`` function returns a ``sbool`` and implements the average fusion.
-- ``weightedBeliefFusion`` function returns a ``sbool`` and implements the weighted belief fusion (WBF).
-- ``consensusAndCompromiseFusion(Collection[sbool])`` function returns a ``sbool`` and implements the consensus & compromise fusion (CCF).
+The ``uTypes`` Python library also supports the following *functions* to fuse two or more opinions:
 
-beliefConstraintFusion code example:
+| Fusion operation | Collection version (function) | 
+|----------------|-----------------------|
+| Constraint Belief Fusion (CBF) | ``bcFusion(c: Collection[sbool]) -> sbool`` |
+| Consensus & Compromise Fusion (CCF) | ``ccFusion(Collection[sbool]) -> sbool`` |
+| Aleatory Cumulative Fusion (aCBF) | ``aleatoryCumulativeFusion(Collection[sbool]) -> sbool`` |
+| Epistemic Cumulative Fusion (eCBF) | ``epistemicCumulativeFusion(Collection[sbool]) -> sbool`` |
+| Averaging Belief Fusion (ABF) | ``averagingFusion(Collection[sbool]) -> sbool`` |
+| Weighted Belief Fusion (WBF) | ``weightedFusion(Collection[sbool]) -> sbool`` |
+| Minimum Belief Fusion (MinBF) | ``minimumFusion(Collection[sbool]) -> sbool`` |
+| Majority Belief Fusion (MajBF) | ``majorityFusion(Collection[sbool]) -> sbool`` |
+
+Example of Belief Constraint Fusion:
 ```python
 opinions = [
     sbool(0.0, 0.40, 0.6, 0.5), 
@@ -626,20 +628,43 @@ opinions = [
     sbool(0.1, 0.75, 0.15, 0.38),
     sbool(0.151, 0.48, 0.369, 0.382) 
 ]
-beliefConstraintFusion(opinions)
+bcFusion(opinions)
 # sbool(0.126, 0.861, 0.013, 0.393)
 ```
 
-**Discount implementation**
-The following methods and functions of the class sbool returns a ``sbool`` that represent the discount of two opinions:
-- The method ``s.discount(sbool)`` (binary implementation) and the function ``discount(Collection[sbool])`` (applied to the collection): implements the "probability-sensitive trust discounting operator".
-- The method ``s.discountB(sbool)`` (binary implementation) and the function ``discountB(Collection[sbool])`` (applied to the collection): implements the discounting operator from the Trustyfeer 2018 paper bu Kurdi et al.
+### Discount operator
+
+Subjective logic can also be used to represent and reason about trust. In this context, *trust discounting* is used to express degrees of trust in an information source and then to discount it from all the information provided by that source. The ``discount()`` operation is used to compute the trust-discounted opinion. 
+
+Thus, given an opinion ``b_X`` that represents the opinion (i.e., the *functional trust*) of an agent $B$ about a statement $X$, i.e., $[B:X]$, and an opinion ``trustofAOnB`` that represents the *trust referral* that Agent $A$ has on agent $B$, i.e., $[A;B]$, then,
+
+- ``b_X.discount(trustOfAonB: sbool) -> sbool``
+
+returns the derived opinion of $A$ about $X$, i.e., $[A:X]=[A;B]\otimes[B:X]$. This operation follows the defintion given in [Jøsang's book](https://link.springer.com/book/10.1007/978-3-319-42337-1) (Section 14.3.2). 
+
+We also provide the alternative defintion of the discount operator given by [Hardi et al.](https://www.hindawi.com/journals/wcmc/2018/1073216/) that uses the degree of belief instead of the projection of the opinion to compute the discounted opinion:
+
+- ``b_X.discountB(trustOfAonB: sbool) -> sbool``
+
+### Discount operator on multi-edge paths
+
+We also implement the discounting operator on multi-edge paths, using the "probability-sensitive trust discounting operator" (section 14.3.4 of [Jøsang's book](https://link.springer.com/book/10.1007/978-3-319-42337-1)). 
+
+We assume that ``An_X`` represents the opinion (functional trust) of an agent $A_n$ on statement $X$, i.e., $[A_n:X]$, and that ``agentsTrusts`` is a collection of opinions with the *trust referrals* that Agent $A_i$ has on Agent $A_{i+1}$, i.e., $[A_i;A_{i+1}]$. Then,
+
+- ``An_X.discount(agentsTrusts: Collection[sbool]) -> sbool``
+
+returns an ``sbool`` value that represents the resulting opinion of $A_1$ on $X$, i.e., $[A_1:X]=[A_1;A_2;...;A_n]\otimes[A_n:X]$.
+
+The alternative implementation by [Hardi et al.](https://www.hindawi.com/journals/wcmc/2018/1073216/) is also supported in the ``uTypes`` library:
+
+- ``An_X.discountB(agentsTrusts: Collection[sbool]) -> sbool``
 
 Discount code example:
 ```python
-x = sbool(0.95, 0, 0.05, 0.20) 
-y = sbool(0.0, 0.0, 1, 0.9) 
-x.discount(y)
+b_x = sbool(0.95, 0, 0.05, 0.20) 
+a_on_b = sbool(0.0, 0.0, 1, 0.9) 
+b_x.discount(a_on_b)
 # sbool(0.855, 0.000, 0.145, 0.200)
 ```
 
