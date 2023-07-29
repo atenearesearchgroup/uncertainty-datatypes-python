@@ -462,10 +462,10 @@ x.ustrs
 
 Type ``sbool`` provides an extension of ``ubool`` to represent binomial *opinions* in [Subjective Logic](https://en.wikipedia.org/wiki/Subjective_logic). They allow expressing degrees of belief with epistemic uncertainty, and also trust.
 
-A binomial opinion $w_X^A$ about a given fact $X$ by a belief agent $A$ is represented as a quadruple $w_X^A = $ ``sbool(b,d,u,a)`` where
+A binomial opinion $w_X^A$ about a given fact $X$ by a belief agent $A$ is represented as a quadruple $w_X^A=$ ``sbool(b,d,u,a)`` where
 
-- Belief: ``b`` is the degree of belief that X is True
-- Disbelief: ``d`` is the degree of belief that X is False
+- Belief: ``b`` is the degree of belief that $X$ is True
+- Disbelief: ``d`` is the degree of belief that $$ is False
 - Uncertainty: ``u`` is the amount of uncommitted belief, also interpreted as epistemic uncertainty.
 - Base rate: ``a`` is the prior probability in the absence of belief or disbelief.
 
