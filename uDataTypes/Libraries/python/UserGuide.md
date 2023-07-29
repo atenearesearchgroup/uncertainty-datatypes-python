@@ -462,10 +462,10 @@ x.ustrs
 
 Type ``sbool`` provides an extension of ``ubool`` to represent binomial *opinions* in [Subjective Logic](https://en.wikipedia.org/wiki/Subjective_logic). They allow expressing degrees of belief with epistemic uncertainty, and also trust.
 
-A binomial opinion $w_X^A$ about a given fact $X$ by a belief agent $A$ is represented as a quadruple $w_X^A=$ ``sbool(b,d,u,a)`` where
+A binomial opinion $w_X^A=(b,d,u,a)$ about a given fact $X$ by a belief agent $A$ is represented as a quadruple ``sbool(b, d, u, a)`` where
 
 - Belief: ``b`` is the degree of belief that $X$ is True
-- Disbelief: ``d`` is the degree of belief that $$ is False
+- Disbelief: ``d`` is the degree of belief that $X$ is False
 - Uncertainty: ``u`` is the amount of uncommitted belief, also interpreted as epistemic uncertainty.
 - Base rate: ``a`` is the prior probability in the absence of belief or disbelief.
 
@@ -501,11 +501,18 @@ All information about Subjective Logic and the operations it defines to reason a
 
 ### Conversion methods
 
-Values of type ``sbool`` can be converted into ``ubool`` or ``bool`` values. 
+Values of type ``sbool`` can be converted into ``ubool`` or ``bool`` values as follows
 
-Method ``s.toubool() -> ubool`` converts an ``sboolean`` variable ``s`` into an ``ubool`` value. It does so by projecting it. That is, ``s.toubool() = s.projection()``
+- Method ``s.toubool() -> ubool`` converts an ``sboolean`` variable ``s`` into an ``ubool`` value. It does so by projecting it. That is, ``s.toubool() = s.projection()``
 
-Method ``s.tobool() -> bool`` converts an ``sboolean`` variable ``s`` into a ``bool`` value. It does so by projecting it and then using the degree of certainty: ``s.tobool() = (s.projection() >= ubool.getCertainty())``.
+- Method ``s.tobool() -> bool`` converts an ``sboolean`` variable ``s`` into a ``bool`` value. It does so by projecting it and then using the degree of certainty: ``s.tobool() = (s.projection() >= ubool.getCertainty())``.
+
+
+Method ``uncertaintyMaximized()`` can be used to convert an ``sbool`` value into an equivalent one but with maximized uncertainty (i.e., with either null belief or disbelief).
+
+- ``s.uncertaintyMaximized() -> sbool`` returns an ``sbool`` that is equivalent to ``s`` but with maximum uncertainty. 
+
+
 
 <!--
 The following conversion operations are provided for ``sbool``.
@@ -523,7 +530,6 @@ In addition, type ``sbool`` supports the following query methods.
 
 - ``s.projection() -> bool`` returns the projected probability of opinon ``s``, i.e., ``s.projection() = s.belief + s.uncertainty*s.base_rate``.
 - ``s.isAbsolute() -> bool``  returns ``True`` iff ``s.belief == 1 or s.disbelief == 1``.
-- ``s.uncertaintyMaximized() -> sbool`` returns an ``sbool`` that is equivalent to ``s`` but with maximum uncertainty. 
 - ``s.isMaximizedUncertainty() -> bool``  returns ``True`` iff ``s.belief == 0 or s.disbelief == 0``.
 - ``s.isVacuous() -> bool`` returns ``True`` iff ``s.uncertainty == 1``.
 - ``s.isDogmatic() -> bool``  returns ``True`` iff ``s.uncertainty == 0``.
@@ -532,6 +538,7 @@ In addition, type ``sbool`` supports the following query methods.
 - ``s.isUncertain(threshold) -> bool`` method returns ``True`` if the ``sbool`` has ``uncertainty < threshold``.
 - ``s.certainty() ->`` method returns the certainty. (i.e., 1 - u).
 -->
+
 
 ### Logical operators
 
@@ -560,16 +567,16 @@ Infix operator are recommended.
 - ``s.deduceY(sboolyGivenX, sboolyGivenNotX)``:  Deduction, returns Y, acting "self sbool" as X.
 -->
 
-The *addition* (or *union*)  operation defined in Subjective logic ($w_{X\cup Y}^A = w_X^A + w_Y^A$) is also supported:
+The *addition* (or *union*)  operation defined in Subjective logic ($w_{X\cup Y}^A = w_X^A + w_Y^A$) is supported:
 
 
 - ``s.union(y: sbool) -> sbool`` returns a ``sbool`` with the union of ``s`` and ``y``.
 
-We have also created a new operation to perform the weighted union of opinions:
+Moreover, we have defined a new operation that performs the weighted union of two opinions:
 
 - ``s.weightedUnion(y: sbool) -> sbool`` returns a ``sbool`` with the weighted union of ``s`` and ``y``.
 
-These two methods also have versions as functions, which allow calculating the union and weighted union of two or more opinions: 
+These two methods also have versions that allow calculating the union and weighted union of two or more opinions. These versions are defined as functions: 
 
 - ``union(opinions: Collection[sbool]) -> sbool``
 - ``weightedUnion(opinions: Collection[sbool]) -> sbool``
@@ -607,7 +614,7 @@ x.bcFusion(y)
 
 #### Fusion of collections of opions
 
-The ``uTypes`` Python library also supports the following *functions* to fuse two or more opinions:
+The ``uTypes`` Python library also supports the following *functions* that allow to fuse two or more opinions:
 
 | Fusion operation | Collection version (function) | 
 |----------------|-----------------------|
