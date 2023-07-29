@@ -619,13 +619,13 @@ The ``uTypes`` Python library also supports the following *functions* that allow
 | Fusion operation | Collection version (function) | 
 |----------------|-----------------------|
 | Constraint Belief Fusion (CBF) | ``bcFusion(c: Collection[sbool]) -> sbool`` |
-| Consensus & Compromise Fusion (CCF) | ``ccFusion(Collection[sbool]) -> sbool`` |
-| Aleatory Cumulative Fusion (aCBF) | ``aleatoryCumulativeFusion(Collection[sbool]) -> sbool`` |
-| Epistemic Cumulative Fusion (eCBF) | ``epistemicCumulativeFusion(Collection[sbool]) -> sbool`` |
-| Averaging Belief Fusion (ABF) | ``averagingFusion(Collection[sbool]) -> sbool`` |
-| Weighted Belief Fusion (WBF) | ``weightedFusion(Collection[sbool]) -> sbool`` |
-| Minimum Belief Fusion (MinBF) | ``minimumFusion(Collection[sbool]) -> sbool`` |
-| Majority Belief Fusion (MajBF) | ``majorityFusion(Collection[sbool]) -> sbool`` |
+| Consensus & Compromise Fusion (CCF) | ``ccFusion(c: Collection[sbool]) -> sbool`` |
+| Aleatory Cumulative Fusion (aCBF) | ``aleatoryCumulativeFusion(c: Collection[sbool]) -> sbool`` |
+| Epistemic Cumulative Fusion (eCBF) | ``epistemicCumulativeFusion(c: Collection[sbool]) -> sbool`` |
+| Averaging Belief Fusion (ABF) | ``averagingFusion(c: Collection[sbool]) -> sbool`` |
+| Weighted Belief Fusion (WBF) | ``weightedFusion(c: Collection[sbool]) -> sbool`` |
+| Minimum Belief Fusion (MinBF) | ``minimumFusion(c: Collection[sbool]) -> sbool`` |
+| Majority Belief Fusion (MajBF) | ``majorityFusion(c: Collection[sbool]) -> sbool`` |
 
 Example of Belief Constraint Fusion:
 ```python
