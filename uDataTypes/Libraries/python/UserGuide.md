@@ -26,7 +26,7 @@ from uncertainty.utypes import *
 
 ## Type ubool
 
-Type ``ubool`` is an embedding of type ``bool`` that extends traditional logic truth values (``True``, ``False``), with probabilities, and truth tables are replaced with probability expressions. Thus, an ``ubool`` value is expressed by a probability representing the degree of belief (i.e., the *confidence*) that a given statement is true. For example, ``ubool(0.7)`` means that there is a 70% chance of an event occurring. Python ``bool`` values ``True`` and ``False`` correspond to ``ubool(1.0)`` and ``ubool(0.0)``, respectively. 
+Type ``ubool`` is an embedding of type ``bool`` that extends traditional logic truth values (``True``, ``False``) with probabilities, and replaces truth tables with probability expressions. Thus, an ``ubool`` value is expressed by a probability (i.e., a number between 0 and 1) representing the degree of belief (i.e., the *confidence*) that a given statement is true. For example, ``ubool(0.7)`` means that there is a 70% chance of an event occurring. Python ``bool`` values ``True`` and ``False`` correspond to ``ubool(1.0)`` and ``ubool(0.0)``, respectively. 
 
 ```python
 x = ubool(0.7) 
@@ -45,11 +45,7 @@ print (x.confidence)
 
 ### Type conversion and projection
 
-``ubool`` values can be converted to ``bool`` values, using a threshold that determines when the ``ubool`` value is evaluated as ``True`` or ``False``. This threshold is called "*level of certainty*" and its default value is ``0.9``.  The *level of certainty* can be changed using ``ubool.setCertainty(x)`` function and queried using ``ubool.getCertainty()``. 
-
-Then, method ``u.tobool()`` to convert ``ubool`` variable ``u`` into ``bool``. It is defined as follows: ``u.tobool() = (x.confidence > ubool.getCertainty())``
-
-In addition, ``ubool`` values and variables can be used in ``if`` statements because they can be automatically evaluated as ``bool`` values in this case. Thus,  an ``ubool`` variable ``x`` is evaluated to ``True`` (when considered as a ``bool``) if ``x.confidence > ubool.getCertainty()``.  
+``ubool`` values can be converted to ``bool`` values, using a threshold that determines when the ``ubool`` value is evaluated as ``True`` or ``False``. This threshold is called "*level of certainty*" and its default value is ``0.9``.  The *level of certainty* can be changed using ``ubool.setCertainty(x)`` and queried using ``ubool.getCertainty()``. 
 
 ```python
 y = ubool(0.7)
@@ -66,12 +62,14 @@ if y:   # y is ubool(0.7) >= 0.5
 ubool.getCertainty()
 # 0.5
 ```
-In this way, ``ubool`` values can be used as booleans in conditional statements.
+
+In this way, ``ubool`` values and variables can be used as booleans in conditional statements.
 
 ```python
 if x:
     'executed'
 ```
+In addition, method ``u.tobool()`` explicitly converts an ``ubool`` variable into a ``bool``, using the level of certainty: ``u.tobool() = (x.confidence > ubool.getCertainty())``
 
 ### Logical operators
 
