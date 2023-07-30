@@ -461,7 +461,7 @@ class sbool:
 	    average base rate (see Josang's book). The neutral element is the vacuous opinion.
         return a sbool that represents the fused evidence.
     '''
-    def bcFusion(opinions: Iterable[sbool]) -> sbool:
+    def cbFusion(opinions: Iterable[sbool]) -> sbool:
         if None in opinions or len(opinions) < 2:
             raise ValueError('BCF: Cannot fuse None opinions, or only one opinion was passed')
         bcf: sbool = None
@@ -470,7 +470,7 @@ class sbool:
             if bcf is None:
                 bcf = so # first time
             else:
-                bcf = bcf.bcFusion(so)
+                bcf = bcf.cbFusion(so)
         
         return bcf
     
@@ -987,7 +987,7 @@ class sbool:
    
     ''' BINARY VERSIONS OF FUSING OPERATIONS '''
 
-    def bcFusion(self, opinion: sbool) -> sbool: #belief constraint fusion
+    def cbFusion(self, opinion: sbool) -> sbool: #belief constraint fusion
         #implemented using equation 12.2 of Josang's book
         harmony: float = self._b * opinion.uncertainty + self._u * opinion.belief + self._b *opinion.belief
         conflict: float = self._b * opinion.disbelief + self._d * opinion.belief #self._degreeOfConflict(opinion)# 0.0 # binomial opinions 
