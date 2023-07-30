@@ -163,7 +163,7 @@ This representation of uncertainty for numerical values follows the "ISO Guide t
 | MUL       | ``` x * y ``` | ``` x.mul(y) ```      | ``` mul(x, y) ```      |
 | DIV       | ``` x / y ``` | ``` x.div(y) ```      | ``` div(x, y) ```      |
 | FLOOR DIV | ``` x // y ```| ``` x.floordiv(y) ``` | ``` floordiv(x, y) ``` |
-| NEG       | ``` -x ```    | ``` x.neg(y) ```      | ``` neg(x, y) ```      |
+| NEG       | ``` -x ```    | ``` x.neg() ```      | ``` neg(x) ```      |
 | POW       | ``` x ** y ```| ``` x.power(y) ```    | ``` pow(x, y) ```      |
 
 Infix operators are recommended. When using the traditional operators, precedence is respected and it works the same as with ``float`` values. 
@@ -382,7 +382,7 @@ x.concat(' Lorem Ipsum is simply dummy text')
 # ustr(What is Lorem Ipsum? Lorem Ipsum is simply dummy text, 0.989)
 ```
 
-### Comparison Operators
+### Comparison operators
 
 Comparisons between uncertain strings can also be performed using the traditional comparison operators (using their infix versions, as methods, or as functions), which now return  ``ubool`` values.
 
@@ -400,7 +400,7 @@ le(x, y)
 # ubool(0.321)
 ```
 
-### ustr Methods
+### ustr methods
 
 Further operations available for any uncertain string ``s`` include:
 
@@ -501,14 +501,14 @@ All information about Subjective Logic and the operations it defines to reason a
 
 ### Conversion methods
 
-Values of type ``sbool`` can be converted into ``ubool`` or ``bool`` values as follows
+Values of type ``sbool`` can be converted into ``ubool`` or ``bool`` values as follows:
 
 - Method ``s.toubool() -> ubool`` converts an ``sboolean`` variable ``s`` into an ``ubool`` value. It does so by projecting it. That is, ``s.toubool() = s.projection()``
 
 - Method ``s.tobool() -> bool`` converts an ``sboolean`` variable ``s`` into a ``bool`` value. It does so by projecting it and then using the degree of certainty: ``s.tobool() = (s.projection() >= ubool.getCertainty())``.
 
 
-Method ``uncertaintyMaximized()`` can be used to convert an ``sbool`` value into an equivalent one but with maximized uncertainty (i.e., with either null belief or disbelief).
+Sometimes, an ``sbool`` value needs to be converted into an equivalent one but with maximized uncertainty (i.e., with either null belief or disbelief):
 
 - ``s.uncertaintyMaximized() -> sbool`` returns an ``sbool`` that is equivalent to ``s`` but with maximum uncertainty. 
 
@@ -576,7 +576,7 @@ Moreover, we have defined a new operation that performs the weighted union of tw
 
 - ``s.weightedUnion(y: sbool) -> sbool`` returns a ``sbool`` with the weighted union of ``s`` and ``y``.
 
-These two methods also have versions that allow calculating the union and weighted union of two or more opinions. These versions are defined as functions: 
+These two methods also have versions that allow calculating the union and weighted union of two or more opinions, as functions: 
 
 - ``union(opinions: Collection[sbool]) -> sbool``
 - ``weightedUnion(opinions: Collection[sbool]) -> sbool``
@@ -595,7 +595,7 @@ Given two ``sbool`` opinions ``o1`` and ``o2``, the following methods return the
 
 | Fusion operation | Binary version (method) | 
 |----------------|-----------------------|
-| Constraint Belief Fusion (CBF) | ``o1.bcFusion(o2: sbool) -> sbool`` |
+| Constraint Belief Fusion (CBF) | ``o1.cbFusion(o2: sbool) -> sbool`` |
 | Consensus & Compromise Fusion (CCF) | ``o1.ccFusion(o2: sbool) -> sbool`` |
 | Aleatory Cumulative Fusion (aCBF) | ``o1.aleatoryCumulativeFusion(o2: sbool) -> sbool`` |
 | Epistemic Cumulative Fusion (eCBF) | ``o1.epistemicCumulativeFusion(o2: sbool) -> sbool`` |
@@ -604,11 +604,11 @@ Given two ``sbool`` opinions ``o1`` and ``o2``, the following methods return the
 | Minimum Belief Fusion (MinBF) | ``o1.minimumFusion(o2: sbool) -> sbool`` |
 | Majority Belief Fusion (MajBF) | ``o1.majorityFusion(o2: sbool) -> sbool`` |
 
-Example of use of ``bcFusion()`` operator:
+Example of use of ``cbFusion()`` operator:
 ```python
 x = sbool(0.0, 0.40, 0.6, 0.5)
 y = sbool(0.55, 0.3, 0.15, 0.38)
-x.bcFusion(y)
+x.cbFusion(y)
 # sbool(0.423, 0.462, 0.115, 0.418)
 ```
 
@@ -618,7 +618,7 @@ The ``uTypes`` Python library also supports the following *functions* that allow
 
 | Fusion operation | Collection version (function) | 
 |----------------|-----------------------|
-| Constraint Belief Fusion (CBF) | ``bcFusion(c: Collection[sbool]) -> sbool`` |
+| Constraint Belief Fusion (CBF) | ``cbFusion(c: Collection[sbool]) -> sbool`` |
 | Consensus & Compromise Fusion (CCF) | ``ccFusion(c: Collection[sbool]) -> sbool`` |
 | Aleatory Cumulative Fusion (aCBF) | ``aleatoryCumulativeFusion(c: Collection[sbool]) -> sbool`` |
 | Epistemic Cumulative Fusion (eCBF) | ``epistemicCumulativeFusion(c: Collection[sbool]) -> sbool`` |
@@ -635,13 +635,13 @@ opinions = [
     sbool(0.1, 0.75, 0.15, 0.38),
     sbool(0.151, 0.48, 0.369, 0.382) 
 ]
-bcFusion(opinions)
+cbFusion(opinions)
 # sbool(0.126, 0.861, 0.013, 0.393)
 ```
 
 ### Discount operator
 
-Subjective logic can also be used to represent and reason about trust. In this context, *trust discounting* is used to express degrees of trust in an information source and then to discount it from all the information provided by that source. The ``discount()`` operation is used to compute the trust-discounted opinion. 
+Subjective logic can also be used to represent and reason about trust. In this context, *trust discounting* is used to express degrees of trust in an information source and then to discount it from all the information provided by that source. The ``discount()`` method is used to compute the trust-discounted opinion. 
 
 Thus, given an opinion ``b_X`` that represents the opinion (i.e., the *functional trust*) of an agent $B$ about a statement $X$, i.e., $[B:X]$, and an opinion ``trustofAOnB`` that represents the *trust referral* that Agent $A$ has on agent $B$, i.e., $[A;B]$, then,
 
@@ -649,7 +649,7 @@ Thus, given an opinion ``b_X`` that represents the opinion (i.e., the *functiona
 
 returns the derived opinion of $A$ about $X$, i.e., $[A:X]=[A;B]\otimes[B:X]$. This operation follows the defintion given in [Jøsang's book](https://link.springer.com/book/10.1007/978-3-319-42337-1) (Section 14.3.2). 
 
-We also provide the alternative defintion of the discount operator given by [Hardi et al.](https://www.hindawi.com/journals/wcmc/2018/1073216/) that uses the degree of belief instead of the projection of the opinion to compute the discounted opinion:
+We also provide the alternative defintion of the discount operator given by [Hardi et al.](https://www.hindawi.com/journals/wcmc/2018/1073216/), which uses the degree of belief instead of the projection of the opinion to compute the discounted opinion:
 
 - ``b_X.discountB(trustOfAonB: sbool) -> sbool``
 
