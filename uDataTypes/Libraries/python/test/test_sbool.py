@@ -178,14 +178,14 @@ class sboolTest(unittest.TestCase):
         uncertainty_maximized_equals(sbool.averageFusion(opinions), sbool(0.753, 0.159, 0.088, 0.38))
         uncertainty_maximized_equals(sbool.aleatoryCumulativeFusion(opinions), sbool(0.810, 0.171, 0.019, 0.38))
         uncertainty_maximized_equals(sbool.epistemicCumulativeFusion(opinions), sbool(0.705, 0.0, 0.295, 0.38))
-        uncertainty_maximized_equals(sbool.bcFusion(opinions), sbool(0.997, 0.003, 0, 0.38))
+        uncertainty_maximized_equals(sbool.cbFusion(opinions), sbool(0.997, 0.003, 0, 0.38))
         
     def test_consensus_And_Compromise_Fusion(self):
         ''' consensus And Compromise Fusion '''
         opinions = [self.c1, self.c2, self.c3, self.c4, self.c5]
 
         uncertainty_maximized_equals(sbool.ccFusion(opinions), sbool(0.564, 0.057, 0.379, 0.380))
-        uncertainty_maximized_equals(sbool.bcFusion(opinions), sbool(0.997, 0.003, 0.000, 0.380))
+        uncertainty_maximized_equals(sbool.cbFusion(opinions), sbool(0.997, 0.003, 0.000, 0.380))
     
     def test_tfui(self):       
         ''' '''
@@ -240,13 +240,13 @@ class sboolTest(unittest.TestCase):
         opinions = [sbool(0.1,0.3,0.6,0.5), sbool(0.4,0.2,0.4,0.5), sbool(0.7,0.1,0.2,0.5)]
                 
         uncertainty_maximized_equals(sbool.ccFusion(opinions), sbool(0.629, 0.182, 0.189, 0.5) )
-        uncertainty_maximized_equals(sbool.bcFusion(opinions), sbool(0.738, 0.184, 0.078, 0.5))
+        uncertainty_maximized_equals(sbool.cbFusion(opinions), sbool(0.738, 0.184, 0.078, 0.5))
         uncertainty_maximized_equals(sbool.averageFusion(opinions), sbool(0.509, 0.164, 0.327, 0.5))
         uncertainty_maximized_equals(sbool.aleatoryCumulativeFusion(opinions), sbool(0.651, 0.209, 0.140, 0.5))
         uncertainty_maximized_equals(sbool.epistemicCumulativeFusion(opinions), sbool(0.442, 0, 0.558, 0.5))
         uncertainty_maximized_equals(sbool.weightedFusion(opinions), sbool(0.562, 0.146, 0.292, 0.5))
 
-    def test_bcfusion(self):
+    def test_cbFusion(self):
         uno = sbool(0.9, 0.1, 0, 0.5)
         dos = sbool(0.1, 0.9, 0, 0.5)
         res = sbool(0.5, 0.5, 0, 0.5) 
@@ -255,7 +255,7 @@ class sboolTest(unittest.TestCase):
         uncertainty_maximized(res)
         t(0.8, uno.degreeOfConflict(dos))
         t(0.8, dos.degreeOfConflict(uno))
-        t(res, uno.bcFusion(dos))
+        t(res, uno.cbFusion(dos))
 
     def test_average_fusion1(self):
         ''' Average Fusion '''
@@ -271,7 +271,7 @@ class sboolTest(unittest.TestCase):
         opinions = [sbool(0.1,0.3,0.6,0.5), sbool(0.4,0.2,0.4,0.5), sbool(0.7,0.1,0.2,0.5)]
         t(sbool.averageFusion(opinions), sbool(0.509,0.164,0.327,0.5))
         t(sbool.ccFusion(opinions), sbool(0.629,0.182,0.189,0.5))
-        t(sbool.bcFusion(opinions), sbool(0.738,0.184,0.078,0.5))
+        t(sbool.cbFusion(opinions), sbool(0.738,0.184,0.078,0.5))
         t(sbool.aleatoryCumulativeFusion(opinions), sbool(0.651,0.209,0.140,0.5))
         t(sbool.epistemicCumulativeFusion(opinions), sbool(0.442,0,0.558,0.5))
         t(sbool.weightedFusion(opinions), sbool(0.562,0.146,0.292,0.5))
