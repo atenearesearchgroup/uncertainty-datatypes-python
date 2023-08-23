@@ -368,7 +368,7 @@ x.uSubstring(-6)
 
 ### Concatenating ustrs
 
-Method ``.add(ustr)``, function ``add(ustr, ustr)``, or  operator ``+`` can be used to concatenate uncertain strings, strings, or both, as the example below shows:
+Method ``add(ustr)``, function ``add(ustr, ustr)``, or  operator ``+`` can be used to concatenate uncertain strings, strings, or both, as the example below shows:
 
 ```python
 x = ustr('What is Lorem Ipsum?', 0.97)
@@ -646,11 +646,11 @@ cbFusion(opinions)
 
 Subjective logic can also be used to represent and reason about trust. In this context, *trust discounting* is used to express degrees of trust in an information source and then to discount it from all the information provided by that source. The ``discount()`` method is used to compute the trust-discounted opinion. 
 
-Thus, given an opinion ``b_X`` that represents the opinion (i.e., the *functional trust*) of an agent $B$ about a statement $X$, i.e., $[B:X]$, and an opinion ``trustofAOnB`` that represents the *trust referral* that Agent $A$ has on agent $B$, i.e., $[A ;B]$, then,
+Thus, given an opinion ``b_X`` that represents the opinion (i.e., the *functional trust*) of an agent $B$ about a statement $X$, i.e., $[B:X]$, and an opinion ``trustofAOnB`` that represents the *trust referral* that Agent $A$ has on agent $B$, i.e., $[A\.;B]$, then,
 
 - ``b_X.discount(trustOfAonB: sbool) -> sbool``
 
-returns the derived opinion of $A$ about $X$, i.e., $[A:X]=[A ;B]\otimes[B:X]$. This operation follows the defintion given in [Jøsang's book](https://link.springer.com/book/10.1007/978-3-319-42337-1) (Section 14.3.2). 
+returns the derived opinion of $A$ about $X$, i.e., $[A:X]=[A\.;B]\otimes[B:X]$. This operation follows the defintion given in [Jøsang's book](https://link.springer.com/book/10.1007/978-3-319-42337-1) (Section 14.3.2). 
 
 We also provide the alternative defintion of the discount operator given by [Hardi et al.](https://www.hindawi.com/journals/wcmc/2018/1073216/), which uses the degree of belief instead of the projection of the opinion to compute the discounted opinion:
 
