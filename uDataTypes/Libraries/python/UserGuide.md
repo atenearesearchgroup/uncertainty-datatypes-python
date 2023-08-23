@@ -95,7 +95,7 @@ The table below summarizes all the possible usages.
 | EQUALS     | ``` x == y ```  | ``` x \|EQUALS\| y ```     | ``` x.EQUALS(y) ```     | ``` EQUALS(x, y) ```     |
 | DISTINCT   | ``` x != y ```  | ``` x \|DISTINCT\| y ```   | ``` x.DISTINCT(y) ```   | ``` DISTINCT(x, y) ```   |
 
-<sub> Note that equal and equivalent operations are not the same. Equivalence corresponds to ``~(x^y)`` (i.e., the negation of ``xor``), while the equal operation (``==``) requires that the two values are the same.</sub>
+Note that ``equal`` and ``equivalent`` operations are not the same. Equivalence corresponds to ``~(x^y)`` (i.e., the negation of ``xor``), while the equal operation (``==``) requires that the two values are the same.
 
 ***IMPORTANT***: 
 
@@ -156,7 +156,7 @@ This representation of uncertainty for numerical values follows the "ISO Guide t
 
 ``ufloat`` operators include: ``ADD``, ``SUB``, ``MUL``, ``DIV``, ``FLOOR DIV``, ``NEG``, and ``POWER``. The table below summarizes all the possible operations. Uncertainty propagates through all the operations performed on variables with uncertainty.
 
-| Operation | Operator      | Method                | Function               |
+| Operation | Infix operator      | Method                | Function               |
 |:---------:|:-------------:|:---------------------:|:----------------------:|
 | ADD       | ``` x + y ``` | ``` x.add(y) ```      | ``` add(x, y) ```      |
 | SUB       | ``` x - y ``` | ``` x.sub(y) ```      | ``` sub(x, y) ```      |
@@ -164,11 +164,12 @@ This representation of uncertainty for numerical values follows the "ISO Guide t
 | DIV       | ``` x / y ``` | ``` x.div(y) ```      | ``` div(x, y) ```      |
 | FLOOR DIV | ``` x // y ```| ``` x.floordiv(y) ``` | ``` floordiv(x, y) ``` |
 | NEG       | ``` -x ```    | ``` x.neg() ```      | ``` neg(x) ```      |
-| POW       | ``` x ** y ```| ``` x.power(y) ```    | ``` pow(x, y) ```      |
+| POWER       | ``` x ** y ```| ``` x.power(y) ```    | ``` pow(x, y) ```      |
 
-Infix operators are recommended. When using the traditional operators, precedence is respected and it works the same as with ``float`` values. 
+<!-- Infix operators are recommended.--> 
+When using the traditional *infix* operators, precedence is respected and it works the same as with ``float`` values. 
 
-In addition, any ``ufloat`` variable can be interrogated for its nominal value (x) and its uncertainty (u), using properties ``value`` and ``uncertainty``, respectively.
+In addition, any ``ufloat`` variable can be interrogated for its nominal value (``x``) and its uncertainty (``u``), using properties ``value`` and ``uncertainty``, respectively.
 
 #### Examples
 ```python
@@ -228,11 +229,11 @@ y = uint(432, '5.7')  # Data can be provided as str, int or float.
 
 In addition to the operators defined also for ``ufloat``, type ``uint`` also supports operator ``MOD``. 
 
-| Operation | Operator      | Method            | Function         |
+| Operation | Infix operator      | Method            | Function         |
 |:---------:|:-------------:|:-----------------:|:----------------:|
 | MOD       | ``` x % y ``` | ``` x.mod(y) ```  | ``` mod(x, y) ```|
 
-Again, infix operators are recommended for type ``uint``. 
+<!-- Again, infix operators are recommended for type ``uint``.--> 
 
 
 #### Example
@@ -278,7 +279,7 @@ z = x < y
 Comparisons between ``uint`` and ``ufloat`` can be performed using the traditional comparison operators: ``<``, ``<=``, ``>``, ``>=``, ``==`` and ``!=``. These operators return ``ubool`` values.
 
 
-| Operation               | Operator       | Method           | Function        |
+| Operation               | Infix operator       | Method           | Function        |
 |:-----------------------:|:--------------:|:----------------:|:---------------:|
 | Less than               | ``` x < y ```  | ``` x.lt(y) ```  | ``` lt(x, y) ```|
 | Less than or Equals     | ``` x <= y ``` | ``` x.le(y) ```  | ``` le(x, y) ```|
@@ -287,9 +288,9 @@ Comparisons between ``uint`` and ``ufloat`` can be performed using the tradition
 | Equals                  | ``` x == y ``` | ``` x.eq(y) ```  | ``` eq(x, y) ```|
 | Not Equals              | ``` x != y ``` | ``` x.ne(y) ```  | ``` ne(x, y) ```|
 
-Given that ``ufloat`` and ``uint`` values can be considered random variables, they are compared using *equality in distribution*: two variables are equal (``==``) if their distributions are the same. 
+Given that ``ufloat`` and ``uint`` values can be considered random variables, they are compared using *equality in distribution*: two variables are equal (``==``) if their probability distributions are the same. 
 
-Again, infix operators are recommended. 
+<!-- Again, infix operators are recommended. -->
 
 #### Example
 ```python
@@ -347,7 +348,9 @@ x.at(0)
 
 ### Slicing
 
-Both operator ``[start, stop, step]`` and method ``uSubstring(start, stop, step)`` can be used to split an uncertain string. The ``start`` and ``stop`` indexes are optional, their default values being 0 and the lenght of the string, respectively. The third parameter is also optional with a default value of 1. Negative indexes are valid, they indicate positions from the right end of the string. Note that the ``confidence`` is adjusted according to the length of the substring. 
+Both operator ``[start, stop, step]`` and method ``uSubstring(start, stop, step)`` can be used to split an uncertain string. ``start`` indicates the starting index of the substring. The character at this index is included in the substring. The default value is 0. ``end`` indicates the terminating index of the substring. The character at this index is not included in the substring. If ``end`` is not indicated, or if the specified value exceeds the string length, it is assumed to be equal to the length of the string by default. ``step`` indicates that every "step" character after the current character is to be included. The default value is 1.
+
+Negative indexes are valid, they indicate positions from the right end of the string. Note that the ``confidence`` is adjusted according to the length of the substring. 
 
 ```python
 x = ustr('What is Lorem Ipsum?', 0.97)
@@ -365,7 +368,7 @@ x.uSubstring(-6)
 
 ### Concatenating ustrs
 
-Method ``.add(ustr)``, function ``add(ustr, ustr)``, or  operator ``+`` can be used to concatenate either uncertain string, or strings, or both, as the example below shows:
+Method ``.add(ustr)``, function ``add(ustr, ustr)``, or  operator ``+`` can be used to concatenate uncertain strings, strings, or both, as the example below shows:
 
 ```python
 x = ustr('What is Lorem Ipsum?', 0.97)
@@ -483,7 +486,7 @@ w = sbool(ubool(0.7))
 # sbool(0.700, 0.300, 0.000, 0.700)
 ```
 
-The four components of an opinion can be known using properties:
+The four components of an opinion can be known using the corresponding properties:
 ```python
 z = sbool(0.7, 0.1, 0.2, 0.5)
 # sbool(0.700, 0.100, 0.200, 0.500)
@@ -503,9 +506,9 @@ All information about Subjective Logic and the operations it defines to reason a
 
 Values of type ``sbool`` can be converted into ``ubool`` or ``bool`` values as follows:
 
-- Method ``s.toubool() -> ubool`` converts an ``sboolean`` variable ``s`` into an ``ubool`` value. It does so by projecting it. That is, ``s.toubool() = s.projection()``
+- Method ``s.toubool() -> ubool`` converts an ``sboolean`` variable ``s`` into an ``ubool`` value by projecting it. That is, ``s.toubool() = s.projection()``
 
-- Method ``s.tobool() -> bool`` converts an ``sboolean`` variable ``s`` into a ``bool`` value. It does so by projecting it and then using the degree of certainty: ``s.tobool() = (s.projection() >= ubool.getCertainty())``.
+- Method ``s.tobool() -> bool`` converts an ``sboolean`` variable ``s`` into a ``bool`` value by projecting it and then using the degree of certainty: ``s.tobool() = (s.projection() >= ubool.getCertainty())``.
 
 
 Sometimes, an ``sbool`` value needs to be converted into an equivalent one but with maximized uncertainty (i.e., with either null belief or disbelief):
@@ -557,9 +560,9 @@ Basic operations include ``AND``, ``OR``, ``NOT``, ``XOR``, ``IMPLIES``, and ``E
 | EQUALS     | ``` x == y ```  | ``` x \|EQUALS\| y ```     | ``` x.EQUALS(y) ```     | ``` EQUALS(x, y) ```     |
 | DISTINCT   | ``` x != y ```  | ``` x \|DISTINCT\| y ```   | ``` x.DISTINCT(y) ```   | ``` DISTINCT(x, y) ```   |
 
-<sub> Note that equal and equivalent operations are not the same. Equivalence corresponds to ``~(x^y)``, while the equal operation ``=='' requires all four components of the two opinions to be the same.</sub>
+Note that equal and equivalent operations are not the same. Equivalence corresponds to ``~(x^y)``, while the equal operation ``=='' requires all four components of the two opinions to be the same.
 
-Infix operator are recommended.
+<!-- Infix operator are recommended.-->
 
 ### Union operations
 <!--
@@ -643,11 +646,11 @@ cbFusion(opinions)
 
 Subjective logic can also be used to represent and reason about trust. In this context, *trust discounting* is used to express degrees of trust in an information source and then to discount it from all the information provided by that source. The ``discount()`` method is used to compute the trust-discounted opinion. 
 
-Thus, given an opinion ``b_X`` that represents the opinion (i.e., the *functional trust*) of an agent $B$ about a statement $X$, i.e., $[B:X]$, and an opinion ``trustofAOnB`` that represents the *trust referral* that Agent $A$ has on agent $B$, i.e., $[A;B]$, then,
+Thus, given an opinion ``b_X`` that represents the opinion (i.e., the *functional trust*) of an agent $B$ about a statement $X$, i.e., $[B:X]$, and an opinion ``trustofAOnB`` that represents the *trust referral* that Agent $A$ has on agent $B$, i.e., $[A ;B]$, then,
 
 - ``b_X.discount(trustOfAonB: sbool) -> sbool``
 
-returns the derived opinion of $A$ about $X$, i.e., $[A:X]=[A;B]\otimes[B:X]$. This operation follows the defintion given in [Jøsang's book](https://link.springer.com/book/10.1007/978-3-319-42337-1) (Section 14.3.2). 
+returns the derived opinion of $A$ about $X$, i.e., $[A:X]=[A ;B]\otimes[B:X]$. This operation follows the defintion given in [Jøsang's book](https://link.springer.com/book/10.1007/978-3-319-42337-1) (Section 14.3.2). 
 
 We also provide the alternative defintion of the discount operator given by [Hardi et al.](https://www.hindawi.com/journals/wcmc/2018/1073216/), which uses the degree of belief instead of the projection of the opinion to compute the discounted opinion:
 
