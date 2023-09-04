@@ -258,8 +258,8 @@ class uintTest(unittest.TestCase):
         negs(self.ufa, uint( 4, 3.000))
         negs(self.ufb, uint(-2, 4.000))     
 
-    def test_power(self):
-        ''' power ** '''
+    def test_pow(self):
+        ''' pow ** '''
         pows(self.uia, 2, uint(   16,   24.000))
         pows(self.uia, 3, uint(  -64,  144.000))
         pows(self.uia, 5, uint(-1024, 3840.000))

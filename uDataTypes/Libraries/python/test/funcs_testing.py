@@ -57,7 +57,7 @@ def floordivs(l, r, e):
 
 def pows(l, r, e):
     c = l.__class__ if is_utype(l) else r.__class__
-    execute(l, r, e, pow, c.power, c.__pow__,  c.__pow__)
+    execute(l, r, e, pow, c.pow, c.__pow__,  c.__pow__)
 
 def mods(l, r, e):
     c = l.__class__ if is_utype(l) else r.__class__

@@ -407,7 +407,7 @@ class sbool:
 
     ''' UNION AND WEIGHTED UNION OPERATIONS '''
     '''
-        self method implements Union of two opinions, according to Josang's book (Section 6.1)
+        This method implements Union of two opinions, according to Josang's book (Section 6.1)
         return a sbool that represents the union of the two opinions (self + s).
     '''
     def union(self, s: sbool) -> sbool:
@@ -426,7 +426,7 @@ class sbool:
 		)
 	
     '''
-        self method implements the Weighted Union of a collection of opinions. 
+        This method implements the Weighted Union of a collection of opinions. 
         Note that the weighted union of two operations is different from their union. 
         return a sbool that represents the weigthed union, assuming the same weight for all opinions.
     '''    
@@ -447,7 +447,7 @@ class sbool:
  
     ''' Binary ver ''' 
     def weightedUnion2(self, opinion: sbool) -> sbool: #consensus and compromise fusion
-       return sbool.ccFusion([self, opinion])
+       return sbool.ccOpinionsFusion([self, opinion])
 
 	
     '''
@@ -455,13 +455,13 @@ class sbool:
 	        These implementations are based in those given in https:#github.com/vs-uulm/subjective-logic-java
     '''
     '''
-	    self method implements constraint belief fusion (CBF). It uses the binary operation and iterates 
+	    This method implements constraint belief fusion (CBF). It uses the binary operation and iterates 
 	    over the collection of opinions. self operation is associative if the base rate is the same for all 
         opinions, otherwise the fused base rate distribution could be the confidence-weighted
 	    average base rate (see Josang's book). The neutral element is the vacuous opinion.
         return a sbool that represents the fused evidence.
     '''
-    def cbFusion(opinions: Iterable[sbool]) -> sbool:
+    def cbOpinionsFusion(opinions: Iterable[sbool]) -> sbool:
         if None in opinions or len(opinions) < 2:
             raise ValueError('BCF: Cannot fuse None opinions, or only one opinion was passed')
         bcf: sbool = None
@@ -475,11 +475,11 @@ class sbool:
         return bcf
     
     '''
-        self method implements MIN fusion. self takes the minimum, i.e., returns the opinion with 
+        This method implements MIN fusion. self takes the minimum, i.e., returns the opinion with 
         the lowest probability of being True, meaning the lowest projected probability P(X=x).
         return a sbool that represents the fused evidence.
     '''
-    def minimumFusion(opinions: Iterable[sbool]) -> sbool:
+    def minimumOpinionsFusion(opinions: Iterable[sbool]) -> sbool:
         if None in opinions or len(opinions) < 2:
             raise ValueError('MBF: Cannot fuse None opinions, or only one opinion was passed')
 
@@ -492,7 +492,7 @@ class sbool:
         return min.copy()
 
     '''
-        self method implements MAJORITY fusion. self returns a dogmatic opinion that specifies the 
+        This method implements MAJORITY fusion. self returns a dogmatic opinion that specifies the 
         decision of the majority.
         If the majority is tied, a vacuous opinion is returned.
         It is assumed that the base rates of all opinions are equal.
@@ -500,7 +500,7 @@ class sbool:
         return a sbool that represents the fused evidence.
     '''
 
-    def majorityFusion(opinions: Iterable[sbool]) -> sbool:
+    def majorityOpinionsFusion(opinions: Iterable[sbool]) -> sbool:
         if None in opinions or len(opinions) < 2:
             raise ValueError('MajBF: Cannot fuse None opinions, or only one opinion was passed')
         pos: int = 0
@@ -517,10 +517,10 @@ class sbool:
         else: return sbool(0, 0, 1.0, 0.5) 				# uncertain
     
     
-    ''' self method implements AVERAGE fusion.
+    ''' This method implements AVERAGE fusion.
         return a sbool that represents the fused evidence.
     '''
-    def averagingFusion(opinions: Iterable[sbool]) -> sbool:
+    def averagingOpinionsFusion(opinions: Iterable[sbool]) -> sbool:
 	   
         #implemented using equation (32) of https:#folk.uio.no/josang/papers/JWZ2017-FUSION.pdf 
         # because the Josang's book has a problem.
@@ -565,7 +565,7 @@ class sbool:
         return reduce(lambda acc, u : acc * u, map(lambda x : x.uncertainty, opinions), 1.0)
 
     '''
-     self method implements cumulative belief fusion (CBF) for multiple sources, as discussed in the corrected
+     This method implements cumulative belief fusion (CBF) for multiple sources, as discussed in the corrected
      version of <a href='https:#folk.uio.no/josang/papers/JWZ2017-FUSION.pdf'>a FUSION 2017 paper by Josang et al.</a>
     
      As discussed in the book, cumulative fusion is useful in scenarios where opinions from multiple sources 
@@ -574,7 +574,7 @@ class sbool:
      
        return a sbool that represents the fused evidence based on evidence accumulation.
     '''
-    def aleatoryCumulativeFusion(opinions: Iterable[sbool]) -> sbool:
+    def aleatoryCumulativeOpinionsFusion(opinions: Iterable[sbool]) -> sbool:
         #handle edge cases
         if opinions is None or None in opinions or not opinions:
             raise ValueError('aCBF: Cannot average None opinions')
@@ -634,7 +634,7 @@ class sbool:
         return sbool(resultBelief, resultDisbelief, resultUncertainty, resultAtomicity,resultRelativeWeight)
 
     '''
-        self method implements epistemic cumulative belief fusion (eCBF) for multiple sources, 
+        This method implements epistemic cumulative belief fusion (eCBF) for multiple sources, 
         as discussed in the corrected
         version of <a href='https:#folk.uio.no/josang/papers/JWZ2017-FUSION.pdf'>a FUSION 2017 paper by Josang et al.</a>
 
@@ -643,7 +643,7 @@ class sbool:
         (in the statistical sense) evidence (in self case, knowledge).
         return a sbool that represents the fused evidence based on evidence accumulation.
     '''
-    def epistemicCumulativeFusion(opinions: Iterable[sbool]) -> sbool:
+    def epistemicCumulativeOpinionsFusion(opinions: Iterable[sbool]) -> sbool:
         #handle edge cases
         if opinions is None or None in opinions or not opinions:
             raise ValueError('eCBF: Cannot average None opinions')
@@ -706,7 +706,7 @@ class sbool:
 
 
     '''
-        self method implements weighted belief fusion (WBF) for multiple sources, as discussed in a FUSION 2018 paper by van der Heijden et al.
+        This method implements weighted belief fusion (WBF) for multiple sources, as discussed in a FUSION 2018 paper by van der Heijden et al.
         
         As discussed in the book, WBF is intended to represent the confidence-weighted averaging of evidence.
         Similar to AverageBF, it is useful when dependence between sources is assumed. However, WBF introduces 
@@ -714,7 +714,7 @@ class sbool:
         
         return a SubjectiveOpinion that represents the fused evidence based on confidence-weighted averaging of evidence.
     '''
-    def weightedFusion(opinions: Iterable[sbool]) -> sbool:
+    def weightedOpinionsFusion(opinions: Iterable[sbool]) -> sbool:
         if opinions is None or None in opinions or not opinions:
             raise ValueError('WBF: Cannot average None opinions')
 
@@ -795,12 +795,12 @@ class sbool:
         return sbool(resultBelief, resultDisbelief, resultUncertainty, resultAtomicity,resultRelativeWeight)
    
     '''
-        self method implements consensus & compromise fusion (CCF) for multiple sources, as discussed in a FUSION 2018 paper by van der Heijden et al.
+        This method implements consensus & compromise fusion (CCF) for multiple sources, as discussed in a FUSION 2018 paper by van der Heijden et al.
         For more details, refer to Chapter 12 of the Subjective Logic book by Josang, specifically Section 12.6, which defines CC fusion for the case of two sources.
     
         return a sbool that represents the fused evidence.
     '''
-    def ccFusion(opinions: Iterable[sbool]) -> sbool:
+    def ccOpinionsFusion(opinions: Iterable[sbool]) -> sbool:
         if opinions is None or None in opinions or len(opinions) < 2:
             raise ValueError('CCF: Cannot fuse None opinions, or only one opinion was passed')
 
@@ -990,7 +990,7 @@ class sbool:
     def cbFusion(self, opinion: sbool) -> sbool: #belief constraint fusion
         #implemented using equation 12.2 of Josang's book
         harmony: float = self._b * opinion.uncertainty + self._u * opinion.belief + self._b *opinion.belief
-        conflict: float = self._b * opinion.disbelief + self._d * opinion.belief #self._degreeOfConflict(opinion)# 0.0 # binomial opinions 
+        conflict: float = self._b * opinion.disbelief + self._d * opinion.belief
         if conflict == 1.0:
             raise ValueError('BCF: Cannot fuse totally conflicting opinions')
         
@@ -1002,25 +1002,25 @@ class sbool:
         return sbool(b, 1.0 - b - u, u, a)
         
     def ccFusion(self, opinion: sbool) -> sbool: #consensus and compromise fusion
-        return sbool.ccFusion([self, opinion])
+        return sbool.ccOpinionsFusion([self, opinion])
 
     def aleatoryCumulativeFusion(self, opinion: sbool) -> sbool:
-        return sbool.aleatoryCumulativeFusion([self, opinion])
+        return sbool.aleatoryCumulativeOpinionsFusion([self, opinion])
 
     def epistemicCumulativeFusion(self, opinion: sbool) -> sbool:
-        return sbool.epistemicCumulativeFusion([self, opinion])
+        return sbool.epistemicCumulativeOpinionsFusion([self, opinion])
 
     def weightedFusion(self, opinion: sbool) -> sbool:
-        return sbool.weightedFusion([self, opinion])
+        return sbool.weightedOpinionsFusion([self, opinion])
 
     def minimumFusion(self, opinion: sbool) -> sbool:
-        return sbool.minimumFusion([self, opinion])
+        return sbool.minimumOpinionsFusion([self, opinion])
 
     def majorityFusion(self, opinion: sbool) -> sbool:
-        return sbool.majorityFusion([self, opinion])
+        return sbool.majorityOpinionsFusion([self, opinion])
 
     def averagingFusion(self, opinion: sbool) -> sbool:
-        return sbool.averagingFusion([self, opinion])
+        return sbool.averagingOpinionsFusion([self, opinion])
    
    
     ''' DISCOUNTING OPERATIONS '''
@@ -1033,7 +1033,7 @@ class sbool:
 
     ''' Binary versions '''
     '''
-        self method implements the 'probability-sensitive trust discounting operator', 
+        This method implements the 'probability-sensitive trust discounting operator', 
         which causes the uncertainty in A's derived opinion about X to increase as a 
         function of the projected distrust in the source/advisor B. 
     
@@ -1059,7 +1059,7 @@ class sbool:
 
 
     '''
-        self method implements the discounting operator from the Trustyfeer 2018 
+        This method implements the discounting operator from the Trustyfeer 2018 
         paper bu Kurdi et al., which uses the belief of the trust of A on B, instead of 
         the projection() of the trust of A on B, that was originally used by Josang. 
      
@@ -1088,7 +1088,7 @@ class sbool:
 
     ''' Multi-edge path versions '''
     '''
-        self method implements the discounting operator on multi-edge paths, 
+        This method implements the discounting operator on multi-edge paths, 
         using the 'probability-sensitive trust discounting operator'
         which causes the uncertainty in A�s derived opinion about X to increase as a 
         function of the projected distrust in the source/advisor B. 
@@ -1118,7 +1118,7 @@ class sbool:
         return sbool(b,d,u,a)
 
     '''
-        self method implements the discounting operator on multi-edge paths, 
+        This method implements the discounting operator on multi-edge paths, 
         using the 'discounting operator' discountB() defined by Kurdi et al in 
         their 2018 paper 
          

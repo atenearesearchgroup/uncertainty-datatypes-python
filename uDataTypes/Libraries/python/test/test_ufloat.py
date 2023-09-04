@@ -265,8 +265,8 @@ class ufloatTest(unittest.TestCase):
         negs(self.uia, ufloat( 4.000, 3.000))
         negs(self.uib, ufloat(-2.000, 4.000))     
 
-    def test_power(self):
-        ''' power ** '''
+    def test_pow(self):
+        ''' pow ** '''
         pows(self.ufa, 2, ufloat(   16.000,   24.000))
         pows(self.ufa, 3, ufloat(  -64.000,  144.000))
         pows(self.ufa, 5, ufloat(-1024.000, 3840.000))

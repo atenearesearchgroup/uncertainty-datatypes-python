@@ -203,11 +203,11 @@ class uint:
 	def __neg__(self) -> uint:
 		return self.neg()
 	
-	def power(self, s: float|int) -> uint:
+	def pow(self, s: float|int) -> uint:
 		return (self.toufloat()**s).touint()
 	
 	def __pow__(self, s: float|int) -> uint:
-		return self.power(s)
+		return self.pow(s)
 		
 	def sqrt(self) -> uint:
 		return self.toufloat().sqrt()
@@ -444,14 +444,14 @@ class ufloat:
 	def __neg__(self) -> ufloat:
 		return self.neg()
 	
-	def power(self, s: float|int) -> ufloat:
+	def pow(self, s: float|int) -> ufloat:
 		a = self._x**s
 		c = s * self._u * (self._x**(s-1))
 
 		return ufloat(a, c)
 	
 	def __pow__(self, s: float|int) -> ufloat:
-		return self.power(s)
+		return self.pow(s)
 	
 	def sqrt(self) -> ufloat:
 		if self._x == 0.0 and self._u == 0.0:
