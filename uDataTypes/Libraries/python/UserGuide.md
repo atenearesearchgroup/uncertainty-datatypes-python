@@ -154,17 +154,17 @@ This representation of uncertainty for numerical values follows the "ISO Guide t
 
 ### Operators
 
-``ufloat`` operators include: ``ADD``, ``SUB``, ``MUL``, ``DIV``, ``FLOOR DIV``, ``NEG``, and ``POWER``. The table below summarizes all the possible operations. Uncertainty propagates through all the operations performed on variables with uncertainty.
+``ufloat`` operators include: ``ADD``, ``SUB``, ``MUL``, ``DIV``, ``FLOOR DIV``, ``NEG``, and ``POW``. The table below summarizes all the possible operations. Uncertainty propagates through all the operations performed on variables with uncertainty.
 
-| Operation | Infix operator      | Method                | Function               |
+| Operation | Infix operator| Method                | Function               |
 |:---------:|:-------------:|:---------------------:|:----------------------:|
 | ADD       | ``` x + y ``` | ``` x.add(y) ```      | ``` add(x, y) ```      |
 | SUB       | ``` x - y ``` | ``` x.sub(y) ```      | ``` sub(x, y) ```      |
 | MUL       | ``` x * y ``` | ``` x.mul(y) ```      | ``` mul(x, y) ```      |
 | DIV       | ``` x / y ``` | ``` x.div(y) ```      | ``` div(x, y) ```      |
 | FLOOR DIV | ``` x // y ```| ``` x.floordiv(y) ``` | ``` floordiv(x, y) ``` |
-| NEG       | ``` -x ```    | ``` x.neg() ```      | ``` neg(x) ```      |
-| POWER       | ``` x ** y ```| ``` x.power(y) ```    | ``` pow(x, y) ```      |
+| NEG       | ``` -x ```    | ``` x.neg() ```       | ``` neg(x) ```         |
+| POW       | ``` x ** y ```| ``` x.pow(y) ```      | ``` pow(x, y) ```      |
 
 <!-- Infix operators are recommended.--> 
 When using the traditional *infix* operators, precedence is respected and it works the same as with ``float`` values. 
