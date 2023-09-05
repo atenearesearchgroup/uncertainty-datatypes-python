@@ -532,10 +532,10 @@ The following conversion operations are provided for ``sbool``.
 In addition, type ``sbool`` supports the following query methods.
 
 - ``s.projection() -> bool`` returns the projected probability of opinon ``s``, i.e., ``s.projection() = s.belief + s.uncertainty*s.base_rate``.
-- ``s.isAbsolute() -> bool``  returns ``True`` iff ``s.belief == 1 or s.disbelief == 1``.
-- ``s.isMaximizedUncertainty() -> bool``  returns ``True`` iff ``s.belief == 0 or s.disbelief == 0``.
-- ``s.isVacuous() -> bool`` returns ``True`` iff ``s.uncertainty == 1``.
-- ``s.isDogmatic() -> bool``  returns ``True`` iff ``s.uncertainty == 0``.
+- ``s.isAbsolute() -> bool``  returns ``True`` if ``s.belief == 1 or s.disbelief == 1``.
+- ``s.isMaximizedUncertainty() -> bool``  returns ``True`` if ``s.belief == 0 or s.disbelief == 0``.
+- ``s.isVacuous() -> bool`` returns ``True`` if ``s.uncertainty == 1``.
+- ``s.isDogmatic() -> bool``  returns ``True`` if ``s.uncertainty == 0``.
 <!-- 
 - ``s.isCertain(threshold) -> bool`` method returns ``True`` if the ``sbool`` has ``uncertainty >= threshold``.
 - ``s.isUncertain(threshold) -> bool`` method returns ``True`` if the ``sbool`` has ``uncertainty < threshold``.
@@ -549,7 +549,7 @@ Type ``sbool`` extends all the logical operations that type ``bool`` supports. T
 
 Basic operations include ``AND``, ``OR``, ``NOT``, ``XOR``, ``IMPLIES``, and ``EQUIVALENT``. The same four ways of using these logical operators are supported: Infix symbol operators (``` x & y ```), Infix textual operators (``` x |AND| y ```), Instance methods (``` x.AND(y) ```) and functions (``` AND(x, y) ```).
 
-| Operation  | Infix (symbol)       | Infix (textual)            | Method                  | Function                 |
+| Operation  | Infix (symbol)  | Infix (textual)            | Method                  | Function                 |
 |:----------:|:---------------:|:--------------------------:|:-----------------------:|:------------------------:|
 | AND        | ``` x & y ```   | ``` x \|AND\| y ```        | ``` x.AND(y) ```        | ``` AND(x, y) ```        |
 | OR         | ``` x \| y ```  | ``` x \|OR\| y ```         | ``` x.OR(y) ```         | ``` OR(x, y) ```         |
@@ -572,17 +572,11 @@ Note that equal and equivalent operations are not the same. Equivalence correspo
 
 The *addition* (or *union*)  operation defined in Subjective logic ($w_{X\cup Y}^A = w_X^A + w_Y^A$) is supported:
 
-
 - ``s.union(y: sbool) -> sbool`` returns a ``sbool`` with the union of ``s`` and ``y``.
 
-Moreover, we have defined a new operation that performs the weighted union of two opinions:
+Moreover, we have defined a new operation that performs the weighted union of two or more opinions:
 
-- ``s.weightedUnion(y: sbool) -> sbool`` returns a ``sbool`` with the weighted union of ``s`` and ``y``.
-
-These two methods also have versions that allow calculating the union and weighted union of two or more opinions, as functions: 
-
-- ``union(opinions: Collection[sbool]) -> sbool``
-- ``weightedUnion(opinions: Collection[sbool]) -> sbool``
+- ``sbool.weightedUnion(opinions: Collection[sbool]) -> sbool`` returns a ``sbool`` with the weighted union of two or more opinions.
 
    
 ### Belief Fusion operations
@@ -592,53 +586,30 @@ These two methods also have versions that allow calculating the union and weight
 The ``uTypes`` Python library provides all the [fusion operations](https://www.mn.uio.no/ifi/english/people/aca/josang/publications/jwz2017-fusion.pdf) defined in Subjective logic. 
 
 
-#### Binary fusion operators
-
-Given two ``sbool`` opinions ``o1`` and ``o2``, the following methods return their fusion using the different operators.
-
-| Fusion operation | Binary version (method) | 
-|----------------|-----------------------|
-| Constraint Belief Fusion (CBF) | ``o1.cbFusion(o2: sbool) -> sbool`` |
-| Consensus & Compromise Fusion (CCF) | ``o1.ccFusion(o2: sbool) -> sbool`` |
-| Aleatory Cumulative Fusion (aCBF) | ``o1.aleatoryCumulativeFusion(o2: sbool) -> sbool`` |
-| Epistemic Cumulative Fusion (eCBF) | ``o1.epistemicCumulativeFusion(o2: sbool) -> sbool`` |
-| Averaging Belief Fusion (ABF) | ``o1.averagingFusion(o2: sbool) -> sbool`` |
-| Weighted Belief Fusion (WBF) | ``o1.weightedFusion(o2: sbool) -> sbool`` |
-| Minimum Belief Fusion (MinBF) | ``o1.minimumFusion(o2: sbool) -> sbool`` |
-| Majority Belief Fusion (MajBF) | ``o1.majorityFusion(o2: sbool) -> sbool`` |
-
-Example of use of ``cbFusion()`` operator:
-```python
-x = sbool(0.0, 0.40, 0.6, 0.5)
-y = sbool(0.55, 0.3, 0.15, 0.38)
-x.cbFusion(y)
-# sbool(0.423, 0.462, 0.115, 0.418)
-```
-
 #### Fusion of collections of opions
 
 The ``uTypes`` Python library also supports the following *functions* that allow to fuse two or more opinions:
 
-| Fusion operation | Collection version (function) | 
-|----------------|-----------------------|
-| Constraint Belief Fusion (CBF) | ``cbFusion(c: Collection[sbool]) -> sbool`` |
-| Consensus & Compromise Fusion (CCF) | ``ccFusion(c: Collection[sbool]) -> sbool`` |
-| Aleatory Cumulative Fusion (aCBF) | ``aleatoryCumulativeFusion(c: Collection[sbool]) -> sbool`` |
-| Epistemic Cumulative Fusion (eCBF) | ``epistemicCumulativeFusion(c: Collection[sbool]) -> sbool`` |
-| Averaging Belief Fusion (ABF) | ``averagingFusion(c: Collection[sbool]) -> sbool`` |
-| Weighted Belief Fusion (WBF) | ``weightedFusion(c: Collection[sbool]) -> sbool`` |
-| Minimum Belief Fusion (MinBF) | ``minimumFusion(c: Collection[sbool]) -> sbool`` |
-| Majority Belief Fusion (MajBF) | ``majorityFusion(c: Collection[sbool]) -> sbool`` |
+| Fusion operation                      | Collection version (function)                                         | 
+|---------------------------------------|-----------------------------------------------------------------------|
+| Constraint Belief Fusion (CBF)        | ``sbool.cbFusion(c: Collection[sbool]) -> sbool``                     |
+| Consensus & Compromise Fusion (CCF)   | ``sbool.ccFusion(c: Collection[sbool]) -> sbool``                     |
+| Aleatory Cumulative Fusion (aCBF)     | ``sbool.aleatoryCumulativeFusion(c: Collection[sbool]) -> sbool``     |
+| Epistemic Cumulative Fusion (eCBF)    | ``sbool.epistemicCumulativeFusion(c: Collection[sbool]) -> sbool``    |
+| Averaging Belief Fusion (ABF)         | ``sbool.averagingFusion(c: Collection[sbool]) -> sbool``              |
+| Weighted Belief Fusion (WBF)          | ``sbool.weightedFusion(c: Collection[sbool]) -> sbool``               |
+| Minimum Belief Fusion (MinBF)         | ``sbool.minimumFusion(c: Collection[sbool]) -> sbool``                |
+| Majority Belief Fusion (MajBF)        | ``sbool.majorityFusion(c: Collection[sbool]) -> sbool``               |
 
 Example of Belief Constraint Fusion:
 ```python
 opinions = [
-    sbool(0.0, 0.40, 0.6, 0.5), 
-    sbool(0.55, 0.3, 0.15, 0.38), 
-    sbool(0.1, 0.75, 0.15, 0.38),
-    sbool(0.151, 0.48, 0.369, 0.382) 
+    sbool(0.000, 0.400, 0.600, 0.50), 
+    sbool(0.550, 0.300, 0.150, 0.380), 
+    sbool(0.100, 0.750, 0.150, 0.380),
+    sbool(0.151, 0.480, 0.369, 0.382) 
 ]
-cbFusion(opinions)
+sbool.cbFusion(opinions)
 # sbool(0.126, 0.861, 0.013, 0.393)
 ```
 
