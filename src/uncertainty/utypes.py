@@ -171,30 +171,3 @@ def round(obj: uint|ufloat) -> uint|ufloat:
     if isinstance(obj, uint):
         return obj
     return __call_func(obj.toufloat(), round.__name__)
-
-def beliefConstraintFusion(opinions: Iterable[sbool]) -> sbool:
-    return sbool.beliefConstraintFusion(opinions)
-
-def minimumBeliefFusion(opinions: Iterable[sbool]) -> sbool:
-    return sbool.minimumBeliefFusion(opinions)
-
-def majorityBeliefFusion(opinions: Iterable[sbool]) -> sbool:
-    return sbool.majorityBeliefFusion(opinions)
-
-def averageBeliefFusion(opinions: Iterable[sbool]) -> sbool:
-    return sbool.averageBeliefFusion(opinions)
-
-def productOfUncertainties(opinions: Iterable[sbool]) -> sbool:
-    return sbool.productOfUncertainties(opinions)
-
-def cumulativeBeliefFusion(opinions: Iterable[sbool]) -> sbool:
-    return sbool.cumulativeBeliefFusion(opinions)
-
-def epistemicCumulativeBeliefFusion(opinions: Iterable[sbool]) -> sbool:
-    return sbool.epistemicCumulativeBeliefFusion(opinions)
-
-def weightedBeliefFusion(opinions: Iterable[sbool]) -> sbool:
-    return sbool.weightedBeliefFusion(opinions)
-
-def consensusAndCompromiseFusion(opinions: Iterable[sbool]) -> sbool:
-    return sbool.consensusAndCompromiseFusion(opinions)

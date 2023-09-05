@@ -26,8 +26,8 @@ dependencies = [
 dynamic = ["version"]
 
 [tool.setuptools_scm]
-root = '../../..'
 
 [project.urls]
-"Homepage" = "https://github.com/atenearesearchgroup/uncertainty"
+"Homepage" = "https://atenea.lcc.uma.es"
+"Repository" = "https://github.com/atenearesearchgroup/uncertainty-datatypes-python"
 "Bug Tracker" = "https://github.com/atenearesearchgroup/uncertainty/issues"
