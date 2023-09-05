@@ -1,11 +1,11 @@
-# uTypes Python Library: User Guide
+# Uncertainty Datatypes Python Library: User Guide
 
 Uncertainty is an inherent property of any measure or estimation performed in any physical setting, and therefore it needs to be considered when modeling systems that manage real data. Although several modeling languages permit the representation of measurement uncertainty for describing some system attributes, these aspects are not normally incorporated into their type systems. Thus, operating with uncertain values and propagating uncertainty are normally cumbersome processes, difficult to achieve at the model level. This library provides an extension of Python basic datatypes to incorporate data uncertainty coming from physical measurements or user estimations into the models, along with the set of operations defined for the values of these types.
 
-``uTypes`` is a Python library that supports a set of uncertain primitive datatypes, including [``ubool``](#type-ubool), [``sbool``](#type-sbool), [``uint``](#type-uint),  [``ufloat``](#type-ufloat), [``uenum``](#type-uenum) and [``ustr``](#type-ustr).
+``Uncertainty Datatypes`` is a Python library that supports a set of uncertain primitive datatypes, including [``ubool``](#type-ubool), [``sbool``](#type-sbool), [``uint``](#type-uint),  [``ufloat``](#type-ufloat), [``uenum``](#type-uenum) and [``ustr``](#type-ustr).
 They extend their corresponding Python types (``bool``, ``int``,  ``float``, ``enum`` and ``str``) with uncertainty. 
 
-The ``uTypes`` library implements linear error propagation theory in Python. Uncertainty calculations are performed analytically.
+The ``Uncertainty Datatypes`` library implements linear error propagation theory in Python. Uncertainty calculations are performed analytically.
 
 ## Installation and Usage
 
@@ -583,12 +583,12 @@ Moreover, we have defined a new operation that performs the weighted union of tw
 
 [Belief fusion](https://www.mn.uio.no/ifi/english/people/aca/josang/publications/jwz2017-fusion.pdf) is a central concept in subjective logic. It allows opinions from different source agents $A_1,...A_n$ about the same fact $X$ to be merged, in order to provide an opinion representing a consensus agreement, or at least a single compromise opinion.
 
-The ``uTypes`` Python library provides all the [fusion operations](https://www.mn.uio.no/ifi/english/people/aca/josang/publications/jwz2017-fusion.pdf) defined in Subjective logic. 
+The ``Uncertainty Datatypes`` library provides all the [fusion operations](https://www.mn.uio.no/ifi/english/people/aca/josang/publications/jwz2017-fusion.pdf) defined in Subjective logic. 
 
 
 #### Fusion of collections of opions
 
-The ``uTypes`` Python library also supports the following *functions* that allow to fuse two or more opinions:
+The ``Uncertainty Datatypes`` library also supports the following *functions* that allow to fuse two or more opinions:
 
 | Fusion operation                      | Collection version (function)                                         | 
 |---------------------------------------|-----------------------------------------------------------------------|
@@ -637,7 +637,7 @@ We assume that ``An_X`` represents the opinion (functional trust) of an agent $A
 
 returns an ``sbool`` value that represents the resulting opinion of $A_1$ on $X$, i.e., $[A_1:X]=[A_1;A_2;...;A_n]\otimes[A_n:X]$.
 
-The alternative implementation by [Hardi et al.](https://www.hindawi.com/journals/wcmc/2018/1073216/) is also supported in the ``uTypes`` library:
+The alternative implementation by [Hardi et al.](https://www.hindawi.com/journals/wcmc/2018/1073216/) is also supported in the ``Uncertainty Datatypes`` library:
 
 - ``An_X.discountB(agentsTrusts: Collection[sbool]) -> sbool``
 
@@ -654,7 +654,7 @@ b_x.discount(a_on_b)
 ---
 # Alternative representations
 
-Package ``uTypes`` provides two different implementations for the extended numerical types values, using their corresponding Type-A and Type-B evaluations described in the "ISO Guide to Measurement Uncertainty" ([JCMG 100:2008](https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf)). 
+Package ``Uncertainty Datatypes`` provides two different implementations for the extended numerical types values, using their corresponding Type-A and Type-B evaluations described in the "ISO Guide to Measurement Uncertainty" ([JCMG 100:2008](https://www.bipm.org/documents/20126/2071204/JCGM_100_2008_E.pdf)). 
 
 - In **Type A** implementations, uncertain values are represented by n independent observations $X = \{x_1,...,x_n\}$ that have been obtained under the same conditions of measurement. The value of the corresponding uncertain number corresponds to the mean of the sample, and the uncertainty is given by the standard deviation.  
 - In **Type B** implementation, values are represented by the mean and standard deviation of the assumed probability density function that represents how the measurements of the ground truth values are expected to distribute (in case of floats and integers) or the degree of belief that an event will occur (in case of booleans).
