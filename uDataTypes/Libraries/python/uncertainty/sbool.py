@@ -442,7 +442,7 @@ class sbool:
             a+=so._a
             u+=so._a*so._u
         
-        return sbool(b/n,1-b/n-u/a,u/a,a/n)
+        return sbool(b/n, 1-b/n-u/a, u/a, a/n)
     
  
     ''' Binary ver ''' 
