@@ -9,7 +9,7 @@ from uncertainty.unumbers import uint
 from uncertainty.unumbers import ufloat
 from uncertainty.ustr import ustr
 from uncertainty.uenum import uenum
-	
+    
 # Operator Class
 class infix:
     def __init__(self, function):

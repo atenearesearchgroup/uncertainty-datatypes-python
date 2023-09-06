@@ -136,7 +136,7 @@ class sbool:
             raise ValueError('Create Dogmatic Opinion: Projections and baseRates should be between 0 and 1')
         
         return sbool(projection, 1.0 - projection, 0.0, base_rate)
-	
+    
     ''' Vacuous opinions have an uncertainty of 1. '''
     def createVacuousOpinion(projection: float) -> sbool:
         if projection < 0.0 or projection > 1.0:
@@ -200,15 +200,15 @@ class sbool:
         return 1.0 - self._u
     
     '''
-	   Returns the subjective opinion that results from adjusting the base rate to be the one given in the
-	   parameter. self operation is useful when we need to apply an opinion on a ubool value, whose
-	   confidence will become the base rate of the resulting opinion. 
-	   @param x ubool, whose confidence specifies the base_rate
-	   @return A sbool value whose base rate is the one given in the parameter, the uncertainty is 
-	   maintained, and the degree of belief is adjusted proportionally to the ratio (b/a) of the 
-	   original sbool. If the base rate is the same, the sbool does not change. If the 
-	   base_rate is 0 (False), the degree of belief of the sbool is 0 too, and the previous belief is 
-	   transferred to the degree of disbelief.
+       Returns the subjective opinion that results from adjusting the base rate to be the one given in the
+       parameter. self operation is useful when we need to apply an opinion on a ubool value, whose
+       confidence will become the base rate of the resulting opinion. 
+       @param x ubool, whose confidence specifies the base_rate
+       @return A sbool value whose base rate is the one given in the parameter, the uncertainty is 
+       maintained, and the degree of belief is adjusted proportionally to the ratio (b/a) of the 
+       original sbool. If the base rate is the same, the sbool does not change. If the 
+       base_rate is 0 (False), the degree of belief of the sbool is 0 too, and the previous belief is 
+       transferred to the degree of disbelief.
     '''
     def applyOn(self, x: ubool) -> sbool:
         base_rate: float = x.c
@@ -229,13 +229,10 @@ class sbool:
             bT  = min(base_rate * self._b / self._a, (1.0 - uT))
         
         return sbool(bT, 1.0 - bT - uT, uT, base_rate)
-		
+        
     '''Type Operations '''
     def NOT(self) -> sbool:
         return sbool(self._d, self._b, self._u, 1.0-self._a, self._relative_weight)
-    
-    def __invert__(self) -> sbool:
-        return self.NOT()
     
     def __invert__(self) -> sbool:
         return self.NOT()
@@ -289,10 +286,10 @@ class sbool:
 
     def __ror__(self, left) -> sbool:
         return sbool(left).OR(self)
-	
+    
     def IMPLIES(self, s: sbool) -> sbool:
         return self.NOT().OR(s) # self is to be consistent with ubool, because in Subjective Logic self is not the case...
-	
+    
     def __rshift__(self, other) -> ubool:
         return self.IMPLIES(other)
 
@@ -300,9 +297,9 @@ class sbool:
         return ubool(left).IMPLIES(self)
     
     def EQUIVALENT(self, s: sbool) -> sbool:
-		# return self.IMPLIES(b).and(b.IMPLIES(self))
+        # return self.IMPLIES(b).and(b.IMPLIES(self))
         return self.XOR(s).NOT() 	
-	
+    
     def XOR(self, s: sbool) -> sbool:
         if not isinstance(s, sbool):
             s = sbool(s)
@@ -320,7 +317,7 @@ class sbool:
     
     def __rxor__(self, left) -> sbool:
         return sbool(left).XOR(self)
-	
+    
     def uncertaintyMaximized(self) -> sbool: # Returns the equivalent sbool with maximum uncertainty. 
             # The dual operation is toubool, which returns the equivalent sbool, with u==0
         #return self.increaseduncertainty
@@ -338,7 +335,7 @@ class sbool:
         if p < self._a:
             return sbool(0.0, 1.0 - (p/self._a), p/self._a, self._a,self.getRelativeWeight())
         return sbool((p - self._a) / (1.0 - self._a), 0.0, (1.0 - p)/ (1.0 - self._a), self._a,self.getRelativeWeight())	
-		
+        
     def deduceY(self, yGivenX: sbool, yGivenNotX: sbool) -> sbool: # DEDUCTION: returns Y, acting 'self' as X
         y: sbool = sbool()
         px: float = self.projection()
@@ -403,7 +400,7 @@ class sbool:
         y.relative_weight = yGivenX.getRelativeWeight() + yGivenNotX.getRelativeWeight()
 
         return y
-	
+    
 
     ''' UNION AND WEIGHTED UNION OPERATIONS '''
     '''
@@ -423,8 +420,8 @@ class sbool:
             self._a * self._u + s._a * s._u,
             self._a + s._a, 
             self.getRelativeWeight() + s.getRelativeWeight()
-		)
-	
+        )
+    
     '''
         This method implements the Weighted Union of a collection of opinions. 
         Note that the weighted union of two operations is different from their union. 
@@ -449,16 +446,16 @@ class sbool:
     def weightedUnion2(self, opinion: sbool) -> sbool: #consensus and compromise fusion
        return sbool.ccFusion([self, opinion])
 
-	
+    
     '''
-	    FUSION OPERATIONS 
-	        These implementations are based in those given in https:#github.com/vs-uulm/subjective-logic-java
+        FUSION OPERATIONS 
+            These implementations are based in those given in https:#github.com/vs-uulm/subjective-logic-java
     '''
     '''
-	    This method implements constraint belief fusion (CBF). It uses the binary operation and iterates 
-	    over the collection of opinions. self operation is associative if the base rate is the same for all 
+        This method implements constraint belief fusion (CBF). It uses the binary operation and iterates 
+        over the collection of opinions. self operation is associative if the base rate is the same for all 
         opinions, otherwise the fused base rate distribution could be the confidence-weighted
-	    average base rate (see Josang's book). The neutral element is the vacuous opinion.
+        average base rate (see Josang's book). The neutral element is the vacuous opinion.
         return a sbool that represents the fused evidence.
     '''
     def cbFusion(opinions: Iterable[sbool]) -> sbool:
@@ -521,7 +518,7 @@ class sbool:
         return a sbool that represents the fused evidence.
     '''
     def averagingFusion(opinions: Iterable[sbool]) -> sbool:
-	   
+       
         #implemented using equation (32) of https:#folk.uio.no/josang/papers/JWZ2017-FUSION.pdf 
         # because the Josang's book has a problem.
 
@@ -667,7 +664,6 @@ class sbool:
         
         if not dogmatic:
             #there are no dogmatic opinions -- case I/Eq16 of 10.23919/ICIF.2017.8009820
-            uncertainties: float = map(lambda o : o.uncertainty, opinions)
             productOfUncertainties: float = sbool.productOfUncertainties(opinions)
             numerator: float = 0.0
             beliefAccumulator: float = 0.0
@@ -752,7 +748,6 @@ class sbool:
                 disbeliefAccumulator = disbeliefAccumulator + prod * o.disbelief * o.certainty()
                 atomicityAccumulator = atomicityAccumulator + o.base_rate * o.certainty()
                 numerator = numerator + prod
-            
 
             numerator = numerator - len(opinions) * productOfUncertainties
 

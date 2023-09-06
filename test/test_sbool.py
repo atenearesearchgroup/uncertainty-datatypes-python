@@ -15,7 +15,7 @@ class sboolTest(unittest.TestCase):
         self.w = sbool(ubool(0.3))
         self.r = sbool(0.2, 0.6, 0.2, 0.5)
         self.g = sbool(0.6, 0.2, 0.2, 0.5)
-        
+
         self.t = sbool()
         self.f = sbool(False)
         self.b = sbool(0.7, 0.1, 0.2, 0.5)
@@ -344,7 +344,7 @@ class sboolTest(unittest.TestCase):
         t(A1onX.discount(opinions), sbool(0.462, 0.116, 0.422, 0.1))
         opinions.append(sbool(0.2, 0.1, 0.7, 0.8))
         t(A1onX.discount(opinions), sbool(0.351, 0.088, 0.561, 0.1) )
-		
+        
     def test_fusion(self):
         ''' weightedFusion, cumulativeFusion y epistemicCumulativeFusion'''
         a = sbool(0.300, 0.100, 0.600, 0.900)

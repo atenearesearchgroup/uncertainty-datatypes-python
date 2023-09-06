@@ -9,7 +9,7 @@ from uncertainty.ubool import ubool
 THRESHOLD = 0.95
 
 class ustr:
-	
+    
     # Instance attributes:
     # str: str 
     # c: float 
