@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../src")
 import unittest
 
 from uncertainty.utypes import *
-from funcs_testing import *
+from .funcs_testing import *
 
 class uboolTest(unittest.TestCase):
 

@@ -3,13 +3,10 @@ from __future__ import annotations
 from collections.abc import Iterable
 
 from uncertainty.ubool import ubool
-from uncertainty.abool import abool
 from uncertainty.sbool import sbool
 from uncertainty.result import Result
 from uncertainty.unumbers import uint
 from uncertainty.unumbers import ufloat
-from uncertainty.anumbers import aint
-from uncertainty.anumbers import afloat
 from uncertainty.ustr import ustr
 from uncertainty.uenum import uenum
 	
@@ -25,13 +22,13 @@ class infix:
         return self.function(value1, value2)
     
 # Operator functions
-AND = infix(lambda l, r: l.AND(r) if isinstance(l, (ubool, abool, sbool)) else r.AND(l))
-OR = infix(lambda l, r: l.OR(r) if isinstance(l, (ubool, abool, sbool)) else r.OR(l))
-XOR = infix(lambda l, r: l.XOR(r) if isinstance(l, (ubool, abool, sbool)) else r.XOR(l))
-IMPLIES = infix(lambda l, r: l.IMPLIES(r) if isinstance(l, (ubool, abool, sbool)) else r.IMPLIES(l))
-EQUIVALENT = infix(lambda l, r: l.EQUIVALENT(r) if isinstance(l, (ubool, abool, sbool)) else r.EQUIVALENT(l))
-EQUALS = infix(lambda l, r: l.EQUALS(r) if isinstance(l, (ubool, abool, sbool)) else r.EQUALS(l))
-DISTINCT = infix(lambda l, r: l.DISTINCT(r) if isinstance(l, (ubool, abool, sbool)) else r.DISTINCT(l))
+AND = infix(lambda l, r: l.AND(r) if isinstance(l, (ubool, sbool)) else r.AND(l))
+OR = infix(lambda l, r: l.OR(r) if isinstance(l, (ubool, sbool)) else r.OR(l))
+XOR = infix(lambda l, r: l.XOR(r) if isinstance(l, (ubool, sbool)) else r.XOR(l))
+IMPLIES = infix(lambda l, r: l.IMPLIES(r) if isinstance(l, (ubool, sbool)) else r.IMPLIES(l))
+EQUIVALENT = infix(lambda l, r: l.EQUIVALENT(r) if isinstance(l, (ubool, sbool)) else r.EQUIVALENT(l))
+EQUALS = infix(lambda l, r: l.EQUALS(r) if isinstance(l, (ubool, sbool)) else r.EQUALS(l))
+DISTINCT = infix(lambda l, r: l.DISTINCT(r) if isinstance(l, (ubool, sbool)) else r.DISTINCT(l))
 NOT = lambda x: x.NOT()
 
 add = infix(lambda l, r: l + r)
@@ -53,7 +50,7 @@ ne = infix(lambda l, r: l != r)
 
 # Data Functions
 def is_utype(obj) -> bool:
-    return isinstance(obj, (uint, ufloat, ubool, ustr, uenum, abool, aint, afloat))
+    return isinstance(obj, (uint, ufloat, ubool, ustr, uenum))
 
 def is_ubool(obj) -> bool:
     return isinstance(obj, ubool)

@@ -17,7 +17,7 @@ def err_msg(o, e):
     return 'Obtained: ' + str(o) + ' | Expected: ' + str(e)
 
 def t(o, e):
-    assert o.equals(e) if isinstance(o, (ustr, uint, ufloat, ubool, abool, aint, afloat, sbool)) else o == e, err_msg(o, e)
+    assert o.equals(e) if isinstance(o, (ustr, uint, ufloat, ubool, sbool)) else o == e, err_msg(o, e)
 
 def execute(l, r, e, func, method, op, rev_op, special_op = None):
     t(func(l, r), e)            #   add(l, r)
@@ -34,7 +34,7 @@ def negs(l, e):
     t(neg(l),  e)
     t(l.neg(), e)
     t(-l,      e)
-
+    
 def adds(l, r, e):
     c = l.__class__ if is_utype(l) else r.__class__
     execute(l, r, e, add, c.concat if isinstance(l, ustr) or isinstance(r, ustr) else c.add, c.__add__,  c.__radd__)
