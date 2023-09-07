@@ -216,6 +216,12 @@ class uint:
         return uint(1, 0.0).div(self, 0.0)
         
     def equals(self, r: uint) -> ubool:
+        if isinstance(r, int):
+            r = uint(r)
+
+        if not isinstance(r, uint):
+            return False
+
         return self.toufloat() == r.toufloat()
     
     def distinct(self, r: uint) -> bool:
@@ -228,6 +234,10 @@ class uint:
     def uEquals(self, r: uint|ufloat) -> ubool:
         if isinstance(r, (int, float)):
             r = ufloat(r)
+
+        if not isinstance(r, (int, float)):
+            return ubool(0)
+        
         return self.toufloat() == r.toufloat()
     
     def eq(self, other) -> ubool:
@@ -505,8 +515,14 @@ class ufloat:
              see http:#faculty.washington.edu/tamre/IsHumanHeightBimodal.pdf '''
         if id(self) == id(other): return True
         
+        if isinstance(other, float):
+            other = ufloat(other)
+        
+        if not isinstance(other, ufloat):
+            return False
+
         s1 = self._u
-        s2 = other.uncertainty
+        s2 = other._u
         # non-ufloat cases first
         if s1 == 0 or s2 == 0:
             return self._x == other.value
@@ -655,6 +671,10 @@ class ufloat:
     def uEquals(self, other: uint|ufloat) -> ubool:
         if isinstance(other, (int, float)):
             other = ufloat(other)
+
+        if not isinstance(other, ufloat):
+            return ubool(0)
+
         r = self.calculate(other.toufloat())
         return ubool(r.eq)
 
@@ -722,7 +742,7 @@ class ufloat:
     def toufloat(self) -> ufloat: 
         return self
 
-    def toBestuint(self) -> uint:
+    def tobestuint(self) -> uint:
         x = int(round(self._x))
         u = math.sqrt((self._u * self._u) + (self._x - x) * (self._x - x))
         return uint(x, u)
