@@ -48,7 +48,7 @@ The derivatives of mathematical expressions are not automatically handled by the
 
 In case derivatives or these further features are needed, other libraries that provide these features could be used instead. 
  
- - For example, the [uncertainties package](https://pythonhosted.org/uncertainties) supports uncertainty progagation, variable correlation, derivatives, and integration with the [NumPy](https://numpy.org/) package for scientific computation in Python. 
+ - For example, the [uncertainties package](https://pythonhosted.org/uncertainties) supports uncertainty propagation, variable correlation, derivatives, and integration with the [NumPy](https://numpy.org/) package for scientific computation in Python. 
   
  - [soerp](https://pypi.python.org/pypi/soerp) is another uncertainty calculation package for Python that provides higher-order approximations of uncertainty. In particular, it supports a second-order analysis to error propagation. Mathematical functions, similar to those in the standard [math](http://docs.python.org/library/math.html) module, can also be evaluated directly using this package.
 
