@@ -80,6 +80,20 @@ from uncertainty.utypes import *
 
 The companion [Uncertainty Datatypes User Guide](https://github.com/atenearesearchgroup/uncertainty-datatypes-python/blob/master/docs/UserGuide.md) provides details about all supported datatypes and its associated operations.
 
+## Tests
+
+Tests are organized in different files, one for each datatype (e.g. *test_uint.py*, *test_ubool.py*). The '*.in*' files in the folder 'test/test-files' (e.g. ufloatTest.in) contains lot of tests provided using two lines for each test. The first line is the python expresion and the second its result. Tests written in the '*.in*' files are executed by '*test_files.py*'.
+
+All test can be executed using:
+
+```python
+pytest
+```
+or 
+```python
+python -m unittest
+```
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue to discuss what you would like to change.
