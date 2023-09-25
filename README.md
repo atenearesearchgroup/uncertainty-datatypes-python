@@ -44,7 +44,7 @@ Correlations between expressions are not automatically taken into account in ``U
 In any case, should there be a need to deal with dependent variables, [``uint``](https://github.com/atenearesearchgroup/uncertainty-datatypes-python/blob/master/docs/UserGuide.md#type-uint) and 
 [``ufloat``](https://github.com/atenearesearchgroup/uncertainty-datatypes-python/blob/master/docs/UserGuide.md#type-ufloat) mathematical operations allow specifying the correlation between them (see the [User Guide](https://github.com/atenearesearchgroup/uncertainty-datatypes-python/blob/master/docs/UserGuide.md/#covariance-methods)).
 
-The derivatives of mathematical expressions are not automatically handled by the ``Uncertainty Datatypes`` library, either. Again, this saves keeping track of the value of derivatives, something that also impacts performance. Other unsuported features include automatic handling of arrays of uncertain numbers, or higher-order analysis to error propagation.
+The derivatives of mathematical expressions are not automatically handled by the ``Uncertainty Datatypes`` library, either. Again, this saves keeping track of the value of derivatives, something that also impacts performance. Other unsupported features include automatic handling of arrays of uncertain numbers, or higher-order analysis to error propagation.
 
 In case derivatives or these further features are needed, other libraries that provide these features could be used instead. 
  
