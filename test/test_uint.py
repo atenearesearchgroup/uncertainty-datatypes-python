@@ -254,9 +254,7 @@ class uintTest(unittest.TestCase):
     def test_neg(self):
         ''' neg - '''
         negs(self.uia, uint( 4, 3.000))
-        negs(self.uib, uint(-2, 4.000))
-        negs(self.ufa, uint( 4, 3.000))
-        negs(self.ufb, uint(-2, 4.000))     
+        negs(self.uib, uint(-2, 4.000))  
 
     def test_pow(self):
         ''' pow ** '''
@@ -272,9 +270,9 @@ class uintTest(unittest.TestCase):
     '''
     def test_abs(self):
         ''' abs '''
-        abss(self.uia, ufloat( 4.0, 3.0))
-        abss(self.uib, ufloat( 2.0, 4.0))
-        abss(self.uic, ufloat(23.0, 5.3))
+        abss(self.uia, uint( 4, 3.000))
+        abss(self.uib, uint( 2, 4.000))
+        abss(self.uic, uint(23, 5.300))
 
     def test_sqrt(self):
         ''' sqrt '''
@@ -283,7 +281,7 @@ class uintTest(unittest.TestCase):
 
     def test_sin(self):
         ''' sin '''
-        sins(self.uib,  ufloat(0.909, 1.665))
+        sins(self.uib, ufloat(0.909, 1.665))
         sins(self.uic, ufloat(-0.846, 2.824))
 
     def test_cos(self):
@@ -319,17 +317,17 @@ class uintTest(unittest.TestCase):
 
     def test_floor(self):
         ''' floor '''
-        floors(mul(self.uia, self.fa), uint( 98, 74.160))
-        floors(mul(self.uia, self.fb), uint(-51, 37.680))
-        floors(mul(self.uib, self.fa), uint(-50, 98.880))
-        floors(mul(self.uib, self.fb), uint( 25, 50.240))
+        floors(mul(self.uia, self.uia), uint(16, 16.971))
+        floors(mul(self.uia, self.uib), uint(-8, 17.088))
+        floors(mul(self.uib, self.uia), uint(-8, 17.088))
+        floors(mul(self.uib, self.uib), uint( 4, 11.314))
 
     def test_round(self):
         ''' round '''
-        rounds(mul(self.uia, self.fa), uint( 99, 74.160))
-        rounds(mul(self.uia, self.fb), uint(-50, 37.680))
-        rounds(mul(self.uib, self.fa), uint(-49, 98.880))
-        rounds(mul(self.uib, self.fb), uint( 25, 50.240))
+        rounds(mul(self.uia, self.uia), uint(16, 16.971))
+        rounds(mul(self.uia, self.uib), uint(-8, 17.088))
+        rounds(mul(self.uib, self.uia), uint(-8, 17.088))
+        rounds(mul(self.uib, self.uib), uint( 4, 11.314))
 
     def test_max(self):
         ''' max '''

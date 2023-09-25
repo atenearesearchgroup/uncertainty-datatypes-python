@@ -1,0 +1,259 @@
+#
+# TIPO ubool
+#
+
+# Creación
+
+ubool(0.2)
+->ubool(0.2)
+
+ubool(1 - 0.4)
+->ubool(0.6)
+
+ubool(0.1)
+->ubool(0.1)
+
+ubool(0.65)
+->ubool(0.65)
+
+ubool(1 - 0.42)
+->ubool(0.58)
+
+
+# AND
+
+ubool(1 - 0.5) & ubool(1 - 0.2)
+->ubool(0.4)
+
+ubool(1 - 0.9) & ubool(0.8)
+->ubool(0.08)
+
+ubool(1 - 0.55) & ubool(0.49)
+->ubool(0.2205)
+
+False & ubool(1 - 0.49)
+->ubool(0.0)
+
+ubool(1 - 0.79) & False
+->ubool(0.0)
+
+ubool(1 - 0.79) & True
+->ubool(0.21)
+
+ubool(0.79) & True
+->ubool(0.79)
+
+# & PROPERTIES
+
+# - CONMUTATIVE
+( ubool(0.3) & ubool(0.8) ).equals( (ubool(0.8) & ubool(0.3)) )
+->True
+
+( True & ubool(0.8) ).equals( (ubool(0.8) & True) )
+->True
+
+# - ASSOCIATIVITY
+( ubool(0.4) & (ubool(1 - 0.55) & ubool(0.8)) ).equals(( (ubool(0.4) & ubool(1 - 0.55)) & ubool(0.8) ))
+->True
+
+( False & (ubool(1 - 0.55) & ubool(0.8)) ).equals(( (False & ubool(1 - 0.55)) & ubool(0.8) ))
+->True
+
+# - IDENTITY
+( ubool(1 - 0.4) & ubool(1) ).equals( ubool(1 - 0.4) )
+->True
+
+( ubool(1 - 0.4) & True ).equals( ubool(1 - 0.4) )
+->True
+
+
+# OR
+
+ubool(1 - 0.45) | ubool(1 - 0.76)
+->ubool(0.658)
+
+ubool(1 - 0.45) | ubool(0.37)
+->ubool(0.7165)
+
+ubool(0.45) | ubool(0.76)
+->ubool(0.868)
+
+False | ubool(1 - 0.49)
+->ubool(0.51)
+
+ubool(1 - 0.79) | False
+->ubool(0.21)
+
+ubool(0.79) | True
+->ubool(1.0)
+
+# | PROPERTIES
+
+# - CONMUTATIVITY
+( ubool(0.5) | ubool(0.16) ).equals( ubool(0.16) | ubool(0.5) )
+->True
+
+( False | ubool(0.16) ).equals( ubool(0.16) | False )
+->True
+
+# - ASSOCIATIVITY
+( ubool(1 - 0.1) | (ubool(1 - 0.4) | ubool(0.6)) ).equals ( (ubool(1 - 0.1) | ubool(1 - 0.4)) | ubool(0.6) )
+->True
+
+( True | (ubool(1 - 0.4) | ubool(0.6)) ).equals ( (True | ubool(1 - 0.4)) | ubool(0.6) )
+->True
+
+# - IDENTITY
+( ubool(0.4) | ubool(0) ).equals( ubool(0.4) )
+->True
+
+( ubool(1 - 0.4) | ubool(0) ).equals( ubool(1 - 0.4) )
+->True
+
+( True | ubool(0) ).equals( ubool(1) )
+->True
+
+# NOT
+
+~ubool(0)
+->ubool(1.0)
+
+~ubool(1)
+->ubool(0.0)
+
+~ubool(0.2)
+->ubool(0.8)
+
+~ubool(0.5)
+->ubool(0.5)
+
+~ubool(0.8)
+->ubool(0.2)
+
+~ubool(1 - 0)
+->ubool(0.0)
+
+~ubool(1 - 1)
+->ubool(1.0)
+
+~ubool(1 - 0.2)
+->ubool(0.2)
+
+~ubool(1 - 0.5)
+->ubool(0.5)
+
+~ubool(1 - 0.8)
+->ubool(0.8)
+
+# | PROPERTIES
+
+# NOT(NOT(A)) = A
+( ~( ~ubool(1 - 0.2)) ).equals( ubool(1 - 0.2) )
+->True
+
+( ~( ~ubool(0.2)) ).equals( ubool(0.2) )
+->True
+
+# ~(A | B) = NOT(A) & NOT(B)
+( ~(ubool(0.36) | ubool(0.39)) ).equals( (~ubool(0.36)) & (~ubool(0.39)) )
+->True
+
+( ~(ubool(1 - 0.8) | ubool(0.39)) ).equals( (~ubool(1 - 0.8)) & (~ubool(0.39)) )
+->True
+
+( ~(ubool(1 - 0.04) | ubool(1 - 0.9)) ).equals( (~ubool(1 - 0.04)) & (~ubool(1 - 0.9)) )
+->True
+
+# ~(A & B) = NOT(A) | NOT(B)
+( ~(ubool(0.36) & ubool(0.39)) ).equals( (~ubool(0.36)) | (~ubool(0.39)) )
+->True
+
+( ~(ubool(1 - 0.8) & ubool(0.39)) ).equals( (~ubool(1 - 0.8)) | (~ubool(0.39)) )
+->True
+
+( ~(ubool(1 - 0.04) & ubool(1 - 0.9)) ).equals( (~ubool(1 - 0.04)) | (~ubool(1 - 0.9)) )
+->True
+
+
+# ^
+
+ubool(1 - 0.4) ^ ubool(1 - 0.2)
+->ubool(0.2)
+
+ubool(1 - 0.2) ^ ubool(0.3)
+->ubool(0.5)
+
+ubool(0.1) ^ ubool(0.1)
+->ubool(0.0)
+
+ubool(1 - 0) ^ ubool(1 - 1)
+->ubool(1.0)
+
+False ^ ubool(1 - 0.5)
+->ubool(0.5)
+
+ubool(1 - 0.2) ^ False
+->ubool(0.8)
+
+ubool(1 - 0.6) ^ True
+->ubool(0.6)
+
+ubool( 0.3) ^ True
+->ubool(0.7)
+
+ubool( 0.0) ^ True
+->ubool(1.0)
+
+# EQUIVALENT
+
+ubool(1 - 0.2) |EQUIVALENT| ubool(1 - 0.4)
+->ubool(0.8)
+
+ubool(1 - 0.8) |EQUIVALENT| ubool(0.5)
+->ubool(0.7)
+
+ubool(0.34) |EQUIVALENT| ubool(0.56)
+->ubool(0.78)
+
+False |EQUIVALENT| ubool(1 - 0.49)
+->ubool(0.49)
+
+ubool(1 - 0.79) |EQUIVALENT| False
+->ubool(0.79)
+
+ubool(0.79) |EQUIVALENT| True
+->ubool(0.79)
+
+# UNCERTAINTY
+
+ubool(0).confidence
+->0.0
+
+ubool(0.5).confidence
+->0.5
+
+ubool(1).confidence
+->1.0
+
+
+# TRANSFORMATION
+
+# to Boolean
+
+ubool(0).tobool()
+->False
+
+ubool(0.49).tobool()
+->False
+
+ubool(0.5).tobool()
+->False
+
+ubool(0.85).tobool()
+->False
+
+ubool(0.9).tobool()
+->True
+
+ubool(1).tobool()
+->True

@@ -261,9 +261,7 @@ class ufloatTest(unittest.TestCase):
     def test_neg(self):
         ''' neg - '''
         negs(self.ufa, ufloat( 4.000, 3.000))
-        negs(self.ufb, ufloat(-2.000, 4.000))
-        negs(self.uia, ufloat( 4.000, 3.000))
-        negs(self.uib, ufloat(-2.000, 4.000))     
+        negs(self.ufb, ufloat(-2.000, 4.000))   
 
     def test_pow(self):
         ''' pow ** '''

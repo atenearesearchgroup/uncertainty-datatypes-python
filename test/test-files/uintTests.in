@@ -1,0 +1,2052 @@
+#
+# TIPO uint
+#
+
+# Creación
+
+uint(-5, 0.0)
+->uint(-5, 0.0)
+
+uint(-5, 0.5)
+->uint(-5, 0.5)
+
+uint(-5, -0.5)
+->uint(-5, 0.5)
+
+uint(-5, 2)
+->uint(-5, 2.0)
+
+uint(-5, -5)
+->uint(-5, 5.0)
+
+uint(3, 39)
+->uint(3, 39.0)
+
+uint(0, 0)
+->uint(0, 0.0)
+
+uint(3 + 4*2-3, ufloat(4, 3.3).value + 1)
+->uint(8, 5.0)
+
+
+# VALUE
+
+uint(3, 3.5).value
+->3
+
+uint(0, 2.3).value
+->0
+
+uint(-5, 0.2).value
+->-5
+
+
+# UNCERTAINTY
+
+uint(3, 3.5).uncertainty
+->3.5
+
+uint(0, 0).uncertainty
+->0.0
+
+uint(-5, 0.2).uncertainty
+->0.2
+
+# TRANSFORMATIONS
+
+uint(3, 0.5).toufloat()
+->ufloat(3.0, 0.5)
+
+uint(3, -0.5).toufloat()
+->ufloat(3.0, 0.5)
+
+uint(0, 0).toufloat()
+->ufloat(0.0, 0.0)
+
+uint(-53, 5).toufloat()
+->ufloat(-53.0, 5.0)
+
+# TO INTEGER
+
+uint(3, 0.3).toint()
+->3
+
+uint(0, 4).toint()
+->0
+
+uint(-5, 5).toint()
+->-5
+
+# TO REAL
+
+uint(3, 0.3).tofloat()
+->3.0
+
+uint(0, 0.5).tofloat()
+->0.0
+
+uint(-3, -0.5).tofloat()
+->-3.0
+
+# TO STRING
+
+str(uint(5, 0.3))
+->'uint(5, 0.3)'
+
+str(uint(5, -0.3))
+->'uint(5, 0.3)'
+
+str(uint(-5, 0.3))
+->'uint(-5, 0.3)'
+
+
+#
+# OPERACIONES
+#
+
+# ABS
+
+uint(2, 3).abs()
+->uint(2, 3.0)
+
+uint(0, 3).abs()
+->uint(0, 3.0)
+
+uint(-2, 3).abs()
+->uint(2, 3.0)
+
+
+# SQRT
+
+uint(0, 0.0).sqrt()
+->uint(0, 0.0)
+
+uint(4, 0.0).sqrt()
+->uint(2, 0.0)
+
+uint(4, 2).sqrt()
+->uint(2, 0.5)
+
+# POWER
+
+uint(0, 0).pow(3)
+->uint(0, 0.0)
+
+uint(0, 0).pow(3.5)
+->uint(0, 0.0)
+
+uint(0, 4).pow(3)
+->uint(0, 0.0)
+
+uint(0, 1).pow(3.5)
+->uint(0, 0.0)
+
+uint(3, 0).pow(0)
+->uint(1, 0.0)
+
+uint(2, 0).pow(3)
+->uint(8, 0.0)
+
+uint(4, 0).pow(-2)
+->uint(0, 0.0625)
+
+uint(4, 0).pow(1.5)
+->uint(8, 0.0)
+
+uint(2, 4).pow(4)
+->uint(16, 128.0)
+
+uint(1, 3).pow(-2)
+->uint(1, 6.0)
+
+uint(1, 2).pow(0.25)
+->uint(1, 0.5)
+
+
+# NEG
+
+uint(3, 2.3).neg()
+->uint(-3, 2.3)
+
+uint(0, 2.3).neg()
+->uint(0, 2.3)
+
+uint(-3, 2.3).neg()
+->uint(3, 2.3)
+
+# ADD
+
+uint(-9, 0) + uint(-9, 0)
+->uint(-18, 0.0)
+
+uint(-7, 0) + uint(-7, 8)
+->uint(-14, 8.0)
+
+uint(-10, 0) + uint(0, 0)
+->uint(-10, 0.0)
+
+uint(-8, 0) + uint(3, 5)
+->uint(-5, 5.0)
+
+uint(-6, 8) + uint(-6, 0)
+->uint(-12, 8.0)
+
+uint(-9, 3) + uint(-9, 4)
+->uint(-18, 5.0)
+
+uint(-9, 8) + uint(4, 0)
+->uint(-5, 8.0)
+
+uint(-3, 3) + uint(4, 4)
+->uint(1, 5.0)
+
+uint(0, 0) + uint(0, 0)
+->uint(0, 0.0)
+
+uint(0, 0) + uint(0, 0)
+->uint(0, 0.0)
+
+uint(0, 0) + uint(9, 0)
+->uint(9, 0.0)
+
+uint(0, 0) + uint(8, 4)
+->uint(8, 4.0)
+
+uint(0, 8) + uint(0, 0)
+->uint(0, 8.0)
+
+uint(0, 3) + uint(0, 4)
+->uint(0, 5.0)
+
+uint(0, 6) + uint(8, 0)
+->uint(8, 6.0)
+
+uint(0, 3) + uint(5, 4)
+->uint(5, 5.0)
+
+uint(9, 0) + uint(9, 0)
+->uint(18, 0.0)
+
+uint(7, 0) + uint(7, 0)
+->uint(14, 0.0)
+
+uint(10, 0) + uint(8, 0)
+->uint(18, 0.0)
+
+uint(8, 0) + uint(8, 7)
+->uint(16, 7.0)
+
+uint(6, 5) + uint(6, 0)
+->uint(12, 5.0)
+
+uint(9, 3) + uint(9, 4)
+->uint(18, 5.0)
+
+uint(9, 1) + uint(8, 0)
+->uint(17, 1.0)
+
+uint(3, 3) + uint(4, 4)
+->uint(7, 5.0)
+
+
+uint(-9, 0) + ufloat(-9, 0)
+->ufloat(-18.0, 0.0)
+
+uint(-7, 0) + ufloat(-7, 8)
+->ufloat(-14.0, 8.0)
+
+uint(-10, 0) + ufloat(0, 0)
+->ufloat(-10.0, 0.0)
+
+uint(-8, 0) + ufloat(3, 5)
+->ufloat(-5.0, 5.0)
+
+uint(-6, 8) + ufloat(-6, 0)
+->ufloat(-12.0, 8.0)
+
+uint(-9, 3) + ufloat(-9, 4)
+->ufloat(-18.0, 5.0)
+
+uint(-9, 8) + ufloat(4, 0)
+->ufloat(-5.0, 8.0)
+
+uint(-3, 3) + ufloat(4, 4)
+->ufloat(1.0, 5.0)
+
+uint(0, 0) + ufloat(0, 0)
+->ufloat(0.0, 0.0)
+
+uint(0, 0) + ufloat(0, 0)
+->ufloat(0.0, 0.0)
+
+uint(0, 0) + ufloat(9, 0)
+->ufloat(9.0, 0.0)
+
+uint(0, 0) + ufloat(8, 4)
+->ufloat(8.0, 4.0)
+
+uint(0, 8) + ufloat(0, 0)
+->ufloat(0.0, 8.0)
+
+uint(0, 3) + ufloat(0, 4)
+->ufloat(0.0, 5.0)
+
+uint(0, 6) + ufloat(8, 0)
+->ufloat(8.0, 6.0)
+
+uint(0, 3) + ufloat(5, 4)
+->ufloat(5.0, 5.0)
+
+uint(9, 0) + ufloat(9, 0)
+->ufloat(18.0, 0.0)
+
+uint(7, 0) + ufloat(7, 0)
+->ufloat(14.0, 0.0)
+
+uint(10, 0) + ufloat(8, 0)
+->ufloat(18.0, 0.0)
+
+uint(8, 0) + ufloat(8, 7)
+->ufloat(16.0, 7.0)
+
+uint(6, 5) + ufloat(6, 0)
+->ufloat(12.0, 5.0)
+
+uint(9, 3) + ufloat(9, 4)
+->ufloat(18.0, 5.0)
+
+uint(9, 1) + ufloat(8, 0)
+->ufloat(17.0, 1.0)
+
+uint(3, 3) + ufloat(4, 4)
+->ufloat(7.0, 5.0)
+
+
+uint(-3, 0) + -3.0
+->ufloat(-6.0, 0.0)
+
+uint(-6, 0) + -1.2
+->ufloat(-7.2, 0.0)
+
+uint(-5, 3) + -5.0
+->ufloat(-10.0, 3.0)
+
+uint(-8, 5) + -2.0
+->ufloat(-10.0, 5.0)
+
+uint(0, 0) + 0.0
+->ufloat(0.0, 0.0)
+
+uint(0, 0) + 3.0
+->ufloat(3.0, 0.0)
+
+uint(0, 3) + 0.0
+->ufloat(0.0, 3.0)
+
+uint(0, 5) + -5.0
+->ufloat(-5.0, 5.0)
+
+uint(5, 0) + 5.0
+->ufloat(10.0, 0.0)
+
+uint(3, 0) + 0.6
+->ufloat(3.6, 0.0)
+
+uint(7, 3) + 7.0
+->ufloat(14.0, 3.0)
+
+uint(2, 5) + 0.5
+->ufloat(2.5, 5.0)
+
+
+uint(-3, 0) + -3
+->uint(-6, 0.0)
+
+uint(-6, 0) + -12
+->uint(-18, 0.0)
+
+uint(-5, 3) + -5
+->uint(-10, 3.0)
+
+uint(-8, 5) + -2
+->uint(-10, 5.0)
+
+uint(0, 0) + 0
+->uint(0, 0.0)
+
+uint(0, 0) + 3
+->uint(3, 0.0)
+
+uint(0, 3) + 0
+->uint(0, 3.0)
+
+uint(0, 5) + -5
+->uint(-5, 5.0)
+
+uint(5, 0) + 5
+->uint(10, 0.0)
+
+uint(3, 0) + 56
+->uint(59, 0.0)
+
+uint(7, 3) + 7
+->uint(14, 3.0)
+
+uint(2, 5) + 65
+->uint(67, 5.0)
+
+# ADD - NEUTRO
+
+( uint(2, 5) + uint(0, 0) ).equals( uint(2, 5) )
+->True
+
+( uint(2, 5) + 0 ).equals( uint(2, 5) )
+->True
+
+( uint(2, 5) + 0.0 ).equals( ufloat(2, 5) )
+->True
+
+( uint(2, 5) + ufloat(0, 0) ).equals( ufloat(2, 5) )
+->True
+
+# ADD - CONMUTATIVA
+
+( uint(6, 3) + uint(5, 0.3) ).equals( uint(5, 0.3) + uint(6, 3) )
+->True
+
+( uint(9, 32) + 0.53 ).equals( 0.53 + uint(9, 32) )
+->True
+
+( uint(2, 3) + 5 ).equals( 5 + uint(2, 3) )
+->True
+
+( uint(9, 32) + ufloat(0.53, 3) ).equals( ufloat(0.53, 3) + uint(9, 32) )
+->True
+
+# ADD - ASSOCIATIVE
+
+( uint(6, 3) + (uint(5, 3) + uint(9,2)) ).equals( (uint(6, 3) + uint(5, 3)) + uint(9,2) )
+->True
+
+( ufloat(6, 3) + (5.3 + uint(9,2)) ).equals( (ufloat(6, 3) + 5.3) + uint(9,2) )
+->True
+
+( ufloat(6, 3) + (5 + uint(9,2)) ).equals( (ufloat(6, 3) + 5) + uint(9,2) )
+->True
+
+( uint(6, 3) + (5 + 2) ).equals( (uint(6, 3) + 5) + 2 )
+->True
+
+( 3.5 + (5 + uint(9,2)) ).equals( (3.5 + 5) + uint(9,2) )
+->True
+
+
+# MINUS - OPERATOR
+
+uint(-9, 0) - uint(-9, 0)
+->uint(0, 0.0)
+
+uint(-5, 0) - uint(-5, 3)
+->uint(0, 3.0)
+
+uint(-4, 0) - uint(2, 0)
+->uint(-6, 0.0)
+
+uint(-10, 0) - uint(4, 1)
+->uint(-14, 1.0)
+
+uint(-9, 9) - uint(-9, 0)
+->uint(0, 9.0)
+
+uint(-2, 3) - uint(-2, 4)
+->uint(0, 5.0)
+
+uint(-6, 2) - uint(5, 0)
+->uint(-11, 2.0)
+
+uint(-2, 3) - uint(4, 4)
+->uint(-6, 5.0)
+
+uint(0, 0) - uint(0, 0)
+->uint(0, 0.0)
+
+uint(0, 0) - uint(0, 4)
+->uint(0, 4.0)
+
+uint(0, 0) - uint(6, 0)
+->uint(-6, 0.0)
+
+uint(0, 0) - uint(7, 3)
+->uint(-7, 3.0)
+
+uint(0, 4) - uint(0, 0)
+->uint(0, 4.0)
+
+uint(0, 4) - uint(0, 3)
+->uint(0, 5.0)
+
+uint(0, 4) - uint(1, 0)
+->uint(-1, 4.0)
+
+uint(0, 4) - uint(2, 3)
+->uint(-2, 5.0)
+
+uint(9, 0) - uint(9, 0)
+->uint(0, 0.0)
+
+uint(5, 0) - uint(5, 3)
+->uint(0, 3.0)
+
+uint(4, 0) - uint(8, 0)
+->uint(-4, 0.0)
+
+uint(10, 0) - uint(10, 12)
+->uint(0, 12.0)
+
+uint(9, 5) - uint(9, 0)
+->uint(0, 5.0)
+
+uint(2, 3) - uint(2, 4)
+->uint(0, 5.0)
+
+uint(6, 1) - uint(4, 0)
+->uint(2, 1.0)
+
+uint(2, 3) - uint(5, 4)
+->uint(-3, 5.0)
+
+
+uint(-9, 0) - ufloat(-9, 0)
+->ufloat(0.0, 0.0)
+
+uint(-5, 0) - ufloat(-5, 3)
+->ufloat(0.0, 3.0)
+
+uint(-4, 0) - ufloat(2, 0)
+->ufloat(-6.0, 0.0)
+
+uint(-10, 0) - ufloat(4, 1)
+->ufloat(-14.0, 1.0)
+
+uint(-9, 9) - ufloat(-9, 0)
+->ufloat(0.0, 9.0)
+
+uint(-2, 3) - ufloat(-2, 4)
+->ufloat(0.0, 5.0)
+
+uint(-6, 2) - ufloat(5, 0)
+->ufloat(-11.0, 2.0)
+
+uint(-2, 3) - ufloat(4, 4)
+->ufloat(-6.0, 5.0)
+
+uint(0, 0) - ufloat(0, 0)
+->ufloat(0.0, 0.0)
+
+uint(0, 0) - ufloat(0, 4)
+->ufloat(0.0, 4.0)
+
+uint(0, 0) - ufloat(6, 0)
+->ufloat(-6.0, 0.0)
+
+uint(0, 0) - ufloat(7, 3)
+->ufloat(-7.0, 3.0)
+
+uint(0, 4) - ufloat(0, 0)
+->ufloat(0.0, 4.0)
+
+uint(0, 4) - ufloat(0, 3)
+->ufloat(0.0, 5.0)
+
+uint(0, 4) - ufloat(1, 0)
+->ufloat(-1.0, 4.0)
+
+uint(0, 4) - ufloat(2, 3)
+->ufloat(-2.0, 5.0)
+
+uint(9, 0) - ufloat(9, 0)
+->ufloat(0.0, 0.0)
+
+uint(5, 0) - ufloat(5, 3)
+->ufloat(0.0, 3.0)
+
+uint(4, 0) - ufloat(8, 0)
+->ufloat(-4.0, 0.0)
+
+uint(10, 0) - ufloat(10, 12)
+->ufloat(0.0, 12.0)
+
+uint(9, 5) - ufloat(9, 0)
+->ufloat(0.0, 5.0)
+
+uint(2, 3) - ufloat(2, 4)
+->ufloat(0.0, 5.0)
+
+uint(6, 1) - ufloat(4, 0)
+->ufloat(2.0, 1.0)
+
+uint(2, 3) - ufloat(5, 4)
+->ufloat(-3.0, 5.0)
+
+
+uint(-3, 0) - -3.0
+->ufloat(0.0, 0.0)
+
+uint(-6, 0) - -1.2
+->ufloat(-4.8, 0.0)
+
+uint(-5, 3) - -5.0
+->ufloat(0.0, 3.0)
+
+uint(-8, 5) - -2.0
+->ufloat(-6.0, 5.0)
+
+uint(0, 0) - 0.0
+->ufloat(0.0, 0.0)
+
+uint(0, 0) - 3.0
+->ufloat(-3.0, 0.0)
+
+uint(0, 3) - 0.0
+->ufloat(0.0, 3.0)
+
+uint(0, 5) - -5.0
+->ufloat(5.0, 5.0)
+
+uint(5, 0) - 5.0
+->ufloat(0.0, 0.0)
+
+uint(3, 0) - 0.6
+->ufloat(2.4, 0.0)
+
+uint(7, 3) - 7.0
+->ufloat(0.0, 3.0)
+
+uint(2, 5) - 0.5
+->ufloat(1.5, 5.0)
+
+
+uint(-3, 0) - -3
+->uint(0, 0.0)
+
+uint(-6, 0) - -12
+->uint(6, 0.0)
+
+uint(-5, 3) - -5
+->uint(0, 3.0)
+
+uint(-8, 5) - -2
+->uint(-6, 5.0)
+
+uint(0, 0) - 0
+->uint(0, 0.0)
+
+uint(0, 0) - 3
+->uint(-3, 0.0)
+
+uint(0, 3) - 0
+->uint(0, 3.0)
+
+uint(0, 5) - -5
+->uint(5, 5.0)
+
+uint(5, 0) - 5
+->uint(0, 0.0)
+
+uint(3, 0) - 56
+->uint(-53, 0.0)
+
+uint(7, 3) - 7
+->uint(0, 3.0)
+
+uint(2, 5) - 65
+->uint(-63, 5.0)
+
+
+# MINUS - ANTI-COMMUTATIVE
+
+( uint(3, 4) - uint(5, 2) ).equals( -(uint(5, 2) - uint(3, 4)) )
+->True
+
+( uint(3, 4) - 5 ).equals( -(5 - uint(3, 4)) )
+->True
+
+( 4.3 - uint(5, 2) ).equals( -(uint(5, 2) - 4.3) )
+->True
+
+( uint(3, 4) - ufloat(5, 2) ).equals( -(uint(5, 2) - ufloat(3, 4)) )
+->True
+
+# MINUS - NON-ASSOCIATIVE
+
+( uint(3, 4) - (uint(5, 2) - uint(2, 0.53)) ).equals( (uint(3, 4) - uint(5, 2)) - uint(2, 0.53) )
+->False
+
+( uint(3, 0) - (uint(5, 0) - ufloat(2, 0)) ).equals( (uint(3, 0) - uint(5, 0)) - ufloat(2, 0) )
+->False
+
+( uint(3, 0) - (5 - ufloat(2, 0)) ).equals( (uint(3, 0) - 5) - ufloat(2, 0) )
+->False
+
+( uint(3, 0) - (5 - 2.2) ).equals( (uint(3, 0) - 5) - 2.2 )
+->False
+
+
+# MULT - OPERATOR
+
+uint(-9, 0) * uint(-9, 0)
+->uint(81, 0.0)
+
+uint(-5, 0) * uint(-5, 3)
+->uint(25, 15.0)
+
+uint(-4, 0) * uint(2, 0)
+->uint(-8, 0.0)
+
+uint(-10, 0) * uint(4, 1)
+->uint(-40, 10.0)
+
+uint(-9, 9) * uint(-9, 0)
+->uint(81, 81.0)
+
+uint(-2, 3) * uint(-2, 4)
+->uint(4, 10.0)
+
+uint(-6, 2) * uint(5, 0)
+->uint(-30, 10.0)
+
+uint(-2, 3) * uint(2, 4)
+->uint(-4, 10.0)
+
+uint(0, 0) * uint(0, 0)
+->uint(0, 0.0)
+
+uint(0, 0) * uint(0, 4)
+->uint(0, 0.0)
+
+uint(0, 0) * uint(6, 0)
+->uint(0, 0.0)
+
+uint(0, 0) * uint(7, 3)
+->uint(0, 0.0)
+
+uint(0, 4) * uint(0, 0)
+->uint(0, 0.0)
+
+uint(0, 4) * uint(0, 3)
+->uint(0, 0.0)
+
+uint(0, 4) * uint(1, 0)
+->uint(0, 4.0)
+
+uint(0, 4) * uint(2, 3)
+->uint(0, 8.0)
+
+uint(9, 0) * uint(9, 0)
+->uint(81, 0.0)
+
+uint(5, 0) * uint(5, 3)
+->uint(25, 15.0)
+
+uint(4, 0) * uint(8, 0)
+->uint(32, 0.0)
+
+uint(10, 0) * uint(10, 12)
+->uint(100, 120.0)
+
+uint(9, 5) * uint(9, 0)
+->uint(81, 45.0)
+
+uint(2, 3) * uint(2, 4)
+->uint(4, 10.0)
+
+uint(6, 1) * uint(4, 0)
+->uint(24, 4.0)
+
+uint(2, 3) * uint(5, 4)
+->uint(10, 17.0)
+
+
+uint(-9, 0) * ufloat(-9, 0)
+->ufloat(81.0, 0.0)
+
+uint(-5, 0) * ufloat(-5, 3)
+->ufloat(25.0, 15.0)
+
+uint(-4, 0) * ufloat(2, 0)
+->ufloat(-8.0, 0.0)
+
+uint(-10, 0) * ufloat(4, 1)
+->ufloat(-40.0, 10.0)
+
+uint(-9, 9) * ufloat(-9, 0)
+->ufloat(81.0, 81.0)
+
+uint(-2, 3) * ufloat(-2, 4)
+->ufloat(4.0, 10.0)
+
+uint(-6, 2) * ufloat(5, 0)
+->ufloat(-30.0, 10.0)
+
+uint(-2, 3) * ufloat(2, 4)
+->ufloat(-4.0, 10.0)
+
+uint(0, 0) * ufloat(0, 0)
+->ufloat(0.0, 0.0)
+
+uint(0, 0) * ufloat(0, 4)
+->ufloat(0.0, 0.0)
+
+uint(0, 0) * ufloat(6, 0)
+->ufloat(0.0, 0.0)
+
+uint(0, 0) * ufloat(7, 3)
+->ufloat(0.0, 0.0)
+
+uint(0, 4) * ufloat(0, 0)
+->ufloat(0.0, 0.0)
+
+uint(0, 4) * ufloat(0, 3)
+->ufloat(0.0, 0.0)
+
+uint(0, 4) * ufloat(1, 0)
+->ufloat(0.0, 4.0)
+
+uint(0, 4) * ufloat(2, 3)
+->ufloat(0.0, 8.0)
+
+uint(9, 0) * ufloat(9, 0)
+->ufloat(81.0, 0.0)
+
+uint(5, 0) * ufloat(5, 3)
+->ufloat(25.0, 15.0)
+
+uint(4, 0) * ufloat(8, 0)
+->ufloat(32.0, 0.0)
+
+uint(10, 0) * ufloat(10, 12)
+->ufloat(100.0, 120.0)
+
+uint(9, 5) * ufloat(9, 0)
+->ufloat(81.0, 45.0)
+
+uint(2, 3) * ufloat(2, 4)
+->ufloat(4.0, 10.0)
+
+uint(6, 1) * ufloat(4, 0)
+->ufloat(24.0, 4.0)
+
+uint(2, 3) * ufloat(5, 4)
+->ufloat(10.0, 17.0)
+
+
+uint(-3, 0) * -3.0
+->ufloat(9.0, 0.0)
+
+uint(-6, 0) * -1.2
+->ufloat(7.2, 0.0)
+
+uint(-5, 3) * -5.0
+->ufloat(25.0, 15.0)
+
+uint(-8, 5) * -2.0
+->ufloat(16.0, 10.0)
+
+uint(0, 0) * 0.0
+->ufloat(0.0, 0.0)
+
+uint(0, 0) * 3.0
+->ufloat(0.0, 0.0)
+
+uint(0, 3) * 0.0
+->ufloat(0.0, 0.0)
+
+uint(0, 5) * -5.0
+->ufloat(0.0, 25.0)
+
+uint(5, 0) * 5.0
+->ufloat(25.0, 0.0)
+
+uint(3, 0) * 0.6
+->ufloat(1.8, 0.0)
+
+uint(7, 3) * 7.0
+->ufloat(49.0, 21.0)
+
+uint(2, 5) * 0.5
+->ufloat(1.0, 2.5)
+
+
+uint(-3, 0) * -3
+->uint(9, 0.0)
+
+uint(-6, 0) * -12
+->uint(72, 0.0)
+
+uint(-5, 3) * -5
+->uint(25, 15.0)
+
+uint(-8, 5) * -2
+->uint(16, 10.0)
+
+uint(0, 0) * 0
+->uint(0, 0.0)
+
+uint(0, 0) * 3
+->uint(0, 0.0)
+
+uint(0, 3) * 0
+->uint(0, 0.0)
+
+uint(0, 5) * -5
+->uint(0, 25.0)
+
+uint(5, 0) * 5
+->uint(25, 0.0)
+
+uint(3, 0) * 56
+->uint(168, 0.0)
+
+uint(7, 3) * 7
+->uint(49, 21.0)
+
+uint(2, 5) * 65
+->uint(130, 325.0)
+
+# MULTIPLY - COMMUTATIVE
+
+( uint(3, 2) * uint(5, 2) ).equals( uint(5, 2) * uint(3, 2) )
+->True
+
+( uint(3, 2) * ufloat(5, 0) ).equals( uint(5, 0) * ufloat(3, 2) )
+->True
+
+( uint(3, 2) * 5 ).equals( 5 * uint(3, 2) )
+->True
+
+( uint(3, 2) * -5.53 ).equals( -5.53 * uint(3, 2) )
+->True
+
+# MULTIPLY - ASSOCIATIVE
+
+( uint(3, 5) * (uint(5, 1) * uint(1, 2)) ).equals( (uint(3, 5) * uint(5, 1)) * uint(1, 2) )
+->True
+
+( uint(3, 5) * (5.1 * ufloat(1, 2)) ).equals( (uint(3, 5) * 5.1) * ufloat(1, 2) )
+->True
+
+( uint(3, 5) * (5.1 * 1.2) ).equals( (uint(3, 5) * 5.1) * 1.2 )
+->True
+
+( uint(3, 5) * (5 * uint(1, 2)) ).equals( (uint(3, 5) * 5) * uint(1, 2) )
+->True
+
+( uint(3, 5) * (5 * 1.2) ).equals( (uint(3, 5) * 5) * 1.2 )
+->True
+
+( uint(3, 5) * (5 * 2) ).equals( (uint(3, 5) * 5) * 2 )
+->True
+
+# MULTIPLY - NON DISTRIBUTIVE + WITH NON SCALAR MULTIPLIER
+
+( uint(2,1) * (uint(3,1) + uint(5, 0.2)) ).equals( uint(2,1) * uint(3,1) +  uint(2,1) * uint(5, 0.2) )
+->False
+
+# MULTIPLY - DISTRIBUTIVE + WITH SCALAR MULTIPLIER
+
+( 5.1 * (uint(3, 2) + uint(1, 2)) ).equals( (5.1 * uint(3, 2)) + (5.1 * uint(1, 2)) )
+->True
+
+( 2 * (uint(3, 2) + uint(1, 2)) ).equals( (2 * uint(3, 2)) + (2 * uint(1, 2)) )
+->True
+
+# MULTIPLY - A * 1 = 1
+
+( uint(3, 2) * uint(1, 0) ).equals( uint(3, 2) )
+->True
+
+( uint(3, 2) * 1 ).equals( uint(3, 2) )
+->True
+
+( uint(3, 2) * 1.0 ).equals( ufloat(3, 2) )
+->True
+
+
+# DIVISION "/"
+
+uint(-9, 0) / uint(-9, 0)
+->ufloat(1.0, 0.0)
+
+uint(-5, 0) / uint(-5, 3)
+->ufloat(1.0, 0.12)
+
+uint(-4, 0) / uint(2, 0)
+->ufloat(-2.0, 0.0)
+
+uint(-10, 0) / uint(4, 1)
+->ufloat(-2.5, 0.0625)
+
+uint(-9, 9) / uint(-9, 0)
+->ufloat(1.0, 1.0)
+
+uint(-2, 3) / uint(-2, 4)
+->ufloat(1.0, 2.9154759474)
+
+uint(-6, 2) / uint(5, 0)
+->ufloat(-1.2, 0.4)
+
+uint(-2, 3) / uint(2, 4)
+->ufloat(-1.0, 2.9154759474)
+
+uint(0, 0) / uint(6, 0)
+->ufloat(0.0, 0.0)
+
+uint(0, 0) / uint(7, 3)
+->ufloat(0.0, 0.0612244898)
+
+uint(0, 4) / uint(1, 0)
+->ufloat(0.0, 4.0)
+
+uint(0, 4) / uint(2, 3)
+->ufloat(0.0, 2.8284271247)
+
+uint(9, 0) / uint(9, 0)
+->ufloat(1.0, 0.0)
+
+uint(5, 0) / uint(5, 3)
+->ufloat(1.0, 0.12)
+
+uint(4, 0) / uint(8, 0)
+->ufloat(0.5, 0.0)
+
+uint(10, 0) / uint(10, 12)
+->ufloat(1.0, 0.12)
+
+uint(9, 5) / uint(9, 0)
+->ufloat(1.0, 0.5555555556)
+
+uint(2, 3) / uint(2, 4)
+->ufloat(1.0, 2.9154759474)
+
+uint(6, 1) / uint(4, 0)
+->ufloat(1.5, 0.25)
+
+uint(2, 3) / uint(5, 4)
+->ufloat(0.4, 1.379275172)
+
+
+uint(-9, 0) / ufloat(-9, 0)
+->ufloat(1.0, 0.0)
+
+uint(-5, 0) / ufloat(-5, 3)
+->ufloat(1.0, 0.12)
+
+uint(-4, 0) / ufloat(2, 0)
+->ufloat(-2.0, 0.0)
+
+uint(-10, 0) / ufloat(4, 1)
+->ufloat(-2.5, 0.0625)
+
+uint(-9, 9) / ufloat(-9, 0)
+->ufloat(1.0, 1.0)
+
+uint(-2, 3) / ufloat(-2, 4)
+->ufloat(1.0, 2.9154759474)
+
+uint(-6, 2) / ufloat(5, 0)
+->ufloat(-1.2, 0.4)
+
+uint(-2, 3) / ufloat(2, 4)
+->ufloat(-1.0, 2.9154759474)
+
+uint(0, 0) / ufloat(6, 0)
+->ufloat(0.0, 0.0)
+
+uint(0, 0) / ufloat(7, 3)
+->ufloat(0.0, 0.0612244898)
+
+uint(0, 4) / ufloat(1, 0)
+->ufloat(0.0, 4.0)
+
+uint(0, 4) / ufloat(2, 3)
+->ufloat(0.0, 2.8284271247)
+
+uint(9, 0) / ufloat(9, 0)
+->ufloat(1.0, 0.0)
+
+uint(5, 0) / ufloat(5, 3)
+->ufloat(1.0, 0.12)
+
+uint(4, 0) / ufloat(8, 0)
+->ufloat(0.5, 0.0)
+
+uint(10, 0) / ufloat(10, 12)
+->ufloat(1.0, 0.12)
+
+uint(9, 5) / ufloat(9, 0)
+->ufloat(1.0, 0.5555555556)
+
+uint(2, 3) / ufloat(2, 4)
+->ufloat(1.0, 2.9154759474)
+
+uint(6, 1) / ufloat(4, 0)
+->ufloat(1.5, 0.25)
+
+uint(2, 3) / ufloat(5, 4)
+->ufloat(0.4, 1.379275172)
+
+
+uint(-3, 0) / -3.0
+->ufloat(1.0, 0.0)
+
+uint(-6, 0) / -1.2
+->ufloat(5.0, 0.0)
+
+uint(-5, 3) / -5.0
+->ufloat(1.0, 0.6)
+
+uint(-8, 5) / -2.0
+->ufloat(4.0, 2.5)
+
+uint(0, 0) / 3.0
+->ufloat(0.0, 0.0)
+
+uint(0, 5) / -5.0
+->ufloat(0.0, 1.0)
+
+uint(5, 0) / 5.0
+->ufloat(1.0, 0.0)
+
+uint(3, 0) / 0.6
+->ufloat(5.0, 0.0)
+
+uint(7, 3) / 7.0
+->ufloat(1.0, 0.4285714286)
+
+uint(2, 5) / 0.5
+->ufloat(4.0, 10.0)
+
+
+uint(-3, 0) / -3
+->ufloat(1.0, 0.0)
+
+uint(-6, 0) / -12
+->ufloat(0.5, 0.0)
+
+uint(-5, 3) / -5
+->ufloat(1.0, 0.6)
+
+uint(-8, 5) / -2
+->ufloat(4.0, 2.5)
+
+uint(0, 0) / 3
+->ufloat(0.0, 0.0)
+
+uint(0, 5) / -5
+->ufloat(0.0, 1.0)
+
+uint(5, 0) / 5
+->ufloat(1.0, 0.0)
+
+uint(3, 0) / 56
+->ufloat(0.0535714286, 0.0)
+
+uint(7, 3) / 7
+->ufloat(1.0, 0.4285714286)
+
+uint(2, 5) / 65
+->ufloat(0.0307692308, 0.0769230769)
+
+# DIVISION - COMPATIBILITY BETWEEN IVN() AND /
+( uint(2, 3).toufloat().inverse() ).equals( 1 / uint(2, 3) )
+->True
+
+# DIVISION - NON CONMUTATIVE
+( uint(2, 3) / uint(1, 0.5) ).equals( uint(1, 0.5) / uint(2, 3) )
+->False
+
+( 2.3 / uint(1, 0.5) ).equals( uint(1, 0.5) / 2.3 )
+->False
+
+( 2 / uint(1, 0.5) ).equals( uint(1, 0.5) / 2 )
+->False
+
+# DIVISION - NON ASSOCIATIVE
+
+( uint(2, 3) / (uint(1, 0.5) / uint(4, 0.25)) ).equals( (uint(2, 3) / uint(1, 0.5)) / uint(4, 0.25) )
+->False
+
+( uint(2, 3) / (12.59 / uint(3, 0.25)) ).equals( (uint(2, 3) / 12.59) / uint(3, 0.25) )
+->False
+
+( uint(2, 3) / (12 / uint(3, 0.25)) ).equals( (uint(2, 3) / 12) / uint(3, 0.25) )
+->False
+
+# DIVISION ->A / 1 = A
+
+( uint(2, 3) / 1 ).equals( uint(2, 3).toufloat() )
+->True
+
+
+# INTEGER DIVISION
+
+uint(-9, 0) / uint(-9, 0)
+->uint(1, 0.0)
+
+uint(-5, 0) / uint(-5, 3)
+->uint(1, 0.12)
+
+uint(-4, 0) / uint(2, 0)
+->uint(-2, 0.0)
+
+uint(-10, 0) / uint(4, 1)
+->uint(-2, 0.0625)
+
+uint(-9, 9) / uint(-9, 0)
+->uint(1, 1.0)
+
+uint(-2, 3) / uint(-2, 4)
+->uint(1, 2.9154759474)
+
+uint(-6, 2) / uint(5, 0)
+->uint(-1, 0.4)
+
+uint(-2, 3) / uint(2, 4)
+->uint(-1, 2.9154759474)
+
+uint(0, 0) / uint(6, 0)
+->uint(0, 0.0)
+
+uint(0, 0) / uint(7, 3)
+->uint(0, 0.0612244898)
+
+uint(0, 4) / uint(1, 0)
+->uint(0, 4.0)
+
+uint(0, 4) / uint(2, 3)
+->uint(0, 2.8284271247)
+
+uint(9, 0) / uint(9, 0)
+->uint(1, 0.0)
+
+uint(5, 0) / uint(5, 3)
+->uint(1, 0.12)
+
+uint(4, 0) / uint(8, 0)
+->uint(0, 0.0)
+
+uint(10, 0) / uint(10, 12)
+->uint(1, 0.12)
+
+uint(9, 5) / uint(9, 0)
+->uint(1, 0.5555555556)
+
+uint(2, 3) / uint(2, 4)
+->uint(1, 2.9154759474)
+
+uint(6, 1) / uint(4, 0)
+->uint(1, 0.25)
+
+uint(2, 3) / uint(5, 4)
+->uint(0, 1.379275172)
+
+
+uint(-3, 0) / -3
+->uint(1, 0.0)
+
+uint(-6, 0) / -12
+->uint(0, 0.0)
+
+uint(-5, 3) / -5
+->uint(1, 0.6)
+
+uint(-8, 5) / -2
+->uint(4, 2.5)
+
+uint(0, 0) / 3
+->uint(0, 0.0)
+
+uint(0, 5) / -5
+->uint(0, 1.0)
+
+uint(5, 0) / 5
+->uint(1, 0.0)
+
+uint(3, 0) / 56
+->uint(0, 0.0)
+
+uint(7, 3) / 7
+->uint(1, 0.4285714286)
+
+uint(2, 5) / 65
+->uint(0, 0.0769230769)
+
+
+# MOD OPERATION
+
+uint(-9, 0).mod(uint(-9, 0))
+->uint(0, 0.0)
+
+uint(-5, 0).mod(uint(-5, 3))
+->uint(0, 0.12)
+
+uint(-4, 0).mod(uint(2, 0))
+->uint(0, 0.0)
+
+uint(-10, 0).mod(uint(4, 1))
+->uint(-2, 0.0625)
+
+uint(-9, 9).mod(uint(-9, 0))
+->uint(0, 1.0)
+
+uint(-2, 3).mod(uint(-2, 4))
+->uint(0, 2.9154759474)
+
+uint(-6, 2).mod(uint(5, 0))
+->uint(-1, 0.4)
+
+uint(-2, 3).mod(uint(2, 4))
+->uint(0, 2.9154759474)
+
+uint(0, 0).mod(uint(6, 0))
+->uint(0, 0.0)
+
+uint(0, 0).mod(uint(7, 3))
+->uint(0, 0.0612244898)
+
+uint(0, 4).mod(uint(1, 0))
+->uint(0, 4.0)
+
+uint(0, 4).mod(uint(2, 3))
+->uint(0, 2.8284271247)
+
+uint(9, 0).mod(uint(9, 0))
+->uint(0, 0.0)
+
+uint(5, 0).mod(uint(5, 3))
+->uint(0, 0.12)
+
+uint(4, 0).mod(uint(8, 0))
+->uint(4, 0.0)
+
+uint(10, 0).mod(uint(10, 12))
+->uint(0, 0.12)
+
+uint(9, 5).mod(uint(9, 0))
+->uint(0, 0.5555555556)
+
+uint(2, 3).mod(uint(2, 4))
+->uint(0, 2.9154759474)
+
+uint(6, 1).mod(uint(4, 0))
+->uint(2, 0.25)
+
+uint(2, 3).mod(uint(5, 4))
+->uint(2, 1.379275172)
+
+
+uint(-3, 0).mod(-3)
+->uint(0, 0.0)
+
+uint(-6, 0).mod(-12)
+->uint(-6, 0.0)
+
+uint(-5, 3).mod(-5)
+->uint(0, 0.6)
+
+uint(-8, 5).mod(-2)
+->uint(0, 2.5)
+
+uint(0, 0).mod(3)
+->uint(0, 0.0)
+
+uint(0, 5).mod(-5)
+->uint(0, 1.0)
+
+uint(5, 0).mod(5)
+->uint(0, 0.0)
+
+uint(3, 0).mod(56)
+->uint(3, 0.0)
+
+uint(7, 3).mod(7)
+->uint(0, 0.4285714286)
+
+uint(2, 5).mod(65)
+->uint(2, 0.0769230769)
+
+
+# Comparaciones
+
+# Less than
+
+(uint(0, 0) < uint(0, 0)).tobool()
+->False
+
+(uint(0, 0) < uint(1, 0)).tobool()
+->True
+
+(uint(3, 0) < uint(0, 0)).tobool()
+->False
+
+(uint(0, 0) < uint(3, 2)).tobool()
+->True
+
+(uint(3, 0) < uint(0, 2)).tobool()
+->False
+
+(uint(0, 2) < uint(3, 0)).tobool()
+->True
+
+(uint(3, 2) < uint(0, 0)).tobool()
+->False
+
+(uint(0, 2) < uint(0, 2)).tobool()
+->False
+
+(uint(0, 2) < uint(0, 1)).tobool()
+->False
+
+(uint(0, 2) < uint(1, 0.25)).tobool()
+->True
+
+(uint(0, 2) < uint(-1, 0.25)).tobool()
+->False
+
+(uint(0, 2) < uint(5, 2)).tobool()
+->True
+
+(uint(5, 2) < uint(0, 2)).tobool()
+->False
+
+
+(uint(0, 0) < ufloat(0, 0)).tobool()
+->False
+
+(uint(0, 0) < ufloat(1, 0)).tobool()
+->True
+
+(uint(3, 0) < ufloat(0, 0)).tobool()
+->False
+
+(uint(0, 0) < ufloat(3, 2)).tobool()
+->True
+
+(uint(3, 0) < ufloat(0, 2)).tobool()
+->False
+
+(uint(0, 2) < ufloat(3, 0)).tobool()
+->True
+
+(uint(3, 2) < ufloat(0, 0)).tobool()
+->False
+
+(uint(0, 2) < ufloat(0, 2)).tobool()
+->False
+
+(uint(0, 2) < ufloat(0, 1)).tobool()
+->False
+
+(uint(0, 2) < ufloat(1, 0.25)).tobool()
+->True
+
+(uint(0, 2) < ufloat(-1, 0.25)).tobool()
+->False
+
+(uint(0, 2) < ufloat(5, 2)).tobool()
+->True
+
+(uint(5, 2) < ufloat(0, 2)).tobool()
+->False
+
+
+(uint(0, 0) < 0).tobool()
+->False
+
+(uint(0, 0) < 1).tobool()
+->True
+
+(uint(1, 0) < 0).tobool()
+->False
+
+(uint(0, 2) < 3).tobool()
+->True
+
+(uint(3, 2) < 0).tobool()
+->False
+
+
+# LESS OR EQUAL
+
+(uint(0, 0) <= uint(0, 0)).tobool()
+->True
+
+(uint(0, 0) <= uint(1, 0)).tobool()
+->True
+
+(uint(3, 0) <= uint(0, 0)).tobool()
+->False
+
+(uint(0, 0) <= uint(3, 2)).tobool()
+->True
+
+(uint(3, 0) <= uint(0, 2)).tobool()
+->False
+
+(uint(0, 2) <= uint(3, 0)).tobool()
+->True
+
+(uint(3, 2) <= uint(0, 0)).tobool()
+->False
+
+(uint(0, 2) <= uint(0, 2)).tobool()
+->True
+
+(uint(0, 2) <= uint(0, 1)).tobool()
+->True
+
+(uint(0, 2) <= uint(1, 0.25)).tobool()
+->True
+
+(uint(0, 2) <= uint(-1, 0.25)).tobool()
+->False
+
+(uint(0, 2) <= uint(5, 2)).tobool()
+->True
+
+(uint(5, 2) <= uint(0, 2)).tobool()
+->False
+
+
+(uint(0, 0) <= ufloat(0, 0)).tobool()
+->True
+
+(uint(0, 0) <= ufloat(1, 0)).tobool()
+->True
+
+(uint(3, 0) <= ufloat(0, 0)).tobool()
+->False
+
+(uint(0, 0) <= ufloat(3, 2)).tobool()
+->True
+
+(uint(3, 0) <= ufloat(0, 2)).tobool()
+->False
+
+(uint(0, 2) <= ufloat(3, 0)).tobool()
+->True
+
+(uint(3, 2) <= ufloat(0, 0)).tobool()
+->False
+
+(uint(0, 2) <= ufloat(0, 2)).tobool()
+->True
+
+(uint(0, 2) <= ufloat(0, 1)).tobool()
+->True
+
+(uint(0, 2) <= ufloat(1, 0.25)).tobool()
+->True
+
+(uint(0, 2) <= ufloat(-1, 0.25)).tobool()
+->False
+
+(uint(0, 2) <= ufloat(5, 2)).tobool()
+->True
+
+(uint(5, 2) <= ufloat(0, 2)).tobool()
+->False
+
+
+(uint(0, 0) <= 0).tobool()
+->True
+
+(uint(0, 0) <= 1).tobool()
+->True
+
+(uint(1, 0) <= 0).tobool()
+->False
+
+(uint(0, 2) <= 3).tobool()
+->True
+
+(uint(3, 2) <= 0).tobool()
+->False
+
+
+(uint(0, 0) <= 0.0).tobool()
+->True
+
+(uint(0, 0) <= 1.0).tobool()
+->True
+
+(uint(1, 0) <= 0.0).tobool()
+->False
+
+(uint(0, 2) <= 3.0).tobool()
+->True
+
+(uint(3, 2) <= 0.0).tobool()
+->False
+
+
+# GREATER THAN
+
+(uint(0, 0) > uint(0, 0)).tobool()
+->False
+
+(uint(0, 0) > uint(1, 0)).tobool()
+->False
+
+(uint(3, 0) > uint(0, 0)).tobool()
+->True
+
+(uint(0, 0) > uint(3, 2)).tobool()
+->False
+
+(uint(3, 0) > uint(0, 2)).tobool()
+->True
+
+(uint(0, 2) > uint(3, 0)).tobool()
+->False
+
+(uint(3, 2) > uint(0, 0)).tobool()
+->True
+
+(uint(0, 2) > uint(0, 2)).tobool()
+->False
+
+(uint(0, 2) > uint(0, 1)).tobool()
+->False
+
+(uint(0, 2) > uint(1, 0.25)).tobool()
+->False
+
+(uint(0, 2) > uint(-1, 0.25)).tobool()
+->True
+
+(uint(0, 2) > uint(5, 2)).tobool()
+->False
+
+(uint(5, 2) > uint(0, 2)).tobool()
+->True
+
+
+(uint(0, 0) > ufloat(0, 0)).tobool()
+->False
+
+(uint(0, 0) > ufloat(1, 0)).tobool()
+->False
+
+(uint(3, 0) > ufloat(0, 0)).tobool()
+->True
+
+(uint(0, 0) > ufloat(3, 2)).tobool()
+->False
+
+(uint(3, 0) > ufloat(0, 2)).tobool()
+->True
+
+(uint(0, 2) > ufloat(3, 0)).tobool()
+->False
+
+(uint(3, 2) > ufloat(0, 0)).tobool()
+->True
+
+(uint(0, 2) > ufloat(0, 2)).tobool()
+->False
+
+(uint(0, 2) > ufloat(0, 1)).tobool()
+->False
+
+(uint(0, 2) > ufloat(1, 0.25)).tobool()
+->False
+
+(uint(0, 2) > ufloat(-1, 0.25)).tobool()
+->True
+
+(uint(0, 2) > ufloat(5, 2)).tobool()
+->False
+
+(uint(5, 2) > ufloat(0, 2)).tobool()
+->True
+
+
+(uint(0, 0) > 0).tobool()
+->False
+
+(uint(0, 0) > 1).tobool()
+->False
+
+(uint(1, 0) > 0).tobool()
+->True
+
+(uint(0, 2) > 3).tobool()
+->False
+
+(uint(3, 2) > 0).tobool()
+->True
+
+
+(uint(0, 0) > 0.0).tobool()
+->False
+
+(uint(0, 0) > 1.0).tobool()
+->False
+
+(uint(1, 0) > 0.0).tobool()
+->True
+
+(uint(0, 2) > 3.0).tobool()
+->False
+
+(uint(3, 2) > 0.0).tobool()
+->True
+
+
+# GREATER OR EQUAL THAN
+
+(uint(0, 0) >= uint(0, 0)).tobool()
+->True
+
+(uint(0, 0) >= uint(1, 0)).tobool()
+->False
+
+(uint(3, 0) >= uint(0, 0)).tobool()
+->True
+
+(uint(0, 0) >= uint(3, 2)).tobool()
+->False
+
+(uint(3, 0) >= uint(0, 2)).tobool()
+->True
+
+(uint(0, 2) >= uint(3, 0)).tobool()
+->False
+
+(uint(3, 2) >= uint(0, 0)).tobool()
+->True
+
+(uint(0, 2) >= uint(0, 2)).tobool()
+->True
+
+(uint(0, 2) >= uint(0, 1)).tobool()
+->True
+
+(uint(0, 2) >= uint(1, 0.25)).tobool()
+->False
+
+(uint(0, 2) >= uint(-1, 0.25)).tobool()
+->True
+
+(uint(0, 2) >= uint(5, 2)).tobool()
+->False
+
+(uint(5, 2) >= uint(0, 2)).tobool()
+->True
+
+
+(uint(0, 0) >= ufloat(0, 0)).tobool()
+->True
+
+(uint(0, 0) >= ufloat(1, 0)).tobool()
+->False
+
+(uint(3, 0) >= ufloat(0, 0)).tobool()
+->True
+
+(uint(0, 0) >= ufloat(3, 2)).tobool()
+->False
+
+(uint(3, 0) >= ufloat(0, 2)).tobool()
+->True
+
+(uint(0, 2) >= ufloat(3, 0)).tobool()
+->False
+
+(uint(3, 2) >= ufloat(0, 0)).tobool()
+->True
+
+(uint(0, 2) >= ufloat(0, 2)).tobool()
+->True
+
+(uint(0, 2) >= ufloat(0, 1)).tobool()
+->True
+
+(uint(0, 2) >= ufloat(1, 0.25)).tobool()
+->False
+
+(uint(0, 2) >= ufloat(-1, 0.25)).tobool()
+->True
+
+(uint(0, 2) >= ufloat(5, 2)).tobool()
+->False
+
+(uint(5, 2) >= ufloat(0, 2)).tobool()
+->True
+
+
+(uint(0, 0) >= 0).tobool()
+->True
+
+(uint(0, 0) >= 1).tobool()
+->False
+
+(uint(1, 0) >= 0).tobool()
+->True
+
+(uint(0, 2) >= 3).tobool()
+->False
+
+(uint(3, 2) >= 0).tobool()
+->True
+
+
+(uint(0, 0) >= 0.0).tobool()
+->True
+
+(uint(0, 0) >= 1.0).tobool()
+->False
+
+(uint(1, 0) >= 0.0).tobool()
+->True
+
+(uint(0, 2) >= 3.0).tobool()
+->False
+
+(uint(3, 2) >= 0.0).tobool()
+->True
+
+
+# EQUAL
+
+(uint(0, 0) == uint(0, 0)).tobool()
+->True
+
+(uint(0, 0) == uint(1, 0)).tobool()
+->False
+
+(uint(3, 0) == uint(0, 0)).tobool()
+->False
+
+(uint(0, 0) == uint(3, 2)).tobool()
+->False
+
+(uint(3, 0) == uint(0, 2)).tobool()
+->False
+
+(uint(0, 2) == uint(3, 0)).tobool()
+->False
+
+(uint(3, 2) == uint(0, 0)).tobool()
+->False
+
+(uint(0, 2) == uint(0, 2)).tobool()
+->True
+
+(uint(0, 2) == uint(0, 1)).tobool()
+->True
+
+(uint(0, 2) == uint(1, 0.25)).tobool()
+->False
+
+(uint(0, 2) == uint(-1, 0.25)).tobool()
+->False
+
+(uint(0, 2) == uint(5, 2)).tobool()
+->False
+
+(uint(5, 2) == uint(0, 2)).tobool()
+->False
+
+
+(uint(0, 0) == ufloat(0, 0)).tobool()
+->True
+
+(uint(0, 0) == ufloat(1, 0)).tobool()
+->False
+
+(uint(3, 0) == ufloat(0, 0)).tobool()
+->False
+
+(uint(0, 0) == ufloat(3, 2)).tobool()
+->False
+
+(uint(3, 0) == ufloat(0, 2)).tobool()
+->False
+
+(uint(0, 2) == ufloat(3, 0)).tobool()
+->False
+
+(uint(3, 2) == ufloat(0, 0)).tobool()
+->False
+
+(uint(0, 2) == ufloat(0, 2)).tobool()
+->True
+
+(uint(0, 2) == ufloat(0, 1)).tobool()
+->True
+
+(uint(0, 2) == ufloat(1, 0.25)).tobool()
+->False
+
+(uint(0, 2) == ufloat(-1, 0.25)).tobool()
+->False
+
+(uint(0, 2) == ufloat(5, 2)).tobool()
+->False
+
+(uint(5, 2) == ufloat(0, 2)).tobool()
+->False
+
+
+(uint(0, 0) == 0).tobool()
+->True
+
+(uint(0, 0) == 1).tobool()
+->False
+
+(uint(1, 0) == 0).tobool()
+->False
+
+(uint(0, 2) == 3).tobool()
+->False
+
+(uint(3, 2) == 0).tobool()
+->False
+
+
+(uint(0, 0) == 0.0).tobool()
+->True
+
+(uint(0, 0) == 1.0).tobool()
+->False
+
+(uint(1, 0) == 0.0).tobool()
+->False
+
+(uint(0, 2) == 3.0).tobool()
+->False
+
+(uint(3, 2) == 0.0).tobool()
+->False
+
+uint(2, 3) == None
+->False
+
+
+# DISTINCT
+
+(uint(0, 0) != uint(0, 0)).tobool()
+->False
+
+(uint(0, 0) != uint(1, 0)).tobool()
+->True
+
+(uint(3, 0) != uint(0, 0)).tobool()
+->True
+
+(uint(0, 0) != uint(3, 2)).tobool()
+->True
+
+(uint(3, 0) != uint(0, 2)).tobool()
+->True
+
+(uint(0, 2) != uint(3, 0)).tobool()
+->True
+
+(uint(3, 2) != uint(0, 0)).tobool()
+->True
+
+(uint(0, 2) != uint(0, 2)).tobool()
+->False
+
+(uint(0, 2) != uint(0, 1)).tobool()
+->False
+
+(uint(0, 2) != uint(1, 0.25)).tobool()
+->True
+
+(uint(0, 2) != uint(-1, 0.25)).tobool()
+->True
+
+(uint(0, 2) != uint(5, 2)).tobool()
+->True
+
+(uint(5, 2) != uint(0, 2)).tobool()
+->True
+
+
+(uint(0, 0) != ufloat(0, 0)).tobool()
+->False
+
+(uint(0, 0) != ufloat(1, 0)).tobool()
+->True
+
+(uint(3, 0) != ufloat(0, 0)).tobool()
+->True
+
+(uint(0, 0) != ufloat(3, 2)).tobool()
+->True
+
+(uint(3, 0) != ufloat(0, 2)).tobool()
+->True
+
+(uint(0, 2) != ufloat(3, 0)).tobool()
+->True
+
+(uint(3, 2) != ufloat(0, 0)).tobool()
+->True
+
+(uint(0, 2) != ufloat(0, 2)).tobool()
+->False
+
+(uint(0, 2) != ufloat(0, 1)).tobool()
+->False
+
+(uint(0, 2) != ufloat(1, 0.25)).tobool()
+->True
+
+(uint(0, 2) != ufloat(-1, 0.25)).tobool()
+->True
+
+(uint(0, 2) != ufloat(5, 2)).tobool()
+->True
+
+(uint(5, 2) != ufloat(0, 2)).tobool()
+->True
+
+
+(uint(0, 0) != 0).tobool()
+->False
+
+(uint(0, 0) != 1).tobool()
+->True
+
+(uint(1, 0) != 0).tobool()
+->True
+
+(uint(0, 2) != 3).tobool()
+->True
+
+(uint(3, 2) != 0).tobool()
+->True
+
+
+(uint(0, 0) != 0.0).tobool()
+->False
+
+(uint(0, 0) != 1.0).tobool()
+->True
+
+(uint(1, 0) != 0.0).tobool()
+->True
+
+(uint(0, 2) != 3.0).tobool()
+->True
+
+(uint(3, 2) != 0.0).tobool()
+->True
+
+(uint(2, 3) != None ).tobool()
+->True
