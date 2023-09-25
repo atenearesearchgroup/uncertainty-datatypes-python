@@ -14,9 +14,9 @@ TEST_FILES_FOLDER = 'test-files'
 ARROW = '->'
 LINE_COMMENT = '#'
 
-class TestExpression:
+class Expression:
 
-    def __init__(self, expression: str = None, expectedResult: str = None) -> TestExpression:
+    def __init__(self, expression: str = None, expectedResult: str = None) -> Expression:
         self.expression = expression
         self.expectedResult = expectedResult
 
@@ -36,7 +36,7 @@ isCommentLine = isLine(LINE_COMMENT)
 isExpectedResultLine = isLine(ARROW)
 
 def readExpresionLine(f):
-    testExpr = TestExpression()
+    testExpr = Expression()
     line = f.readline()
 
     while line and testExpr.isEmpty():    
