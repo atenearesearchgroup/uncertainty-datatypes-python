@@ -160,11 +160,11 @@ def floor(obj: uint|ufloat) -> uint|ufloat:
     __check_obj(obj)
     if isinstance(obj, uint):
         return obj
-    return __call_func(obj.toufloat(), floor.__name__)
+    return __call_func(obj, floor.__name__)
 
 # round
 def round(obj: uint|ufloat) -> uint|ufloat:
     __check_obj(obj)
     if isinstance(obj, uint):
         return obj
-    return __call_func(obj.toufloat(), round.__name__)
+    return __call_func(obj, round.__name__)

@@ -204,7 +204,10 @@ class uint:
         return self.neg()
     
     def pow(self, s: float|int) -> uint:
-        return (self.toufloat()**s).touint()
+        result = self.toufloat()**s
+        if result._x.is_integer():
+            return result.touint()
+        return result
     
     def __pow__(self, s: float|int) -> uint:
         return self.pow(s)
@@ -235,7 +238,7 @@ class uint:
         if isinstance(r, (int, float)):
             r = ufloat(r)
 
-        if not isinstance(r, (int, float)):
+        if not isinstance(r, (uint, int, float)):
             return ubool(0)
         
         return self.toufloat() == r.toufloat()
@@ -247,8 +250,10 @@ class uint:
         return self.uEquals(r)
 
     def uDistinct(self, r: uint|ufloat) -> ubool:
-        if isinstance(r, (int, float)):
+        if isinstance(r, float):
             r = ufloat(r)
+        if isinstance(r, int):
+            r = uint(r)
         return ~self.uEquals(r)
     
     def ne(self, other) -> ubool:
@@ -297,6 +302,12 @@ class uint:
     
     def __repr__(self) -> str:
         return self.__str__()
+
+    def round(self) -> uint: #returns (i,u) with i the closest int to x
+        return uint(round(self._x), self._u)
+    
+    def floor(self) -> uint: #returns (i,u) with i the largest int such that (i,u)<=(x,u)
+        return uint(math.floor(self._x),self._u)
 
     def toint(self) -> int:
         return self._x
@@ -685,8 +696,10 @@ class ufloat:
         return self.eq(other)
 
     def uDistinct(self, other: uint|ufloat) -> ubool:
-        if isinstance(other, (int, float)):
-            other = ufloat(other)
+        if isinstance(other, float):
+            r = ufloat(other)
+        if isinstance(other, int):
+            r = uint(other)
         return ~self.uEquals(other)
     
     def ne(self, other) -> ubool:
