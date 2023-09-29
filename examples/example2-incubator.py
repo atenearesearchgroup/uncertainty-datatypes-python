@@ -108,14 +108,14 @@ class Controller(ActiveObject):
 
         print(str(self.clock.now) + '\t| ' + str(self.incubator.tBair.value) + '\t| ' + str(self.incubator.tBair.uncertainty))
 
+if __name__ == "__main__":
+    clock = Clock()
+    incubator4p = Incubator4P(clock)
+    controller = Controller(clock, incubator4p)
 
-clock = Clock()
-incubator4p = Incubator4P(clock)
-controller = Controller(clock, incubator4p)
+    clock.addObject(incubator4p)
+    clock.addObject(controller)
 
-clock.addObject(incubator4p)
-clock.addObject(controller)
-
-print("Time\t| Temperature\t\t| Uncertainty")
-print("------------------------------------------------------")
-clock.run(15)
+    print("Time\t| Temperature\t\t| Uncertainty")
+    print("------------------------------------------------------")
+    clock.run(15)
