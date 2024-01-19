@@ -1,5 +1,5 @@
 from __future__ import annotations
-    
+
 class ubool:
 
     CERTAINTY: float = 0.9
@@ -18,14 +18,14 @@ class ubool:
         if isinstance(c, (int, float, str)):
             c = float(c)
             if c < 0.0 or c > 1.0: 
-                raise ValueError('Invalid parameter: c < 0.0 or c > 1.0. c=' + c)
+                raise ValueError('Invalid parameter: c < 0.0 or c > 1.0. c=' + str(c))
             self._c = float(c)
         elif isinstance(c, bool):
             self._c = 1.0 if c else 0.0
         elif isinstance(c, ubool):
             self._c = c.c
         else:
-            raise ValueError('Invalid parameter c: not bool, ubool, str or number[0.0, 1.0]. C=' + c)
+            raise ValueError('Invalid parameter c: not bool, ubool, str or number[0.0, 1.0]. C=' + str(c))
     
     def getCertainty():
         return ubool.CERTAINTY
@@ -34,7 +34,7 @@ class ubool:
         if not isinstance(certainty, (int, float)):
             raise ValueError('Invalid parameter: certainty is not an integer or float [0.0, 1.0].')
         if certainty < 0.0 or certainty > 1.0:
-            raise ValueError('Invalid parameter: certainty is an integer and c < 0 or c > 1. C=')
+            raise ValueError('Invalid parameter: certainty is an integer and c < 0 or c > 1. C=' + str(certainty))
         
         ubool.CERTAINTY = float(certainty)
 
@@ -49,7 +49,7 @@ class ubool:
     @confidence.setter
     def confidence(self, c: int|float|str):
         if not isinstance(c, (int, float, str)):
-            raise ValueError('Invalid parameter c: not a number[0.0, 1.0]. c=' + c)
+            raise ValueError('Invalid parameter c: not a number[0.0, 1.0]. c=' + str(c))
         self._c = float(c)
     
     ''' Type Operations '''
@@ -65,7 +65,11 @@ class ubool:
             return ubool(self._c) # x and x
         
         if not isinstance(o, ubool):
-            o = ubool(o)
+            from uncertainty.utypes import sbool
+            if isinstance(o, sbool):
+                return sbool(self).AND(o)
+            else:
+                o = ubool(o)
 
         return ubool(self._c * o._c)
 
@@ -80,7 +84,11 @@ class ubool:
             return ubool(self._c) # x or x
         
         if not isinstance(o, ubool):
-            o = ubool(o)
+            from uncertainty.utypes import sbool
+            if isinstance(o, sbool):
+                return sbool(self).OR(o)
+            else:
+                o = ubool(o)
 
         return ubool(self._c + o._c - (self._c * o._c))
 
@@ -97,7 +105,11 @@ class ubool:
             return ubool(self._c) # x implies x
         
         if not isinstance(o, ubool):
-            o = ubool(o)
+            from uncertainty.utypes import sbool
+            if isinstance(o, sbool):
+                return sbool(self).IMPLIES(o)
+            else:
+                o = ubool(o)
 
         return ubool((1-self._c) + o._c - ((1 - self._c) * o._c))
     
@@ -109,13 +121,21 @@ class ubool:
 
     def XOR(self, o: ubool) -> ubool:
         if not isinstance(o, ubool):
-            o = ubool(o)
+            from uncertainty.utypes import sbool
+            if isinstance(o, sbool):
+                return sbool(self).XOR(o)
+            else:
+                o = ubool(o)
 
         return ubool(abs(self._c - o._c))
 
     def XOR2(self, o: ubool) -> ubool:
         if not isinstance(o, ubool):
-            o = ubool(o)
+            from uncertainty.utypes import sbool
+            if isinstance(o, sbool):
+                return sbool(self).XOR(o)
+            else:
+                o = ubool(o)
 
         return self.EQUIVALENT2(o).NOT()
 
