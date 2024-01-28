@@ -9,7 +9,7 @@ The ``Uncertainty Datatypes`` library implements linear error propagation theory
 
 ## Installation and Usage
 
-To install the ``uType`` library, use the package manager [pip](https://pip.pypa.io/en/stable/).
+To install the ``UTypes`` library, use the package manager [pip](https://pip.pypa.io/en/stable/).
 
 ```bash
 pip install uncertainty-datatypes
