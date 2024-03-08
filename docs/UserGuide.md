@@ -69,7 +69,7 @@ In this way, ``ubool`` values and variables can be used as booleans in condition
 if x:
     'executed'
 ```
-In addition, method ``u.tobool() -> bool`` explicitly converts an ``ubool`` variable into a ``bool``, using the level of certainty: ``u.tobool() = (x.confidence > ubool.getCertainty())``.
+In addition, method ``u.tobool() -> bool`` explicitly converts an ``ubool`` variable into a ``bool``, using the level of certainty: ``u.tobool() = (x.confidence >= ubool.getCertainty())``.
 
 ### Logical operators
 
